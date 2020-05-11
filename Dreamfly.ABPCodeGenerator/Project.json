@@ -1,0 +1,30 @@
+{
+  "Project": {
+    "EmailAddress": "ywkpl@hotmail.com",
+    "Author": "ywk",
+    "OutputPath": "Output",
+    "Version": "1.0.0",
+    "Entity": "Entity",
+    "Module": "Test",
+    "Name": "Newcity.ReEstate",
+    "BuildTask": {
+      "ABPProjectNames": [
+        "{{ProjectName}}.Application",
+        "{{ProjectName}}.Core",
+        "{{ProjectName}}.EntityFrameworkCore",
+        "{{ProjectName}}.Web.Host"
+      ],
+      "Templates": [
+        {
+          "File": "/Templates/Application/IAppServiceTemplate.cshtml",
+          "Remark": "服务接口",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "/{{ProjectName}}.Application/{{Directory}}",
+            "Name": "I{{EntityName}}AppService.cs"
+          }
+        }
+      ]
+    }
+  }
+}
