@@ -22,7 +22,7 @@ namespace Dreamfly.ABPCodeGenerator
                 .ConfigureAppConfiguration(config =>
                 {
                     config.SetBasePath(Directory.GetCurrentDirectory());
-                    config.AddJsonFile("Project", optional: true, reloadOnChange: true);
+                    config.AddJsonFile("Project.json", optional: true, reloadOnChange: true);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

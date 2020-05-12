@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Dreamfly.ABPCodeGenerator.Core.Impl;
+using Dreamfly.ABPCodeGenerator.Core.Interface;
 using Dreamfly.ABPCodeGenerator.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,7 +36,10 @@ namespace Dreamfly.ABPCodeGenerator
             IFileProvider fileProvider=new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Templates"));
             services.AddSingleton<IFileProvider>(fileProvider);
 
-            services.AddControllers();
+            services.AddScoped<ITemplateEngine, RazorTemplateEngine>();
+            services.AddScoped<IProjectBuilder, ProjectBuilder>();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,7 +11,7 @@ namespace Dreamfly.ABPCodeGenerator.Models
         public string Entity { get; set; }
         public string Module { get; set; }
         public string Name { get; set; }
-        public BuildTask BuildTasks { get; set; }
+        public BuildTask BuildTask { get; set; }
     }
 
     public class BuildTask
@@ -24,7 +24,7 @@ namespace Dreamfly.ABPCodeGenerator.Models
     {
         public string File { get; set; }
         public string Remark { get; set; }
-        public bool? IsExecute { get; set; }
+        public bool IsExecute { get; set; }
         public Output Output { get; set; }
     }
 

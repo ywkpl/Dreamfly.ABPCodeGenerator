@@ -17,7 +17,7 @@
       "Templates": [
         {
           "File": "/Templates/Application/IAppServiceTemplate.cshtml",
-          "Remark": "服务接口",
+          "Remark": "鏈嶅姟鎺ュ彛",
           "IsExecute": true,
           "Output": {
             "Folder": "/{{ProjectName}}.Application/{{Directory}}",
