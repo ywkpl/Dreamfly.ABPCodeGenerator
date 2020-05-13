@@ -39,7 +39,6 @@ namespace Dreamfly.ABPCodeGenerator
             services.AddScoped<ITemplateEngine, RazorTemplateEngine>();
             services.AddScoped<IProjectBuilder, ProjectBuilder>();
             services.AddControllersWithViews();
-            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
