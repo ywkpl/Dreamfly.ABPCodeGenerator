@@ -1,27 +1,39 @@
 {
   "Project": {
-    "EmailAddress": "ywkpl@hotmail.com",
-    "Author": "ywk",
-    "OutputPath": "Output",
     "Version": "1.0.0",
+    "OutputPath": "Output",
     "Entity": "Entity",
     "Module": "Test",
     "Name": "Newcity.ReEstate",
+    "Author": {
+      "Name": "ywk",
+      "Email": "ywkpl@hotmail.com",
+      "Remark": ""
+    },
     "BuildTask": {
-      "ABPProjectNames": [
-        "{{ProjectName}}.Application",
-        "{{ProjectName}}.Core",
-        "{{ProjectName}}.EntityFrameworkCore",
-        "{{ProjectName}}.Web.Host"
+      "ApiProjectNames": [
+        "{{Name}}.Application",
+        "{{Name}}.Core",
+        "{{Name}}.EntityFrameworkCore",
+        "{{Name}}.Web.Host"
       ],
       "Templates": [
         {
-          "File": "/Templates/Application/IAppServiceTemplate.cshtml",
+          "File": "Templates/App/Entity.cshtml",
+          "Remark": "实体接口",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "{{Name}}.Core/{{Module}}",
+            "Name": "{{Entity}}.cs"
+          }
+        },
+        {
+          "File": "Templates/App/IAppService.cshtml",
           "Remark": "服务接口",
           "IsExecute": true,
           "Output": {
-            "Folder": "/{{ProjectName}}.Application/{{Directory}}",
-            "Name": "I{{EntityName}}AppService.cs"
+            "Folder": "{{Name}}.Application/{{Module}}",
+            "Name": "I{{Entity}}AppService.cs"
           }
         }
       ]

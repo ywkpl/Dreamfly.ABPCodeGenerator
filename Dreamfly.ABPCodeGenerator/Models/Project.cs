@@ -4,19 +4,18 @@ namespace Dreamfly.ABPCodeGenerator.Models
 {
     public class Project
     {
-        public string EmailAddress { get; set; }
-        public string Author { get; set; }
+        public string Name { get; set; }
         public string OutputPath { get; set; }
         public string Version { get; set; }
         public string Entity { get; set; }
         public string Module { get; set; }
-        public string Name { get; set; }
+        public Author Author { get; set; }
         public BuildTask BuildTask { get; set; }
     }
 
     public class BuildTask
     {
-        public List<string> ABPProjectNames { get; set; }
+        public List<string> ApiProjectNames { get; set; }
         public Template[] Templates { get; set; }
     }
 

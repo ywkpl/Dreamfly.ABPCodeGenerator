@@ -5,6 +5,6 @@ namespace Dreamfly.ABPCodeGenerator.Core.Interface
 {
     public interface ITemplateEngine
     {
-        Task<string> Render(Entity entity);
+        Task<string> Render(Entity entity, Template template);
     }
 }

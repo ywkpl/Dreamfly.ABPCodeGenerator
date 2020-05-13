@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Dreamfly.ABPCodeGenerator.Core.Interface;
 using Dreamfly.ABPCodeGenerator.Models;
@@ -33,10 +34,10 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
             _viewEngine = viewEngine;
         }
 
-        public async Task<string> Render(Entity entity)
+        public async Task<string> Render(Entity entity, Template template)
         {
             var actionContext = GetActionContext();
-            var view = FindView(actionContext, "/Templates/App/Entity.cshtml");
+            var view = FindView(actionContext, template.File);
 
             using (var output = new StringWriter())
             {

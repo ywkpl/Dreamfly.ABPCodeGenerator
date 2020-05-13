@@ -1,5 +1,38 @@
-﻿@model Dreamfly.ABPCodeGenerator.Models.Entity
-EntityTemplate
-@{
-    @:Model.Project.Author
+﻿@{ Layout = null;}
+@model Dreamfly.ABPCodeGenerator.Models.Entity
+/*
+* 作者: @Model.Project.Author.Name
+* 时间: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* 邮箱: @Model.Project.Author.Email
+* 描述: @Model.Project.Author.Remark
+*/
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
+
+namespace @(Model.Project.Name).@(Model.Project.Module)
+{
+    public class @Model.Project.Entity : FullAuditedEntity
+    {
+    @foreach (var item in Model.EntityItems)
+    {
+        if (!String.IsNullOrEmpty(item.Description))
+        {
+        @("/// ")<summary>
+        @Html.Raw($"/// {item.Description}")
+        @("/// ")</summary>
+        }
+        if (item.IsRequired)
+        {
+        @:[Required]
+        }
+        if (item.Length.HasValue)
+        {
+        @:[MaxLength(@item.Length)]
+        }
+        @:public @item.Type @item.Name { get; set; }
+    }
+    }
 }

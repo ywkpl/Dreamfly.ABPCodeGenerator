@@ -17,7 +17,7 @@ namespace Dreamfly.ABPCodeGenerator.Models
     {
         public string Name { get; set; }
         public string Type { get; set; }
-        public string Length { get; set; }
+        public int? Length { get; set; }
         public bool IsRequired { get; set; }
         public string Description { get; set; }
         public List<EntityItemMapType> MapTypes { get; set; }

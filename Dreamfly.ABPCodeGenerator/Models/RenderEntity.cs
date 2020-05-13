@@ -1,0 +1,17 @@
+﻿using System.Collections.Generic;
+
+namespace Dreamfly.ABPCodeGenerator.Models
+{
+    public class RenderEntity
+    {
+        public string ProjectName { get; set; }
+        public string EntityName { get; set; }
+        public string Version { get; set; }
+        public string ModuleName { get; set; }
+        public string OutputPath { get; set; }
+
+        public List<EntityItem> EntityItems { get; set; }
+        public Template Template { get; set; }
+        public Author Author { get; set; }
+    }
+}
