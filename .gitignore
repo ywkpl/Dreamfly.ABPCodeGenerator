@@ -4,4 +4,4 @@
 .vs/
 obj/
 bin/
-/Dreamfly.ABPCodeGenerator/Output/*
+Dreamfly.ABPCodeGenerator/Output/
