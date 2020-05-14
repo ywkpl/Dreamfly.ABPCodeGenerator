@@ -7,34 +7,25 @@
 * 邮箱: @Model.Author.Email
 * 描述: @Model.Author.Remark
 */
-using Abp.AutoMapper;
 using System;
-using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
 
 @{
     var dtoTemplates = Model.EntityItems
-        .Where(t => t.MapTypes!=null && t.MapTypes.Contains(EntityItemMapType.CreateInput));
+        .Where(t => t.MapTypes != null && t.MapTypes.Contains(EntityItemMapType.QueryInput));
 }
+
 namespace @(Model.ProjectName).@(Model.ModuleName).Dto
 {
-    [AutoMapTo(typeof(@(Model.EntityName))]
-    public class Create@(Model.EntityName)Input
+    public class GetAll@(Model.EntityName)Input: PagedAndSortedResultRequestDto
     {
     @foreach (var item in dtoTemplates)
     {
-		if (!String.IsNullOrEmpty(item.Description))
+        if (!String.IsNullOrEmpty(item.Description))
         {
         @("/// ")<summary>
         @Html.Raw($"/// {item.Description}")
         @("/// ")</summary>
-        }
-        if (item.IsRequired)
-        {
-        @:[Required]
-        }
-        if (item.Length.HasValue)
-        {
-        @:[MaxLength(@item.Length)]
         }
         @:public @item.Type @item.Name { get; set; }
     }

@@ -4,24 +4,18 @@
 * 邮箱: ywkpl@hotmail.com
 * 描述: 
 */
+using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Newcity.ReEstate.Test.Dto
 {
-    [AutoMapTo(typeof(Entity)]
-    public class CreateEntityInput
+    [AutoMapFrom(typeof(Entity)]
+    public class EntityDto : IEntityDto
     {
 /// <summary>
         /// 姓名
         /// </summary>
-        [Required]
-        [MaxLength(50)]
         public string Name { get; set; }
-/// <summary>
-        /// 年龄
-        /// </summary>
-        public int? Age { get; set; }
     }
 }

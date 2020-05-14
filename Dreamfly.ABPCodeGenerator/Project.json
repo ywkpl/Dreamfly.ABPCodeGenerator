@@ -62,6 +62,24 @@
             "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
             "Name": "Delete{{Entity}}Input.cs"
           }
+        },
+        {
+          "File": "Templates/App/EntityDto.cshtml",
+          "Remark": "实体Dto",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+            "Name": "{{Entity}}Dto.cs"
+          }
+        },
+        {
+          "File": "Templates/App/GetAllInput.cshtml",
+          "Remark": "查询列表Dto",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+            "Name": "GetAll{{Entity}}Input.cs"
+          }
         }
       ]
     }

@@ -27,7 +27,6 @@ namespace Dreamfly.ABPCodeGenerator.Models
     {
         CreateInput,
         Output,
-        ListOutput,
         QueryInput
     }
 }
