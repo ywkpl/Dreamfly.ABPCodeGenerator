@@ -80,6 +80,15 @@
             "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
             "Name": "GetAll{{Entity}}Input.cs"
           }
+        },
+        {
+          "File": "Templates/App/GetInputDto.cshtml",
+          "Remark": "查询单一实体Dto",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+            "Name": "Get{{Entity}}Input.cs"
+          }
         }
       ]
     }
