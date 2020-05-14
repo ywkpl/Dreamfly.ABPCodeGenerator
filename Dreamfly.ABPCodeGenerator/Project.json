@@ -32,7 +32,7 @@
           "Remark": "应用服务接口",
           "IsExecute": true,
           "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}",
+            "Folder": "{{Name}}.Application/{{Module}}/Interface",
             "Name": "I{{Entity}}AppService.cs"
           }
         },
@@ -41,7 +41,7 @@
           "Remark": "应用服务",
           "IsExecute": true,
           "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}",
+            "Folder": "{{Name}}.Application/{{Module}}/Impl",
             "Name": "{{Entity}}AppService.cs"
           }
         },
@@ -52,6 +52,15 @@
           "Output": {
             "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
             "Name": "Create{{Entity}}Input.cs"
+          }
+        },
+        {
+          "File": "Templates/App/DeleteInputDto.cshtml",
+          "Remark": "删除实体Dto",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+            "Name": "Delete{{Entity}}Input.cs"
           }
         }
       ]
