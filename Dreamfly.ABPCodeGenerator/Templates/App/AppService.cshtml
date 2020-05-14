@@ -1,0 +1,34 @@
+﻿@{ Layout = null;}
+@model Dreamfly.ABPCodeGenerator.Models.RenderEntity
+/*
+* 作者: @Model.Author.Name
+* 时间: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* 邮箱: @Model.Author.Email
+* 描述: @Model.Author.Remark
+*/
+using Abp.Domain.Repositories;
+using Abp.Linq.Extensions;
+using @(Model.ProjectName).@(Model.ModuleName).Dto;
+using Abp.Application.Services;
+using System;
+using System.Linq;
+using Abp.Authorization;
+
+namespace @(Model.ProjectName).@(Model.ModuleName)
+{
+    //权限未加
+	public class @(Model.EntityName)AppService :
+        AsyncCrudAppServiceBase<@(Model.EntityName), @(Model.EntityName)Dto, int, GetAll@(Model.EntityName)Input, Create@(Model.EntityName)Input, Update@(Model.EntityName)Input, Get@(Model.EntityName)Input, Delete@(Model.EntityName)Input>,
+        I@(Model.EntityName)AppService
+    {
+        public @(Model.EntityName)AppService(IRepository<@(Model.EntityName)> repository) : base(repository)
+        {
+        }
+
+        protected override IQueryable<@(Model.EntityName)> CreateFilteredQuery(GetAll@(Model.EntityName)Input input)
+        {
+            return base.CreateFilteredQuery(input);
+                    //.WhereIf(input.CompanyId.HasValue, t => t.CompanyId == input.CompanyId)
+        }
+    }
+}

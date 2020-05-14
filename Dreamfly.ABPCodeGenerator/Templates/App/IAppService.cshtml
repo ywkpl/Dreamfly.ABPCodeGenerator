@@ -1,6 +1,15 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-IAppService
-@{
+﻿@{ Layout = null;}
+@model Dreamfly.ABPCodeGenerator.Models.RenderEntity
+/*
+* 作者: @Model.Author.Name
+* 时间: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* 邮箱: @Model.Author.Email
+* 描述: @Model.Author.Remark
+*/
+
+namespace @(Model.ProjectName).@(Model.ModuleName)
+{
+    public interface I@(Model.EntityName)AppService
+    {
+    }
 }

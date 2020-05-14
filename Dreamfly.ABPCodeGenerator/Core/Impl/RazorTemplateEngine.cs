@@ -38,29 +38,47 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
         {
             var actionContext = GetActionContext();
             var view = FindView(actionContext, template.File);
+            var renderEntity = MapperRenderEntity(entity, template);
 
             using (var output = new StringWriter())
             {
-                var viewContext = new ViewContext(
-                    actionContext,
-                    view,
-                    new ViewDataDictionary<Entity>(
-                        metadataProvider: new EmptyModelMetadataProvider(),
-                        modelState: new ModelStateDictionary())
-                    {
-                        Model = entity
-                    },
-                    new TempDataDictionary(
-                        actionContext.HttpContext,
-                        _tempDataProvider),
-                    output,
-                    new HtmlHelperOptions()
-                );
-
+                var viewContext = MakeViewContext(actionContext, view, renderEntity, output);
                 await view.RenderAsync(viewContext);
-
                 return output.ToString();
             }
+        }
+
+        private ViewContext MakeViewContext(ActionContext actionContext, IView view, RenderEntity renderEntity,
+            StringWriter output)
+        {
+            return new ViewContext(
+                actionContext,
+                view,
+                new ViewDataDictionary<RenderEntity>(
+                    metadataProvider: new EmptyModelMetadataProvider(),
+                    modelState: new ModelStateDictionary())
+                {
+                    Model = renderEntity
+                },
+                new TempDataDictionary(
+                    actionContext.HttpContext,
+                    _tempDataProvider),
+                output,
+                new HtmlHelperOptions()
+            );
+        }
+
+        private RenderEntity MapperRenderEntity(Entity entity, Template template)
+        {
+            return new RenderEntity
+            {
+                ProjectName = entity.Project.Name,
+                EntityName = entity.Project.Entity,
+                ModuleName = entity.Project.Module,
+                Author = entity.Project.Author,
+                Template = template,
+                EntityItems = entity.EntityItems
+            };
         }
 
         private IView FindView(ActionContext actionContext, string viewName)

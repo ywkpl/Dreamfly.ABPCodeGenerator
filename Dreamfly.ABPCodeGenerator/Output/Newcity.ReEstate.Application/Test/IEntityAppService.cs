@@ -1,1 +1,13 @@
-﻿IAppService
+﻿/*
+* 作者: ywk
+* 时间: 2020-05-14 11:36
+* 邮箱: ywkpl@hotmail.com
+* 描述: 
+*/
+
+namespace Newcity.ReEstate.Test
+{
+    public interface IEntityAppService
+    {
+    }
+}

@@ -4,15 +4,14 @@
 * 邮箱: ywkpl@hotmail.com
 * 描述: 
 */
+using Abp.AutoMapper;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Abp.Domain.Entities;
-using Abp.Domain.Entities.Auditing;
 
-namespace Newcity.ReEstate.Test
+namespace Newcity.ReEstate.Test.Dto
 {
-    public class Entity : FullAuditedEntity
+    [AutoMapTo(typeof(Entity)]
+    public class CreateEntityInput
     {
 /// <summary>
         /// 姓名
@@ -24,9 +23,5 @@ namespace Newcity.ReEstate.Test
         /// 年龄
         /// </summary>
         public int? Age { get; set; }
-/// <summary>
-        /// 总额
-        /// </summary>
-        public decimal Total { get; set; }
     }
 }

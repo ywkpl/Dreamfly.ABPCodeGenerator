@@ -29,11 +29,29 @@
         },
         {
           "File": "Templates/App/IAppService.cshtml",
-          "Remark": "服务接口",
+          "Remark": "应用服务接口",
           "IsExecute": true,
           "Output": {
             "Folder": "{{Name}}.Application/{{Module}}",
             "Name": "I{{Entity}}AppService.cs"
+          }
+        },
+        {
+          "File": "Templates/App/AppService.cshtml",
+          "Remark": "应用服务",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "{{Name}}.Application/{{Module}}",
+            "Name": "{{Entity}}AppService.cs"
+          }
+        },
+        {
+          "File": "Templates/App/CreateInputDto.cshtml",
+          "Remark": "新增实体Dto",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+            "Name": "Create{{Entity}}Input.cs"
           }
         }
       ]

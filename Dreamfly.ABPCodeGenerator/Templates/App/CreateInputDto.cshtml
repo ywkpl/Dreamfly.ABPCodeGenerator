@@ -1,4 +1,5 @@
 ﻿@{ Layout = null;}
+@using Dreamfly.ABPCodeGenerator.Models
 @model Dreamfly.ABPCodeGenerator.Models.RenderEntity
 /*
 * 作者: @Model.Author.Name
@@ -6,19 +7,22 @@
 * 邮箱: @Model.Author.Email
 * 描述: @Model.Author.Remark
 */
+using Abp.AutoMapper;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Abp.Domain.Entities;
-using Abp.Domain.Entities.Auditing;
 
-namespace @(Model.ProjectName).@(Model.ModuleName)
+@{
+    var createTemplates = Model.EntityItems
+        .Where(t => t.MapTypes!=null && t.MapTypes.Contains(EntityItemMapType.CreateInput));
+}
+namespace @(Model.ProjectName).@(Model.ModuleName).Dto
 {
-    public class @Model.EntityName : FullAuditedEntity
+    [AutoMapTo(typeof(@(Model.EntityName))]
+    public class Create@(Model.EntityName)Input
     {
-    @foreach (var item in Model.EntityItems)
+    @foreach (var item in createTemplates)
     {
-        if (!String.IsNullOrEmpty(item.Description))
+		if (!String.IsNullOrEmpty(item.Description))
         {
         @("/// ")<summary>
         @Html.Raw($"/// {item.Description}")
