@@ -4,6 +4,4 @@
 .vs/
 obj/
 bin/
-aspnet-core/src/Newcity.ReEstate.Web.Host/App_Data/Logs/
-aspnet-core/src/Newcity.ReEstate.Web.Mvc/App_Data/Logs/
-aspnet-core/src/Newcity.ReEstate.Migrator/Logs/Logs.txt
+Dreamfly.ABPCodeGenerator/Output/

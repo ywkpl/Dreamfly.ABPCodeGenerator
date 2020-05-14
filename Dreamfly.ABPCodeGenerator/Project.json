@@ -74,7 +74,7 @@
         },
         {
           "File": "Templates/App/GetAllInput.cshtml",
-          "Remark": "查询列表Dto",
+          "Remark": "列表查询Dto",
           "IsExecute": true,
           "Output": {
             "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
@@ -83,11 +83,20 @@
         },
         {
           "File": "Templates/App/GetInputDto.cshtml",
-          "Remark": "查询单一实体Dto",
+          "Remark": "单一查询Dto",
           "IsExecute": true,
           "Output": {
             "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
             "Name": "Get{{Entity}}Input.cs"
+          }
+        },
+        {
+          "File": "Templates/App/UpdateInputDto.cshtml",
+          "Remark": "更新Dto",
+          "IsExecute": true,
+          "Output": {
+            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+            "Name": "Update{{Entity}}Input.cs"
           }
         }
       ]
