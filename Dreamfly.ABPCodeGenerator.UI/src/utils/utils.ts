@@ -63,3 +63,11 @@ export const getRouteAuthority = (path: string, routeData: Route[]) => {
   });
   return authorities;
 };
+
+export const isNull = (value: any): boolean => {
+  return value === null || value === undefined;
+};
+
+export const isEmptyObject = (obj: any): boolean => {
+  return typeof obj === 'object' && Object.keys(obj).length === 0;
+};

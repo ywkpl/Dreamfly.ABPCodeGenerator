@@ -23,10 +23,24 @@ namespace Dreamfly.ABPCodeGenerator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins("http://localhost:8000", "http://127.0.0.1:8000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
+
             services.AddOptions();
             services.Configure<Project>(Configuration.GetSection("Project"));
 
-            IFileProvider fileProvider=new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Templates"));
+            IFileProvider fileProvider =
+                new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Templates"));
             services.AddSingleton<IFileProvider>(fileProvider);
 
             services.AddScoped<ITemplateEngine, RazorTemplateEngine>();
@@ -46,12 +60,10 @@ namespace Dreamfly.ABPCodeGenerator
 
             app.UseRouting();
 
+            app.UseCors();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
