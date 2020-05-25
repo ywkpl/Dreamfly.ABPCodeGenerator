@@ -11,6 +11,7 @@ export interface ProjectType {
   name?: string;
   author?: AuthorType;
   version?: string;
+  templates?: [];
 }
 
 export interface ModelType {

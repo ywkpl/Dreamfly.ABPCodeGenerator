@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Card, Input, Button } from 'antd';
+import { Form, Card, Input, Button, Table, Divider } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
 import { ProjectType } from './model';
+import styles from './index.less';
+import { ColumnProps } from 'antd/es/table';
 
 const FormItem = Form.Item;
 
@@ -14,10 +16,43 @@ interface ProjectProps {
 
 interface State {}
 
+interface ProjectTemplate {
+  name: string;
+}
+
 class Project extends Component<ProjectProps, State> {
+  columns: ColumnProps<ProjectTemplate>[] = [
+    {
+      key: 'file',
+      title: '模板路径',
+      dataIndex: 'file',
+    },
+    {
+      key: 'remark',
+      title: '说明',
+      dataIndex: 'remark',
+    },
+    {
+      key: 'isExecute',
+      title: '是否生成',
+      dataIndex: 'isExecute',
+    },
+    {
+      key: 'folder',
+      title: '生成目录',
+      dataIndex: 'folder',
+    },
+    {
+      key: 'name',
+      title: '生成文件名',
+      dataIndex: 'name',
+    },
+  ];
+
   constructor(props: ProjectProps) {
     super(props);
     this.state = {};
+    this.columns = [{}];
   }
 
   componentDidMount = () => {
@@ -34,6 +69,12 @@ class Project extends Component<ProjectProps, State> {
     this.props.dispatch({
       type: 'project/updateProject',
       payload: values,
+    });
+  };
+
+  handleAdd = () => {
+    this.props.dispatch({
+      type: 'project/addTemplate',
     });
   };
 
@@ -66,7 +107,7 @@ class Project extends Component<ProjectProps, State> {
             initialValues={this.props.project}
             onFinish={this.onFinish}
           >
-            <Card bordered={false} title="项目">
+            <Card bordered={false}>
               <FormItem
                 {...formItemLayout}
                 label="名称："
@@ -75,8 +116,6 @@ class Project extends Component<ProjectProps, State> {
               >
                 <Input placeholder="名称" />
               </FormItem>
-            </Card>
-            <Card bordered={false} title="作者" style={{ marginTop: 8 }}>
               <FormItem
                 {...formItemLayout}
                 label="姓名"
@@ -96,11 +135,33 @@ class Project extends Component<ProjectProps, State> {
               <FormItem {...formItemLayout} label="说明" name={['author', 'remark']}>
                 <Input placeholder="说明" />
               </FormItem>
-              <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
+              {/* <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
                 <Button type="primary" htmlType="submit" loading={submitting}>
                   保存
                 </Button>
-              </FormItem>
+              </FormItem> */}
+            </Card>
+            <Card bordered={false} title="模板">
+              <div className={styles.tableList}>
+                <div className={styles.tableListOperator}>
+                  <Button icon="plus" type="primary" onClick={this.handleAdd}>
+                    新建
+                  </Button>
+
+                  <Button icon="danger" type="primary" onClick={this.handleAdd}>
+                    刪除
+                  </Button>
+                </div>
+                <Divider />
+                <Table
+                  pagination={false}
+                  columns={this.columns}
+                  rowKey="index"
+                  bordered
+                  dataSource={this.props.project.templates}
+                  //rowSelection={rowSelection}
+                />
+              </div>
             </Card>
           </Form>
         )}
