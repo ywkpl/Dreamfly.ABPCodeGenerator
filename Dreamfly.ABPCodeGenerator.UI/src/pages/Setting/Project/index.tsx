@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Form, Card, Input, Button, Table, Divider } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
 import { ProjectType } from './model';
+import { FormInstance } from 'antd/lib/form';
 import styles from './index.less';
 import { ColumnProps } from 'antd/es/table';
 
@@ -14,14 +15,27 @@ interface ProjectProps {
   dispatch: Dispatch<any>;
 }
 
-interface State {}
-
 interface ProjectTemplate {
   name: string;
 }
 
-class Project extends Component<ProjectProps, State> {
-  columns: ColumnProps<ProjectTemplate>[] = [
+const Project: FC<ProjectProps> = (props) => {
+  const { submitting, project } = props;
+  const [form] = Form.useForm();
+
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 7 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 12 },
+      md: { span: 10 },
+    },
+  };
+
+  const columns: ColumnProps<ProjectTemplate>[] = [
     {
       key: 'file',
       title: '模板路径',
@@ -49,126 +63,102 @@ class Project extends Component<ProjectProps, State> {
     },
   ];
 
-  constructor(props: ProjectProps) {
-    super(props);
-    this.state = {};
-    this.columns = [{}];
-  }
-
-  componentDidMount = () => {
-    this.getProject();
-  };
-
-  getProject = () => {
-    this.props.dispatch({
+  const getProject = () => {
+    props.dispatch({
       type: 'project/getProject',
     });
   };
 
-  onFinish = (values: ProjectType) => {
-    this.props.dispatch({
-      type: 'project/updateProject',
-      payload: values,
-    });
-  };
+  useEffect(() => {
+    getProject();
+  });
 
-  handleAdd = () => {
-    this.props.dispatch({
+  const handleAdd = () => {
+    props.dispatch({
       type: 'project/addTemplate',
     });
   };
 
-  render() {
-    const { submitting } = this.props;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
-        md: { span: 10 },
-      },
-    };
+  const saveButton = (
+    <Button
+      type="primary"
+      htmlType="submit"
+      onClick={() => {
+        form.validateFields().then((values) => {
+          console.log(values);
+        });
+      }}
+      loading={submitting}
+    >
+      保存
+    </Button>
+  );
 
-    const submitFormLayout = {
-      wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 12, offset: 10 },
-      },
-    };
-
-    return (
-      <PageHeaderWrapper>
-        {Object.keys(this.props.project).length !== 0 && (
-          <Form
-            style={{ marginTop: 8 }}
-            initialValues={this.props.project}
-            onFinish={this.onFinish}
-          >
-            <Card bordered={false}>
-              <FormItem
-                {...formItemLayout}
-                label="名称："
-                name="name"
-                rules={[{ required: true, message: '请输入名称' }]}
-              >
-                <Input placeholder="名称" />
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="姓名"
-                name={['author', 'name']}
-                rules={[{ required: true, message: '请输入作者姓名' }]}
-              >
-                <Input placeholder="姓名" />
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="Email"
-                name={['author', 'email']}
-                rules={[{ required: true, message: '请输入作者Email' }]}
-              >
-                <Input placeholder="Email" />
-              </FormItem>
-              <FormItem {...formItemLayout} label="说明" name={['author', 'remark']}>
-                <Input placeholder="说明" />
-              </FormItem>
-              {/* <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
+  return (
+    <PageHeaderWrapper extra={saveButton} extraContent={<div>test</div>} content={<div>test</div>}>
+      {Object.keys(project).length !== 0 && (
+        <Form style={{ marginTop: 8 }} form={form} initialValues={project}>
+          <Card bordered={false}>
+            <FormItem
+              {...formItemLayout}
+              label="名称："
+              name="name"
+              rules={[{ required: true, message: '请输入名称' }]}
+            >
+              <Input placeholder="名称" />
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="姓名"
+              name={['author', 'name']}
+              rules={[{ required: true, message: '请输入作者姓名' }]}
+            >
+              <Input placeholder="姓名" />
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="Email"
+              name={['author', 'email']}
+              rules={[{ required: true, message: '请输入作者Email' }]}
+            >
+              <Input placeholder="Email" />
+            </FormItem>
+            <FormItem {...formItemLayout} label="说明" name={['author', 'remark']}>
+              <Input placeholder="说明" />
+            </FormItem>
+            {/* <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
                 <Button type="primary" htmlType="submit" loading={submitting}>
                   保存
                 </Button>
               </FormItem> */}
-            </Card>
-            <Card bordered={false} title="模板">
-              <div className={styles.tableList}>
-                <div className={styles.tableListOperator}>
-                  <Button icon="plus" type="primary" onClick={this.handleAdd}>
-                    新建
-                  </Button>
+          </Card>
+          <Card bordered={false} title="模板">
+            <div className={styles.tableList}>
+              <div className={styles.tableListOperator}>
+                <Button icon="plus" type="primary" onClick={handleAdd}>
+                  新建
+                </Button>
 
-                  <Button icon="danger" type="primary" onClick={this.handleAdd}>
-                    刪除
-                  </Button>
-                </div>
-                <Divider />
-                <Table
-                  pagination={false}
-                  columns={this.columns}
-                  rowKey="index"
-                  bordered
-                  dataSource={this.props.project.templates}
-                  //rowSelection={rowSelection}
-                />
+                <Button icon="danger" type="primary" onClick={handleAdd}>
+                  刪除
+                </Button>
               </div>
-            </Card>
-          </Form>
-        )}
-      </PageHeaderWrapper>
-    );
-  }
-}
+              <Divider />
+              <Table
+                pagination={false}
+                columns={columns}
+                rowKey="index"
+                bordered
+                dataSource={project.templates}
+                //rowSelection={rowSelection}
+              />
+            </div>
+          </Card>
+        </Form>
+      )}
+    </PageHeaderWrapper>
+  );
+};
 
 export default connect(
   ({
