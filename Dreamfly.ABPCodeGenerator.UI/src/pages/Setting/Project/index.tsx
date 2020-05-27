@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Form, Card, Input, Button, Table, Divider } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
@@ -22,6 +22,7 @@ interface ProjectTemplate {
 const Project: FC<ProjectProps> = (props) => {
   const { submitting, project } = props;
   const [form] = Form.useForm();
+  const [test] = useState(props.project);
 
   const formItemLayout = {
     labelCol: {
@@ -70,8 +71,10 @@ const Project: FC<ProjectProps> = (props) => {
   };
 
   useEffect(() => {
+    console.log('useEffect');
+    console.log(test);
     getProject();
-  });
+  }, [test]);
 
   const handleAdd = () => {
     props.dispatch({
@@ -149,7 +152,7 @@ const Project: FC<ProjectProps> = (props) => {
                 columns={columns}
                 rowKey="index"
                 bordered
-                dataSource={project.templates}
+                dataSource={project.buildTask.templates}
                 //rowSelection={rowSelection}
               />
             </div>
