@@ -31,7 +31,7 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
         {
             try
             {
-                List<Template> templates = entity.Project.BuildTask.Templates.Where(t => t.IsExecute).ToList();
+                List<Template> templates = entity.Project.Templates.Where(t => t.IsExecute).ToList();
                 foreach (var template in templates)
                 {
                     await GenerateCodeFile(entity, template);
@@ -48,8 +48,8 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
         private async Task GenerateCodeFile(Entity entity, Template template)
         {
             string content = await _templateEngine.Render(entity, template);
-            var fileName = Handlebars.Compile(template.Output.Name)(entity.Project);
-            var folder = Handlebars.Compile(template.Output.Folder)(entity.Project);
+            var fileName = Handlebars.Compile(template.OutputName)(entity.Project);
+            var folder = Handlebars.Compile(template.OutputFolder)(entity.Project);
             string outputPath = Path.Combine(Directory.GetCurrentDirectory(), entity.Project.OutputPath, folder);
 
             FileHelper.CreateFile(outputPath, fileName, content);

@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Form, Card, Input, Button, Table, Divider } from 'antd';
+import { Form, Card, Input, Button, Table, Divider, Space, Switch, Checkbox } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
-import { ProjectType } from './model';
-import { FormInstance } from 'antd/lib/form';
+import { ProjectType, ProjectTemplate } from './model';
 import styles from './index.less';
 import { ColumnProps } from 'antd/es/table';
 
@@ -12,17 +11,13 @@ const FormItem = Form.Item;
 interface ProjectProps {
   project: ProjectType;
   submitting: boolean;
-  dispatch: Dispatch<any>;
-}
-
-interface ProjectTemplate {
-  name: string;
+  dispatch: Dispatch;
 }
 
 const Project: FC<ProjectProps> = (props) => {
-  const { submitting, project } = props;
+  const { submitting, project, dispatch } = props;
   const [form] = Form.useForm();
-  const [test] = useState(props.project);
+  const [test] = useState(project);
 
   const formItemLayout = {
     labelCol: {
@@ -51,16 +46,62 @@ const Project: FC<ProjectProps> = (props) => {
       key: 'isExecute',
       title: '是否生成',
       dataIndex: 'isExecute',
+      align: 'center',
+      render: (value, row) => {
+        return (
+          <>
+            <Checkbox
+              checked={value}
+              value={row.file}
+              onChange={(v) => {
+                const { templates } = project;
+                const template = templates?.find((t) => t.file === v.target.value);
+                if (template) {
+                  console.log('test');
+                  template.isExecute = v.target.checked;
+                }
+                console.log(v);
+                console.log(template);
+              }}
+            />
+            <Switch
+              checked={value}
+              onChange={(v) => {
+                props.dispatch({
+                  type: 'project/test',
+                  payload: {
+                    ...project,
+                    name: 'test',
+                  },
+                });
+                const { templates } = project;
+                const template = templates?.find((t) => t.file === row.file);
+                if (template) {
+                  console.log('test');
+                  template.isExecute = v;
+                }
+                console.log(v);
+                console.log(row);
+              }}
+            />
+          </>
+        );
+      },
     },
     {
-      key: 'folder',
+      key: 'outputFolder',
       title: '生成目录',
-      dataIndex: 'folder',
+      dataIndex: 'outputFolder',
     },
     {
-      key: 'name',
+      key: 'outputName',
       title: '生成文件名',
-      dataIndex: 'name',
+      dataIndex: 'outputName',
+    },
+    {
+      key: 'projectFile',
+      title: '项目文件',
+      dataIndex: 'projectFile',
     },
   ];
 
@@ -71,8 +112,7 @@ const Project: FC<ProjectProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log('useEffect');
-    console.log(test);
+    console.log('object');
     getProject();
   }, [test]);
 
@@ -98,65 +138,77 @@ const Project: FC<ProjectProps> = (props) => {
   );
 
   return (
-    <PageHeaderWrapper extra={saveButton} extraContent={<div>test</div>} content={<div>test</div>}>
+    <PageHeaderWrapper extra={saveButton}>
       {Object.keys(project).length !== 0 && (
         <Form style={{ marginTop: 8 }} form={form} initialValues={project}>
-          <Card bordered={false}>
-            <FormItem
-              {...formItemLayout}
-              label="名称："
-              name="name"
-              rules={[{ required: true, message: '请输入名称' }]}
-            >
-              <Input placeholder="名称" />
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="姓名"
-              name={['author', 'name']}
-              rules={[{ required: true, message: '请输入作者姓名' }]}
-            >
-              <Input placeholder="姓名" />
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="Email"
-              name={['author', 'email']}
-              rules={[{ required: true, message: '请输入作者Email' }]}
-            >
-              <Input placeholder="Email" />
-            </FormItem>
-            <FormItem {...formItemLayout} label="说明" name={['author', 'remark']}>
-              <Input placeholder="说明" />
-            </FormItem>
-            {/* <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <Card bordered={false} title="项目">
+              <FormItem
+                {...formItemLayout}
+                label="名称"
+                name="name"
+                rules={[{ required: true, message: '请输入名称' }]}
+              >
+                <Input placeholder="名称" />
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="版本"
+                name="version"
+                rules={[{ required: true, message: '请输入版本号' }]}
+              >
+                <Input placeholder="版本" />
+              </FormItem>
+            </Card>
+            <Card bordered={false} title="作者">
+              <FormItem
+                {...formItemLayout}
+                label="姓名"
+                name={['author', 'name']}
+                rules={[{ required: true, message: '请输入作者姓名' }]}
+              >
+                <Input placeholder="姓名" />
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="Email"
+                name={['author', 'email']}
+                rules={[{ required: true, message: '请输入作者Email' }]}
+              >
+                <Input placeholder="Email" />
+              </FormItem>
+              <FormItem {...formItemLayout} label="说明" name={['author', 'remark']}>
+                <Input placeholder="说明" />
+              </FormItem>
+              {/* <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
                 <Button type="primary" htmlType="submit" loading={submitting}>
                   保存
                 </Button>
               </FormItem> */}
-          </Card>
-          <Card bordered={false} title="模板">
-            <div className={styles.tableList}>
-              <div className={styles.tableListOperator}>
-                <Button icon="plus" type="primary" onClick={handleAdd}>
-                  新建
-                </Button>
+            </Card>
+            <Card bordered={false} title="模板">
+              <div className={styles.tableList}>
+                <div className={styles.tableListOperator}>
+                  <Button icon="plus" type="primary" onClick={handleAdd}>
+                    新建
+                  </Button>
 
-                <Button icon="danger" type="primary" onClick={handleAdd}>
-                  刪除
-                </Button>
+                  <Button icon="danger" type="primary" onClick={handleAdd}>
+                    刪除
+                  </Button>
+                </div>
+                <Divider />
+                <Table
+                  pagination={false}
+                  columns={columns}
+                  rowKey="file"
+                  bordered
+                  dataSource={project.templates}
+                  //rowSelection={rowSelection}
+                />
               </div>
-              <Divider />
-              <Table
-                pagination={false}
-                columns={columns}
-                rowKey="index"
-                bordered
-                dataSource={project.buildTask.templates}
-                //rowSelection={rowSelection}
-              />
-            </div>
-          </Card>
+            </Card>
+          </Space>
         </Form>
       )}
     </PageHeaderWrapper>

@@ -73,8 +73,8 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
             return new RenderEntity
             {
                 ProjectName = entity.Project.Name,
-                EntityName = entity.Project.Entity,
-                ModuleName = entity.Project.Module,
+                EntityName = entity.Name,
+                ModuleName = entity.Module,
                 Author = entity.Project.Author,
                 Template = template,
                 EntityItems = entity.EntityItems

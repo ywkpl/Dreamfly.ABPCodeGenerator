@@ -10,96 +10,79 @@
       "Email": "ywkpl@hotmail.com",
       "Remark": ""
     },
-    "BuildTask": {
-      "ApiProjectNames": [
-        "{{Name}}.Application",
-        "{{Name}}.Core",
-        "{{Name}}.EntityFrameworkCore",
-        "{{Name}}.Web.Host"
-      ],
-      "Templates": [
-        {
-          "File": "Templates/App/Entity.cshtml",
-          "Remark": "实体接口",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Core/{{Module}}",
-            "Name": "{{Entity}}.cs"
-          }
-        },
-        {
-          "File": "Templates/App/IAppService.cshtml",
-          "Remark": "应用服务接口",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}/Interface",
-            "Name": "I{{Entity}}AppService.cs"
-          }
-        },
-        {
-          "File": "Templates/App/AppService.cshtml",
-          "Remark": "应用服务",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}/Impl",
-            "Name": "{{Entity}}AppService.cs"
-          }
-        },
-        {
-          "File": "Templates/App/CreateInputDto.cshtml",
-          "Remark": "新增实体Dto",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
-            "Name": "Create{{Entity}}Input.cs"
-          }
-        },
-        {
-          "File": "Templates/App/DeleteInputDto.cshtml",
-          "Remark": "删除实体Dto",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
-            "Name": "Delete{{Entity}}Input.cs"
-          }
-        },
-        {
-          "File": "Templates/App/EntityDto.cshtml",
-          "Remark": "实体Dto",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
-            "Name": "{{Entity}}Dto.cs"
-          }
-        },
-        {
-          "File": "Templates/App/GetAllInput.cshtml",
-          "Remark": "列表查询Dto",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
-            "Name": "GetAll{{Entity}}Input.cs"
-          }
-        },
-        {
-          "File": "Templates/App/GetInputDto.cshtml",
-          "Remark": "单一查询Dto",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
-            "Name": "Get{{Entity}}Input.cs"
-          }
-        },
-        {
-          "File": "Templates/App/UpdateInputDto.cshtml",
-          "Remark": "更新Dto",
-          "IsExecute": true,
-          "Output": {
-            "Folder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
-            "Name": "Update{{Entity}}Input.cs"
-          }
-        }
-      ]
-    }
+    "Templates": [
+      {
+        "File": "Templates/App/Entity.cshtml",
+        "Remark": "实体接口",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Core/{{Module}}",
+        "OutputName": "{{Entity}}.cs",
+        "ProjectFile": "{{Name}}.Core/{{Name}}.Core.csproj"
+      },
+      {
+        "File": "Templates/App/IAppService.cshtml",
+        "Remark": "应用服务接口",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Application/{{Module}}/Interface",
+        "OutputName": "I{{Entity}}AppService.cs",
+        "ProjectFile": "{{Name}}.Application/{{Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/AppService.cshtml",
+        "Remark": "应用服务",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Application/{{Module}}/Impl",
+        "OutputName": "{{Entity}}AppService.cs",
+        "ProjectFile": "{{Name}}.Application/{{Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/CreateInputDto.cshtml",
+        "Remark": "新增实体Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+        "OutputName": "Create{{Entity}}Input.cs",
+        "ProjectFile": "{{Name}}.Application/{{Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/DeleteInputDto.cshtml",
+        "Remark": "删除实体Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+        "OutputName": "Delete{{Entity}}Input.cs",
+        "ProjectFile": "{{Name}}.Application/{{Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/EntityDto.cshtml",
+        "Remark": "实体Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+        "OutputName": "{{Entity}}Dto.cs",
+        "ProjectFile": "{{Name}}.Application/{{Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/GetAllInput.cshtml",
+        "Remark": "列表查询Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+        "OutputName": "GetAll{{Entity}}Input.cs",
+        "ProjectFile": "{{Name}}.Application/{{Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/GetInputDto.cshtml",
+        "Remark": "单一查询Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+        "OutputName": "Get{{Entity}}Input.cs",
+        "ProjectFile": "{{Name}}.Application/{{Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/UpdateInputDto.cshtml",
+        "Remark": "更新Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Name}}.Application/{{Module}}/Dto/{{Entity}}",
+        "OutputName": "Update{{Entity}}Input.cs",
+        "ProjectFile": "{{Name}}.Application/{{Name}}.Application.csproj"
+      }
+    ]
   }
 }

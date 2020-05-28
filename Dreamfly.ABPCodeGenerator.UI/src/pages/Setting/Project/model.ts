@@ -7,11 +7,20 @@ export interface AuthorType {
   email?: string;
   remark?: string;
 }
+
+export interface ProjectTemplate {
+  file: string;
+  remark: string;
+  isExecute: boolean;
+  outputFolder: string;
+  outputName: string;
+  projectFile: string;
+}
 export interface ProjectType {
   name?: string;
   author?: AuthorType;
   version?: string;
-  templates?: [];
+  templates?: Array<ProjectTemplate>;
 }
 
 export interface ModelType {
@@ -24,6 +33,7 @@ export interface ModelType {
     getProject: Effect;
   };
   reducers: {
+    test: Reducer<ProjectType>;
     save: Reducer<ProjectType>;
   };
 }
@@ -45,6 +55,12 @@ const Model: ModelType = {
     },
   },
   reducers: {
+    test(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
     save(state, action) {
       return {
         ...state,
