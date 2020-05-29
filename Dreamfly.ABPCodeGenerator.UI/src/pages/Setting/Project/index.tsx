@@ -1,23 +1,25 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Card, Input, Button, Table, Divider, Space, Switch, Checkbox } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { connect, Dispatch } from 'umi';
+import { useDispatch, useSelector, Loading } from 'umi';
 import { ProjectType, ProjectTemplate } from './model';
 import styles from './index.less';
 import { ColumnProps } from 'antd/es/table';
 
 const FormItem = Form.Item;
 
-interface ProjectProps {
+interface ProjectPageState {
+  loading: Loading;
   project: ProjectType;
-  submitting: boolean;
-  dispatch: Dispatch;
 }
 
-const Project: FC<ProjectProps> = (props) => {
-  const { submitting, project, dispatch } = props;
+const Project = () => {
   const [form] = Form.useForm();
-  const [test] = useState(project);
+  const dispatch = useDispatch();
+  const { project, submitting } = useSelector((state: ProjectPageState) => ({
+    project: state.project,
+    submitting: state.loading.effects['project/updateProject'],
+  }));
 
   const formItemLayout = {
     labelCol: {
@@ -55,9 +57,8 @@ const Project: FC<ProjectProps> = (props) => {
               value={row.file}
               onChange={(v) => {
                 const { templates } = project;
-                const template = templates?.find((t) => t.file === v.target.value);
+                const template = templates?.find((t: ProjectTemplate) => t.file === v.target.value);
                 if (template) {
-                  console.log('test');
                   template.isExecute = v.target.checked;
                 }
                 console.log(v);
@@ -67,7 +68,7 @@ const Project: FC<ProjectProps> = (props) => {
             <Switch
               checked={value}
               onChange={(v) => {
-                props.dispatch({
+                dispatch({
                   type: 'project/test',
                   payload: {
                     ...project,
@@ -106,18 +107,17 @@ const Project: FC<ProjectProps> = (props) => {
   ];
 
   const getProject = () => {
-    props.dispatch({
+    dispatch({
       type: 'project/getProject',
     });
   };
 
   useEffect(() => {
-    console.log('object');
     getProject();
-  }, [test]);
+  }, []);
 
   const handleAdd = () => {
-    props.dispatch({
+    dispatch({
       type: 'project/addTemplate',
     });
   };
@@ -128,7 +128,10 @@ const Project: FC<ProjectProps> = (props) => {
       htmlType="submit"
       onClick={() => {
         form.validateFields().then((values) => {
+          // console.log(submitting)
+          // setTimeout(() => {}, 5000);
           console.log(values);
+          //dispatch({ type: 'project/updateProject', payload: values });
         });
       }}
       loading={submitting}
@@ -215,15 +218,4 @@ const Project: FC<ProjectProps> = (props) => {
   );
 };
 
-export default connect(
-  ({
-    loading,
-    project,
-  }: {
-    loading: { effects: { [key: string]: boolean } };
-    project: ProjectType;
-  }) => ({
-    submitting: loading.effects['project/submit'],
-    project,
-  }),
-)(Project);
+export default Project;

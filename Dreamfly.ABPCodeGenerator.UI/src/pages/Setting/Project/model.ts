@@ -44,7 +44,7 @@ const Model: ModelType = {
   effects: {
     *updateProject({ payload }, { call }) {
       yield call(updateProject, payload);
-      message.success('保存成功');
+      message.success('保存成功！');
     },
     *getProject({ payload }, { call, put }) {
       const response = yield call(getProject, payload);
@@ -56,6 +56,7 @@ const Model: ModelType = {
   },
   reducers: {
     test(state, action) {
+      setTimeout(() => {}, 8000);
       return {
         ...state,
         ...action.payload,
