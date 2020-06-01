@@ -2,11 +2,21 @@ import { Effect, Reducer } from 'umi';
 import { message } from 'antd';
 import { getProject, updateProject } from './service';
 
+const InitTemplate: ProjectTemplate = {
+  file: 'Templates/',
+  remark: '',
+  isExecute: true,
+  outputFolder: '',
+  outputName: '',
+  projectFile: '',
+};
+
 const Model: ModelType = {
   namespace: 'project',
   state: {
     project: {},
     editModelVisible: false,
+    template: InitTemplate,
   },
   effects: {
     *updateProject({ payload }, { call }) {
@@ -74,6 +84,7 @@ export interface ProjectType {
 export interface ProjectStateType {
   project?: ProjectType;
   editModelVisible?: boolean;
+  template?: ProjectTemplate;
 }
 
 export interface ModelType {

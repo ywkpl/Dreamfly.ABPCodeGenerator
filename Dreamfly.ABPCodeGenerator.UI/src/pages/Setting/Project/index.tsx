@@ -1,5 +1,17 @@
 import React, { useEffect } from 'react';
-import { Form, Card, Input, Button, Table, Divider, Space, Switch, Checkbox, Modal } from 'antd';
+import {
+  Form,
+  Card,
+  Input,
+  Button,
+  Table,
+  Divider,
+  Space,
+  Switch,
+  Checkbox,
+  Modal,
+  message,
+} from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { useDispatch, useSelector, Loading } from 'umi';
 import { ProjectType, ProjectTemplate } from './model';
@@ -10,17 +22,21 @@ const FormItem = Form.Item;
 
 interface ProjectPageState {
   loading: Loading;
-  project: { project: ProjectType; editModelVisible: boolean };
+  project: { project: ProjectType; editModelVisible: boolean; template: ProjectTemplate };
 }
 
 const Project = () => {
-  const [form] = Form.useForm();
+  const [mainForm] = Form.useForm();
+  const [subForm] = Form.useForm();
   const dispatch = useDispatch();
-  const { project, editModelVisible, submitting } = useSelector((state: ProjectPageState) => ({
-    project: state.project.project,
-    editModelVisible: state.project.editModelVisible,
-    submitting: state.loading.effects['project/updateProject'],
-  }));
+  const { project, editModelVisible, submitting, template } = useSelector(
+    (state: ProjectPageState) => ({
+      project: state.project.project,
+      editModelVisible: state.project.editModelVisible,
+      submitting: state.loading.effects['project/updateProject'],
+      template: state.project.template,
+    }),
+  );
 
   const formItemLayout = {
     labelCol: {
@@ -108,7 +124,7 @@ const Project = () => {
   };
 
   const handleSave = () => {
-    form.validateFields().then((values) => {
+    mainForm.validateFields().then((values) => {
       console.log({
         ...values,
         templates: project.templates,
@@ -129,7 +145,21 @@ const Project = () => {
     </Button>
   );
 
-  const handleEditModelOk = () => {};
+  const handleEditModelOk = () => {
+    subForm.validateFields().then((values) => {
+      console.log({
+        ...values,
+      });
+      message.success('test');
+      // dispatch({
+      //   type: 'project/updateProject',
+      //   payload: {
+      //     ...project,
+      //     ...values,
+      //   },
+      // });
+    });
+  };
   const handleEditModelCancel = () => {
     dispatch({
       type: 'project/saveEditModelVisible',
@@ -146,7 +176,7 @@ const Project = () => {
       okText="保存"
       onCancel={handleEditModelCancel}
     >
-      <Form style={{ marginTop: 8 }} form={form} initialValues={project}>
+      <Form style={{ marginTop: 8 }} form={subForm} initialValues={template} name="model">
         <FormItem
           {...formAllItemLayout}
           label="模板路径"
@@ -225,7 +255,7 @@ const Project = () => {
   return (
     <PageHeaderWrapper extra={saveButton}>
       {Object.keys(project).length !== 0 && (
-        <Form style={{ marginTop: 8 }} form={form} initialValues={project}>
+        <Form style={{ marginTop: 8 }} form={mainForm} initialValues={project} name="main">
           <Space direction="vertical" style={{ width: '100%' }}>
             <Card bordered={false} title="项目">
               <FormItem
