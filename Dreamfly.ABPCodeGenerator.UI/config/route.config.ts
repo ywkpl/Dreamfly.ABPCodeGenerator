@@ -31,7 +31,7 @@ export default [
           },
           {
             path: '/setting/project',
-            name: '项目设定',
+            name: 'project',
             icon: 'smile',
             component: './setting/project',
           },

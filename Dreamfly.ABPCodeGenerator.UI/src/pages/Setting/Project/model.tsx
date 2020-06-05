@@ -4,11 +4,11 @@ import { getProject, updateProject } from './service';
 
 const InitTemplate: ProjectTemplate = {
   file: 'Templates/',
-  remark: '',
+  remark: '1',
   isExecute: true,
-  outputFolder: '',
-  outputName: '',
-  projectFile: '',
+  outputFolder: '1',
+  outputName: '1',
+  projectFile: '1',
 };
 
 const Model: ModelType = {
@@ -41,6 +41,23 @@ const Model: ModelType = {
         });
       }
     },
+    *insertTemplate({ payload }, { put, select }) {
+      const { project } = yield select((state: ProjectStateType) => state.project);
+      const test = {
+        ...project,
+      };
+
+      test.templates.push(payload);
+      console.log(test);
+      yield put({
+        type: 'save',
+        payload: test,
+      });
+      yield put({
+        type: 'saveEditModelVisible',
+        payload: false,
+      });
+    },
   },
   reducers: {
     saveEditModelVisible(state, action) {
@@ -50,10 +67,12 @@ const Model: ModelType = {
       };
     },
     save(state, action) {
-      return {
+      const test = {
         ...state,
         project: action.payload as ProjectType,
       };
+      console.log(test);
+      return test;
     },
   },
 };
@@ -78,7 +97,7 @@ export interface ProjectType {
   name?: string;
   author?: AuthorType;
   version?: string;
-  templates?: Array<ProjectTemplate>;
+  templates?: ProjectTemplate[];
 }
 
 export interface ProjectStateType {
@@ -94,6 +113,7 @@ export interface ModelType {
     updateProject: Effect;
     getProject: Effect;
     changeTemplateExecute: Effect;
+    insertTemplate: Effect;
   };
   reducers: {
     saveEditModelVisible: Reducer<ProjectStateType>;

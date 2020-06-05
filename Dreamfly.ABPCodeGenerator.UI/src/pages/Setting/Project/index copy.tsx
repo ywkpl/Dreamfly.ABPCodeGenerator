@@ -1,43 +1,42 @@
-import React, { useEffect, useCallback } from 'react';
-import { Form, Card, Input, Button, Table, Divider, Space, Switch, Modal, message } from 'antd';
+import React, { useEffect } from 'react';
+import {
+  Form,
+  Card,
+  Input,
+  Button,
+  Table,
+  Divider,
+  Space,
+  Switch,
+  Checkbox,
+  Modal,
+  message,
+} from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { useDispatch, useSelector, Loading, ConnectRC, connect } from 'umi';
-import { ProjectType, ProjectTemplate, ProjectStateType } from './model';
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-
-import moduleName from '@umijs/hooks';
+import { useDispatch, useSelector, Loading } from 'umi';
+import { ProjectType, ProjectTemplate } from './model';
 import styles from './index.less';
 import { ColumnProps } from 'antd/es/table';
 
-//https://zhuanlan.zhihu.com/p/103150605 直接干掉umi可不可以
-
 const FormItem = Form.Item;
-
-interface ProjectPageProps {
-  submitting: boolean;
-  project: ProjectStateType;
-}
 
 interface ProjectPageState {
   loading: Loading;
   project: { project: ProjectType; editModelVisible: boolean; template: ProjectTemplate };
 }
 
-const Project: ConnectRC<ProjectPageProps> = (props) => {
+const Project = () => {
   const [mainForm] = Form.useForm();
   const [editModelForm] = Form.useForm();
-
-  const { project, submitting, dispatch } = props;
-  const { editModelVisible, template } = project;
-
-  // const { project, editModelVisible, submitting, template } = useSelector(
-  //   (state: ProjectPageState) => ({
-  //     project: state.project.project,
-  //     editModelVisible: state.project.editModelVisible,
-  //     submitting: state.loading.effects['project/updateProject'],
-  //     template: state.project.template,
-  //   }),
-  // );
+  const dispatch = useDispatch();
+  const { project, editModelVisible, submitting, template } = useSelector(
+    (state: ProjectPageState) => ({
+      project: state.project.project,
+      editModelVisible: state.project.editModelVisible,
+      submitting: state.loading.effects['project/updateProject'],
+      template: state.project.template,
+    }),
+  );
 
   const formItemLayout = {
     labelCol: {
@@ -76,19 +75,19 @@ const Project: ConnectRC<ProjectPageProps> = (props) => {
       title: '是否生成',
       dataIndex: 'isExecute',
       align: 'center',
-      // render: (value, row) => {
-      //   return (
-      //     <Switch
-      //       checked={value}
-      //       onChange={(v) => {
-      //         dispatch({
-      //           type: 'project/changeTemplateExecute',
-      //           payload: { file: row.file, isExecute: v },
-      //         });
-      //       }}
-      //     />
-      //   );
-      // },
+      render: (value, row) => {
+        return (
+          <Switch
+            checked={value}
+            onChange={(v) => {
+              dispatch({
+                type: 'project/changeTemplateExecute',
+                payload: { file: row.file, isExecute: v },
+              });
+            }}
+          />
+        );
+      },
     },
     {
       key: 'outputFolder',
@@ -113,19 +112,9 @@ const Project: ConnectRC<ProjectPageProps> = (props) => {
     });
   };
 
-  // const getProject = useCallback(() => {
-  //   dispatch({
-  //     type: 'project/getProject',
-  //   });
-  // }, [project]);
-
   useEffect(() => {
     getProject();
   }, []);
-
-  useEffect(() => {
-    console.log(project.project);
-  }, [project.project]);
 
   const handleAdd = () => {
     dispatch({
@@ -151,7 +140,7 @@ const Project: ConnectRC<ProjectPageProps> = (props) => {
   };
 
   const saveButton = (
-    <Button type="primary" htmlType="submit">
+    <Button type="primary" htmlType="submit" onClick={handleSave} loading={submitting}>
       保存
     </Button>
   );
@@ -169,11 +158,6 @@ const Project: ConnectRC<ProjectPageProps> = (props) => {
       //     ...values,
       //   },
       // });
-
-      dispatch({
-        type: 'project/insertTemplate',
-        payload: values,
-      });
     });
   };
   const handleEditModelCancel = () => {
@@ -270,8 +254,8 @@ const Project: ConnectRC<ProjectPageProps> = (props) => {
 
   return (
     <PageHeaderWrapper extra={saveButton}>
-      {Object.keys(project.project).length !== 0 && (
-        <Form style={{ marginTop: 8 }} form={mainForm} initialValues={project.project} name="main">
+      {Object.keys(project).length !== 0 && (
+        <Form style={{ marginTop: 8 }} form={mainForm} initialValues={project} name="main">
           <Space direction="vertical" style={{ width: '100%' }}>
             <Card bordered={false} title="项目">
               <FormItem
@@ -315,10 +299,10 @@ const Project: ConnectRC<ProjectPageProps> = (props) => {
             <Card bordered={false} title="模板">
               <div className={styles.tableList}>
                 <div className={styles.tableListOperator}>
-                  <Button icon={<PlusOutlined />} type="primary" onClick={handleAdd}>
+                  <Button icon="plus" type="primary" onClick={handleAdd}>
                     新建
                   </Button>
-                  <Button icon={<DeleteOutlined />} type="primary" danger onClick={handleSave}>
+                  <Button icon="danger" type="primary" onClick={handleAdd}>
                     刪除
                   </Button>
                 </div>
@@ -328,7 +312,7 @@ const Project: ConnectRC<ProjectPageProps> = (props) => {
                   columns={columns}
                   rowKey="file"
                   bordered
-                  dataSource={project.project.templates}
+                  dataSource={project.templates}
                   //rowSelection={rowSelection}
                 />
               </div>
@@ -341,7 +325,4 @@ const Project: ConnectRC<ProjectPageProps> = (props) => {
   );
 };
 
-export default connect(({ project, loading }: { project: ProjectStateType; loading: Loading }) => ({
-  project,
-  submitting: loading.effects['project/updateProject'],
-}))(Project);
+export default Project;
