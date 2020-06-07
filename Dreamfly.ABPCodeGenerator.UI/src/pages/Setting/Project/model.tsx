@@ -97,7 +97,7 @@ export interface ProjectType {
   name?: string;
   author?: AuthorType;
   version?: string;
-  templates?: ProjectTemplate[];
+  templates: ProjectTemplate[];
 }
 
 export interface ProjectStateType {
