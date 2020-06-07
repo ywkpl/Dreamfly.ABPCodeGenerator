@@ -39,6 +39,14 @@ const Entity = () => {
       outputName: '1',
       projectFile: '1',
     });
+    editModelForm.setFieldsValue({
+      file: 'Templates/',
+      remark: '1',
+      isExecute: true,
+      outputFolder: '1',
+      outputName: '1',
+      projectFile: '1',
+    });
     setEditModelVisible(true);
   };
 
@@ -89,6 +97,7 @@ const Entity = () => {
             onClick={() => {
               setTemplate(record);
               setIsEdit(true);
+              editModelForm.setFieldsValue(record);
               setEditModelVisible(true);
             }}
           >
@@ -125,13 +134,14 @@ const Entity = () => {
       }
       setProject(project);
       setTemplate({} as ProjectTemplate);
+      editModelForm.resetFields();
       setEditModelVisible(false);
     });
   };
 
   const handleEditModelCancel = () => {
+    editModelForm.resetFields();
     setEditModelVisible(false);
-    setTemplate({} as ProjectTemplate);
   };
 
   const formItemLayout = {
@@ -158,6 +168,7 @@ const Entity = () => {
   const modelEdit = (
     <Modal
       title="模板明细"
+      destroyOnClose
       visible={editModelVisible}
       onOk={handleEditModelOk}
       okText="保存"
@@ -175,7 +186,6 @@ const Entity = () => {
                 message: '请输入模板路径',
               },
             ]}
-            initialValue={template.file}
           >
             <Input placeholder="模板路径" disabled={isEdit} />
           </FormItem>
