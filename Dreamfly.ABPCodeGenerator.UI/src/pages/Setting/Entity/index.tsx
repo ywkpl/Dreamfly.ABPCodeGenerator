@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Form,
   Card,
@@ -11,15 +11,21 @@ import {
   Modal,
   message,
   Popconfirm,
+  Checkbox,
+  Tag,
+  Select,
 } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ColumnProps } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ProjectType, ProjectTemplate } from '../Project/model';
+import { EntityItemMapType, EntityType, EntityItemType } from './model';
+
 import styles from './index.less';
-import { getProject, updateProject } from '../Project/service';
+import { generatorCode } from './service';
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 const Entity = () => {
   const [editModelForm] = Form.useForm();
@@ -29,6 +35,7 @@ const Entity = () => {
   const [submitting, setSubmitting] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [itemJson, setItemJson] = useState('');
 
   const handleAdd = () => {
     setIsEdit(false);
@@ -37,62 +44,53 @@ const Entity = () => {
       isExecute: true,
     });
     setEditModelVisible(true);
+    console.log(Object.keys(EntityItemMapType));
   };
-
-  useEffect(() => {
-    getProject({}).then((va: ProjectType) => {
-      mainForm.setFieldsValue(va);
-      setTemplates(va.templates);
-    });
-  }, []);
 
   const columns: ColumnProps<ProjectTemplate>[] = [
     {
-      key: 'file',
-      title: '模板路径',
-      dataIndex: 'file',
+      key: 'name',
+      title: '名称',
+      dataIndex: 'name',
     },
     {
-      key: 'remark',
-      title: '说明',
-      dataIndex: 'remark',
+      key: 'type',
+      title: '类型',
+      dataIndex: 'type',
     },
     {
-      key: 'isExecute',
-      title: '是否生成',
-      dataIndex: 'isExecute',
+      key: 'length',
+      title: '长度',
+      dataIndex: 'length',
+    },
+    {
+      key: 'isRequired',
+      title: '是否必填',
+      dataIndex: 'isRequired',
       align: 'center',
-      render: (value, row) => {
-        return (
-          <Switch
-            checked={value}
-            onChange={(v) => {
-              const editItem = templates.find((t) => t.file === row.file);
-              if (editItem) {
-                const index = templates.indexOf(editItem);
-                editItem.isExecute = v;
-                templates.splice(index, 1, editItem);
-                setTemplates([...templates]);
-              }
-            }}
-          />
-        );
+      render: (value) => {
+        return <Checkbox checked={value} />;
       },
     },
     {
-      key: 'outputFolder',
-      title: '生成目录',
-      dataIndex: 'outputFolder',
+      key: 'description',
+      title: '描述',
+      dataIndex: 'description',
     },
     {
-      key: 'outputName',
-      title: '生成文件名',
-      dataIndex: 'outputName',
-    },
-    {
-      key: 'projectFile',
-      title: '项目文件',
-      dataIndex: 'projectFile',
+      key: 'mapTypes',
+      title: '映射类型',
+      dataIndex: 'mapTypes',
+      render: (value: EntityItemMapType[]) => {
+        return (
+          <div>
+            {value &&
+              value.map((t: EntityItemMapType) => {
+                return <Tag color="processing">{EntityItemMapType[t]}</Tag>;
+              })}
+          </div>
+        );
+      },
     },
     {
       title: '操作',
@@ -169,9 +167,22 @@ const Entity = () => {
     },
   };
 
+  const childrens: JSX.Element[] = () => {
+    const options = [];
+    const mapTypes = Object.keys(EntityItemMapType);
+    if (mapTypes && mapTypes.length > 0) {
+      for (let i = 0; i < mapTypes.length / 2; i++) {
+        options.push(
+          <Select.Option value={mapTypes[i]}>{mapTypes[i + mapTypes.length / 2]}</Select.Option>,
+        );
+      }
+    }
+    return options;
+  };
+
   const modelEdit = (
     <Modal
-      title="模板明细"
+      title="实体明细"
       destroyOnClose
       visible={editModelVisible}
       onOk={handleEditModelOk}
@@ -181,74 +192,49 @@ const Entity = () => {
       <Form style={{ marginTop: 8 }} form={editModelForm} name="model">
         <FormItem
           {...formAllItemLayout}
-          label="模板路径"
-          name="file"
+          label="名称"
+          name="name"
           rules={[
             {
               required: true,
-              message: '请输入模板路径',
+              message: '请输入名称',
             },
           ]}
         >
-          <Input placeholder="模板路径" disabled={isEdit} />
+          <Input placeholder="名称" />
         </FormItem>
         <FormItem
           {...formAllItemLayout}
-          label="说明"
-          name="remark"
+          label="类型"
+          name="type"
           rules={[
             {
               required: true,
-              message: '请输入说明',
+              message: '请输入类型',
             },
           ]}
         >
-          <Input placeholder="说明" />
+          <Input placeholder="类型" />
         </FormItem>
 
-        <FormItem {...formAllItemLayout} label="是否生成" name="isExecute" valuePropName="checked">
+        <FormItem {...formAllItemLayout} label="长度" name="length">
+          <Input placeholder="长度" />
+        </FormItem>
+
+        <FormItem {...formAllItemLayout} label="是否必填" name="isRequired" valuePropName="checked">
           <Switch />
         </FormItem>
 
-        <FormItem
-          {...formAllItemLayout}
-          label="生成目录"
-          name="outputFolder"
-          rules={[
-            {
-              required: true,
-              message: '请输入生成目录',
-            },
-          ]}
-        >
-          <Input placeholder="生成目录" />
+        <FormItem {...formAllItemLayout} label="描述" name="description">
+          <Input placeholder="描述" />
         </FormItem>
 
-        <FormItem
-          {...formAllItemLayout}
-          label="生成文件名"
-          name="outputName"
-          rules={[
-            {
-              required: true,
-              message: '请输入生成文件名',
-            },
-          ]}
-        >
-          <Input placeholder="生成文件名" />
-        </FormItem>
-        <FormItem
-          {...formAllItemLayout}
-          label="项目文件"
-          name="projectFile"
-          rules={[
-            {
-              required: true,
-              message: '请输入项目文件',
-            },
-          ]}
-        >
-          <Input placeholder="项目文件" />
+        <FormItem {...formAllItemLayout} label="输出类别" name="mapTypes">
+          <Select mode="multiple" style={{ width: '100%' }} placeholder="输出类别">
+            {childrens()}
+            {/* {Object.keys(EntityItemMapType).map(t=>(<Option key={t.} ></Option>))} */}
+          </Select>
+          {/* <Input placeholder="输出类别" /> */}
         </FormItem>
       </Form>
     </Modal>
@@ -257,19 +243,23 @@ const Entity = () => {
   const handleSave = () => {
     mainForm.validateFields().then((values) => {
       setSubmitting(true);
-      updateProject({
-        ...values,
-        templates,
-      }).then(() => {
-        message.success('保存成功！');
+      console.log(values);
+      // generatorCode({
+      //   ...values,
+      //   templates,
+      // }).then(() => {
+      //   message.success('产生成功！');
+      //   setSubmitting(false);
+      // });
+      setTimeout(() => {
         setSubmitting(false);
-      });
+      }, 3000);
     });
   };
 
   const saveButton = (
     <Button type="primary" htmlType="submit" onClick={handleSave} loading={submitting}>
-      保存
+      生成
     </Button>
   );
 
@@ -283,55 +273,45 @@ const Entity = () => {
     <PageHeaderWrapper extra={saveButton}>
       <Form style={{ marginTop: 8 }} form={mainForm} name="main">
         <Space direction="vertical" style={{ width: '100%' }}>
-          <Card bordered={false} title="项目">
+          <Card bordered={false} title="实体">
             <FormItem
               {...formItemLayout}
               label="名称"
-              name="name"
+              name="entity"
               rules={[{ required: true, message: '请输入名称' }]}
             >
               <Input placeholder="名称" />
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="输出目录"
-              name="outputPath"
-              rules={[{ required: true, message: '请输入输出目录' }]}
+              label="目录"
+              name="Module"
+              rules={[{ required: true, message: '请输入目录' }]}
             >
-              <Input placeholder="输出目录" />
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="版本"
-              name="version"
-              rules={[{ required: true, message: '请输入版本号' }]}
-            >
-              <Input placeholder="版本" />
+              <Input placeholder="目录" />
             </FormItem>
           </Card>
-          <Card bordered={false} title="作者">
-            <FormItem
-              {...formItemLayout}
-              label="姓名"
-              name={['author', 'name']}
-              rules={[{ required: true, message: '请输入作者姓名' }]}
-            >
-              <Input placeholder="姓名" />
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="Email"
-              name={['author', 'email']}
-              rules={[{ required: true, message: '请输入作者Email' }]}
-            >
-              <Input placeholder="Email" />
-            </FormItem>
-            <FormItem {...formItemLayout} label="说明" name={['author', 'remark']}>
-              <Input placeholder="说明" />
-            </FormItem>
-          </Card>
-          <Card bordered={false} title="模板">
+          <Card bordered={false} title="明细">
             <div className={styles.tableList}>
+              <TextArea
+                placeholder="明细Json"
+                autoSize={{ minRows: 5 }}
+                value={itemJson}
+                onChange={(e) => {
+                  setItemJson(e.target.value);
+                }}
+              />
+              <Button
+                type="primary"
+                style={{ marginTop: '10px' }}
+                onClick={() => {
+                  const items = JSON.parse(itemJson) as EntityItemMapType[];
+                  console.log(items);
+                }}
+              >
+                导入
+              </Button>
+              <Divider />
               <div className={styles.tableListOperator}>
                 <Button icon={<PlusOutlined />} type="primary" onClick={handleAdd}>
                   新建

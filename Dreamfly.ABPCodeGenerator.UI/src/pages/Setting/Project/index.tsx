@@ -21,7 +21,7 @@ import { getProject, updateProject } from './service';
 
 const FormItem = Form.Item;
 
-const Entity = () => {
+const Project = () => {
   const [editModelForm] = Form.useForm();
   const [mainForm] = Form.useForm();
   const [templates, setTemplates] = useState<ProjectTemplate[]>([]);
@@ -367,4 +367,4 @@ const Entity = () => {
   );
 };
 
-export default Entity;
+export default Project;
