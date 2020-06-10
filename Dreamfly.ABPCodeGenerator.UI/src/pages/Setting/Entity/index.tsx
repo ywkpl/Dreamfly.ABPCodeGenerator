@@ -18,9 +18,7 @@ import {
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ColumnProps } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { ProjectType, ProjectTemplate } from '../Project/model';
-import { EntityItemMapType, EntityType, EntityItemType } from './model';
-
+import { EntityItemMapType, EntityItemType } from './model';
 import styles from './index.less';
 import { generatorCode } from './service';
 
@@ -30,7 +28,7 @@ const { TextArea } = Input;
 const Entity = () => {
   const [editModelForm] = Form.useForm();
   const [mainForm] = Form.useForm();
-  const [templates, setTemplates] = useState<ProjectTemplate[]>([]);
+  const [entityItems, setEntityItems] = useState<EntityItemType[]>([]);
   const [editModelVisible, setEditModelVisible] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -40,14 +38,17 @@ const Entity = () => {
   const handleAdd = () => {
     setIsEdit(false);
     editModelForm.setFieldsValue({
-      file: 'Templates/',
-      isExecute: true,
+      name: '',
+      type: '',
+      length: null,
+      isRequired: false,
+      description: '',
+      mapTypes: [],
     });
     setEditModelVisible(true);
-    console.log(Object.keys(EntityItemMapType));
   };
 
-  const columns: ColumnProps<ProjectTemplate>[] = [
+  const columns: ColumnProps<EntityItemType>[] = [
     {
       key: 'name',
       title: '名称',
@@ -69,7 +70,7 @@ const Entity = () => {
       dataIndex: 'isRequired',
       align: 'center',
       render: (value) => {
-        return <Checkbox checked={value} />;
+        return <Checkbox checked={value} disabled />;
       },
     },
     {
@@ -94,7 +95,7 @@ const Entity = () => {
     },
     {
       title: '操作',
-      render: (record: ProjectTemplate) => (
+      render: (record: EntityItemType) => (
         <>
           <Button
             type="link"
@@ -110,8 +111,8 @@ const Entity = () => {
           <Popconfirm
             title="确认删除吗?"
             onConfirm={() => {
-              const removedItems = templates.filter((t) => t.file !== record.file);
-              setTemplates([...removedItems]);
+              const removedItems = entityItems.filter((t) => t.name !== record.name);
+              setEntityItems([...removedItems]);
             }}
           >
             <a>删除</a>
@@ -123,20 +124,20 @@ const Entity = () => {
 
   const handleEditModelOk = () => {
     editModelForm.validateFields().then((values) => {
-      const templateItem = values as ProjectTemplate;
-      const editItem = templates.find((t) => t.file === templateItem.file);
+      const entityItem = values as EntityItemType;
+      const editItem = entityItems.find((t) => t.name === entityItem.name);
       if (isEdit) {
         if (editItem) {
-          const index = templates.indexOf(editItem);
-          templates.splice(index, 1, templateItem);
-          setTemplates([...templates]);
+          const index = entityItems.indexOf(editItem);
+          entityItems.splice(index, 1, entityItem);
+          setEntityItems([...entityItems]);
         }
       } else {
         if (editItem) {
-          message.error('模板路径已存在，请确认！');
+          message.error('实体项目已存在，请确认！');
           return;
         }
-        setTemplates([...templates, templateItem]);
+        setEntityItems([...entityItems, entityItem]);
       }
       setEditModelVisible(false);
     });
@@ -167,13 +168,15 @@ const Entity = () => {
     },
   };
 
-  const childrens: JSX.Element[] = () => {
+  const mapTypeItems = () => {
     const options = [];
     const mapTypes = Object.keys(EntityItemMapType);
     if (mapTypes && mapTypes.length > 0) {
-      for (let i = 0; i < mapTypes.length / 2; i++) {
+      for (let i = 0; i < mapTypes.length / 2; i += 1) {
         options.push(
-          <Select.Option value={mapTypes[i]}>{mapTypes[i + mapTypes.length / 2]}</Select.Option>,
+          <Select.Option value={mapTypes[i]} key={mapTypes[i]}>
+            {mapTypes[i + mapTypes.length / 2]}
+          </Select.Option>,
         );
       }
     }
@@ -205,20 +208,20 @@ const Entity = () => {
         </FormItem>
         <FormItem
           {...formAllItemLayout}
-          label="类型"
+          label="变量类型"
           name="type"
           rules={[
             {
               required: true,
-              message: '请输入类型',
+              message: '请输入变量类型',
             },
           ]}
         >
-          <Input placeholder="类型" />
+          <Input placeholder="变量类型" style={{ width: 250 }} />
         </FormItem>
 
-        <FormItem {...formAllItemLayout} label="长度" name="length">
-          <Input placeholder="长度" />
+        <FormItem {...formAllItemLayout} label="最大长度" name="length">
+          <Input type="number" placeholder="最大长度" style={{ width: 150 }} />
         </FormItem>
 
         <FormItem {...formAllItemLayout} label="是否必填" name="isRequired" valuePropName="checked">
@@ -231,10 +234,8 @@ const Entity = () => {
 
         <FormItem {...formAllItemLayout} label="输出类别" name="mapTypes">
           <Select mode="multiple" style={{ width: '100%' }} placeholder="输出类别">
-            {childrens()}
-            {/* {Object.keys(EntityItemMapType).map(t=>(<Option key={t.} ></Option>))} */}
+            {mapTypeItems()}
           </Select>
-          {/* <Input placeholder="输出类别" /> */}
         </FormItem>
       </Form>
     </Modal>
@@ -243,17 +244,10 @@ const Entity = () => {
   const handleSave = () => {
     mainForm.validateFields().then((values) => {
       setSubmitting(true);
-      console.log(values);
-      // generatorCode({
-      //   ...values,
-      //   templates,
-      // }).then(() => {
-      //   message.success('产生成功！');
-      //   setSubmitting(false);
-      // });
-      setTimeout(() => {
+      generatorCode(values).then(() => {
+        message.success('生成成功！');
         setSubmitting(false);
-      }, 3000);
+      });
     });
   };
 
@@ -293,23 +287,71 @@ const Entity = () => {
           </Card>
           <Card bordered={false} title="明细">
             <div className={styles.tableList}>
-              <TextArea
-                placeholder="明细Json"
-                autoSize={{ minRows: 5 }}
-                value={itemJson}
-                onChange={(e) => {
-                  setItemJson(e.target.value);
-                }}
-              />
+              <FormItem name="itemJson">
+                <TextArea
+                  placeholder="明细Json"
+                  autoSize={{ minRows: 5, maxRows: 10 }}
+                  value={itemJson}
+                  onChange={(e) => {
+                    setItemJson(e.target.value);
+                  }}
+                />
+              </FormItem>
               <Button
                 type="primary"
-                style={{ marginTop: '10px' }}
                 onClick={() => {
-                  const items = JSON.parse(itemJson) as EntityItemMapType[];
-                  console.log(items);
+                  const items = JSON.parse(itemJson) as EntityItemType[];
+                  if (items && items.length > 0) {
+                    const itemNames = items.map((t) => t.name);
+                    const existsNames = entityItems.filter((t) => itemNames.includes(t.name));
+                    if (existsNames.length > 0) {
+                      message.error('已存在相同名称其次，请确认！');
+                      return;
+                    }
+                    const newItmes = entityItems.concat(items);
+                    setEntityItems([...newItmes]);
+                  }
                 }}
               >
                 导入
+              </Button>
+              <Button
+                type="primary"
+                style={{ marginLeft: '10px' }}
+                onClick={() => {
+                  const data = `[
+                    {
+                        "name": "name",
+                        "type": "string",
+                        "length": 20,
+                        "isRequired": true,
+                        "description": "名称",
+                        "mapTypes": [
+                            0,
+                            1,
+                            2
+                        ]
+                    },
+                    {
+                        "name": "age",
+                        "type": "int",
+                        "description": "年龄",
+                        "mapTypes": [
+                            0,
+                            2
+                        ]
+                    },
+                    {
+                        "name": "memo",
+                        "type": "string",
+                        "length": 400
+                    }
+                ]`;
+                  setItemJson(data);
+                  mainForm.setFieldsValue({ itemJson: data });
+                }}
+              >
+                生成示范数据
               </Button>
               <Divider />
               <div className={styles.tableListOperator}>
@@ -321,8 +363,9 @@ const Entity = () => {
                   type="primary"
                   danger
                   onClick={() => {
-                    const removedItems = templates.filter((t) => !selectedKeys.includes(t.file));
-                    setTemplates([...removedItems]);
+                    const removedItems = entityItems.filter((t) => !selectedKeys.includes(t.name));
+                    setSelectedKeys([]);
+                    setEntityItems([...removedItems]);
                   }}
                   disabled={selectedKeys.length === 0}
                 >
@@ -333,9 +376,9 @@ const Entity = () => {
               <Table
                 pagination={false}
                 columns={columns}
-                rowKey="file"
+                rowKey="name"
                 bordered
-                dataSource={templates}
+                dataSource={entityItems}
                 rowSelection={rowSelection}
               />
             </div>

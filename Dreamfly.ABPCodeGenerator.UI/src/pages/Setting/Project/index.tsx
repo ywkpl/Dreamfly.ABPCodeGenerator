@@ -34,7 +34,11 @@ const Project = () => {
     setIsEdit(false);
     editModelForm.setFieldsValue({
       file: 'Templates/',
+      remark: '',
       isExecute: true,
+      outputFolder: '',
+      outputName: '',
+      projectFile: '',
     });
     setEditModelVisible(true);
   };
@@ -343,6 +347,7 @@ const Project = () => {
                   onClick={() => {
                     const removedItems = templates.filter((t) => !selectedKeys.includes(t.file));
                     setTemplates([...removedItems]);
+                    setSelectedKeys([]);
                   }}
                   disabled={selectedKeys.length === 0}
                 >
