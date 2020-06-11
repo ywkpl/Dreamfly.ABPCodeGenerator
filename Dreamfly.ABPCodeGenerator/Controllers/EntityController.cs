@@ -21,10 +21,10 @@ namespace Dreamfly.ABPCodeGenerator.Controllers
         }
 
         [HttpPost]
-        public async Task Post(List<EntityItem> input)
+        public async Task Post(Entity entity)
         {
             //转换成Entity
-            var entity = new Entity{Project = _project, EntityItems = input};
+            entity.Project = _project;
 
             //生成Code文件
             await _projectBuilder.Build(entity);

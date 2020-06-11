@@ -87,7 +87,11 @@ const Entity = () => {
           <div>
             {value &&
               value.map((t: EntityItemMapType) => {
-                return <Tag color="processing">{EntityItemMapType[t]}</Tag>;
+                return (
+                  <Tag key={t} color="processing">
+                    {EntityItemMapType[t]}
+                  </Tag>
+                );
               })}
           </div>
         );
@@ -243,9 +247,23 @@ const Entity = () => {
 
   const handleSave = () => {
     mainForm.validateFields().then((values) => {
+      if (entityItems.length === 0) {
+        message.error('明细项目必须有值！');
+        return;
+      }
+
+      const para = {
+        name: values.name,
+        module: values.module,
+        entityItems,
+      };
+
+      console.log(para);
       setSubmitting(true);
-      generatorCode(values).then(() => {
-        message.success('生成成功！');
+      generatorCode(para).then((response: Response) => {
+        if (!response) {
+          message.success('生成成功！');
+        }
         setSubmitting(false);
       });
     });
@@ -271,7 +289,7 @@ const Entity = () => {
             <FormItem
               {...formItemLayout}
               label="名称"
-              name="entity"
+              name="name"
               rules={[{ required: true, message: '请输入名称' }]}
             >
               <Input placeholder="名称" />
@@ -279,7 +297,7 @@ const Entity = () => {
             <FormItem
               {...formItemLayout}
               label="目录"
-              name="Module"
+              name="module"
               rules={[{ required: true, message: '请输入目录' }]}
             >
               <Input placeholder="目录" />
@@ -290,7 +308,7 @@ const Entity = () => {
               <FormItem name="itemJson">
                 <TextArea
                   placeholder="明细Json"
-                  autoSize={{ minRows: 5, maxRows: 10 }}
+                  autoSize={{ minRows: 6, maxRows: 6 }}
                   value={itemJson}
                   onChange={(e) => {
                     setItemJson(e.target.value);
@@ -300,16 +318,18 @@ const Entity = () => {
               <Button
                 type="primary"
                 onClick={() => {
-                  const items = JSON.parse(itemJson) as EntityItemType[];
-                  if (items && items.length > 0) {
-                    const itemNames = items.map((t) => t.name);
-                    const existsNames = entityItems.filter((t) => itemNames.includes(t.name));
-                    if (existsNames.length > 0) {
-                      message.error('已存在相同名称其次，请确认！');
-                      return;
+                  if (itemJson && itemJson.length > 0) {
+                    const items = JSON.parse(itemJson) as EntityItemType[];
+                    if (items && items.length > 0) {
+                      const itemNames = items.map((t) => t.name);
+                      const existsNames = entityItems.filter((t) => itemNames.includes(t.name));
+                      if (existsNames.length > 0) {
+                        message.error('已存在相同名称其次，请确认！');
+                        return;
+                      }
+                      const newItmes = entityItems.concat(items);
+                      setEntityItems([...newItmes]);
                     }
-                    const newItmes = entityItems.concat(items);
-                    setEntityItems([...newItmes]);
                   }
                 }}
               >
@@ -364,8 +384,8 @@ const Entity = () => {
                   danger
                   onClick={() => {
                     const removedItems = entityItems.filter((t) => !selectedKeys.includes(t.name));
-                    setSelectedKeys([]);
                     setEntityItems([...removedItems]);
+                    setSelectedKeys([]);
                   }}
                   disabled={selectedKeys.length === 0}
                 >

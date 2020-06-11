@@ -264,8 +264,10 @@ const Project = () => {
       updateProject({
         ...values,
         templates,
-      }).then(() => {
-        message.success('保存成功！');
+      }).then((response: Request) => {
+        if (!response) {
+          message.success('保存成功！');
+        }
         setSubmitting(false);
       });
     });
