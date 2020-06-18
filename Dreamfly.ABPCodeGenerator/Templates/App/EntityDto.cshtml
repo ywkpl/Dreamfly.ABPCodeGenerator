@@ -17,7 +17,7 @@ using System;
 }
 namespace @(Model.ProjectName).@(Model.ModuleName).Dto
 {
-    [AutoMapFrom(typeof(@(Model.EntityName))]
+    [AutoMapFrom(typeof(@(Model.EntityName)))]
     public class @(Model.EntityName)Dto : IEntityDto
     {
     @foreach (var item in dtoTemplates)
@@ -30,5 +30,6 @@ namespace @(Model.ProjectName).@(Model.ModuleName).Dto
         }
         @:public @item.Type @item.Name { get; set; }
     }
+        public int Id { get; set; }
     }
 }

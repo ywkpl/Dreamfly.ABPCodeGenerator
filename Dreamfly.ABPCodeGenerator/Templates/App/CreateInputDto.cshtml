@@ -17,7 +17,7 @@ using System.ComponentModel.DataAnnotations;
 }
 namespace @(Model.ProjectName).@(Model.ModuleName).Dto
 {
-    [AutoMapTo(typeof(@(Model.EntityName))]
+    [AutoMapTo(typeof(@(Model.EntityName)))]
     public class Create@(Model.EntityName)Input
     {
     @foreach (var item in dtoTemplates)
