@@ -50,9 +50,9 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
             string content = await _templateEngine.Render(entity, template);
             var fileName = Handlebars.Compile(template.OutputName)(entity);
             var folder = Handlebars.Compile(template.OutputFolder)(entity);
-            string outputPath = Path.Combine(Directory.GetCurrentDirectory(), entity.Project.OutputPath, folder);
+            string apiOutputPath = Path.Combine(entity.Project.OutputPath, "aspnet-core", "src", folder);
 
-            FileHelper.CreateFile(outputPath, fileName, content);
+            FileHelper.CreateFile(apiOutputPath, fileName, content);
         }
 
         public void IncludeToProject()

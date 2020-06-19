@@ -23,6 +23,9 @@ namespace @(Model.ProjectName).@(Model.ModuleName)
     {
         public @(Model.EntityName)AppService(IRepository<@(Model.EntityName)> repository) : base(repository)
         {
+            this.CreatePermissionName = PermissionNames.Pages_@(Model.ModuleName)_@(Model.EntityName)_Create;
+            this.UpdatePermissionName = PermissionNames.Pages_@(Model.ModuleName)_@(Model.EntityName)_Update;
+            this.DeletePermissionName = PermissionNames.Pages_@(Model.ModuleName)_@(Model.EntityName)_Delete;
         }
 
         protected override IQueryable<@(Model.EntityName)> CreateFilteredQuery(GetAll@(Model.EntityName)Input input)
