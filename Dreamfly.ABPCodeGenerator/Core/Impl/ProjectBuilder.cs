@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Dreamfly.ABPCodeGenerator.Core.Interface;
 using Dreamfly.ABPCodeGenerator.Helper;
@@ -58,6 +59,11 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
         public void IncludeToProject()
         {
             throw new System.NotImplementedException();
+        }
+
+        public Task Insert(Entity entity)
+        {
+            return Task.Run(() => { new FileInsertCode().Insert(entity); });
         }
     }
 }

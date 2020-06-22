@@ -13,5 +13,7 @@ namespace Dreamfly.ABPCodeGenerator.Core.Interface
         /// </summary>
         /// <returns></returns>
         void IncludeToProject();
+
+        Task Insert(Entity entity);
     }
 }
