@@ -255,6 +255,7 @@ const Entity = () => {
       const para = {
         name: values.name,
         module: values.module,
+        description: values.description,
         entityItems,
       };
 
@@ -293,6 +294,14 @@ const Entity = () => {
               rules={[{ required: true, message: '请输入名称' }]}
             >
               <Input placeholder="名称" />
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="描述"
+              name="description"
+              rules={[{ required: true, message: '请输入描述' }]}
+            >
+              <Input placeholder="描述" />
             </FormItem>
             <FormItem
               {...formItemLayout}

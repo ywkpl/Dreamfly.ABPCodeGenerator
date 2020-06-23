@@ -41,7 +41,7 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
 
         private string GetPermissionCode(Entity entity)
         {
-            return $@"{NEW_LINE}{TAB}{TAB}//{entity.Name}
+            return $@"{NEW_LINE}{TAB}{TAB}//{entity.Description}
 {TAB}{TAB}public const string Pages_{entity.Module}_{entity.Name} = ""Pages.{entity.Module}.{entity.Name}"";
 {TAB}{TAB}public const string Pages_{entity.Module}_{entity.Name}_Create = ""Pages.{entity.Module}.{entity.Name}.Create"";
 {TAB}{TAB}public const string Pages_{entity.Module}_{entity.Name}_Update = ""Pages.{entity.Module}.{entity.Name}.Update"";

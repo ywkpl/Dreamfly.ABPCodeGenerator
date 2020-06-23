@@ -63,7 +63,12 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
 
         public Task Insert(Entity entity)
         {
-            return Task.Run(() => { new FileInsertCode().Insert(entity); });
+            return Task.Run(() =>
+            {
+                new FileInsertCode().Insert(entity); 
+                new InsertLanguageXml().Insert(entity);
+                new InsertDbSet().Insert(entity);
+            });
         }
     }
 }
