@@ -9,38 +9,36 @@ namespace Dreamfly.ABPCodeGenerator.Core
 {
     public static class TransferLanguage
     {
-        const int LCMAP_SIMPLIFIED_CHINESE = 0x02000000;
-        const int LCMAP_TRADITIONAL_CHINESE = 0x04000000;
-        [DllImport("kernel32.dll", EntryPoint = "LCMapStringA")]
-        public static extern int LCMapString(int Locale, int dwMapFlags, byte[] lpSrcStr, int cchSrc, byte[] lpDestStr,
-            int cchDest);
-        static string Transfer(string source, int type)
+        const int LocaleSystemDefault = 0x0800;
+        const int LcmapSimplifiedChinese = 0x02000000;
+        const int LcmapTraditionalChinese = 0x04000000;
+
+        [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern int LCMapString(int locale, int dwMapFlags, string lpSrcStr, int cchSrc,
+            string lpDestStr, int cchDest);
+
+        /// <summary>
+        /// 繁体转简体
+        /// </summary>
+        /// <param name="argSource">繁体</param>
+        /// <returns>简体</returns>
+        public static string ToSimplified(string argSource)
         {
-            byte[] srcByte2 = Encoding.Default.GetBytes(source);
-            byte[] desByte2 = new byte[srcByte2.Length];
-            LCMapString(2052, type, srcByte2, -1, desByte2, srcByte2.Length);
-            string des2 = Encoding.Default.GetString(desByte2);
-            return des2;
+            var t = new String(' ', argSource.Length);
+            LCMapString(LocaleSystemDefault, LcmapSimplifiedChinese, argSource, argSource.Length, t, argSource.Length);
+            return t;
         }
 
         /// <summary>
         /// 简体转繁体
         /// </summary>
-        /// <param name="source">简体</param>
+        /// <param name="argSource">简体</param>
         /// <returns>繁体</returns>
-        public static string ToTraditional(string source)
+        public static string ToTraditional(string argSource)
         {
-           return Transfer(source, LCMAP_TRADITIONAL_CHINESE);
-        }
-
-        /// <summary>
-        /// 繁体转简体
-        /// </summary>
-        /// <param name="source">繁体</param>
-        /// <returns>简体</returns>
-        public static string ToSimplified(string source)
-        {
-            return Transfer(source, LCMAP_SIMPLIFIED_CHINESE);
+            var t = new String(' ', argSource.Length);
+            LCMapString(LocaleSystemDefault, LcmapTraditionalChinese, argSource, argSource.Length, t, argSource.Length);
+            return t;
         }
     }
 }

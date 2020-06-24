@@ -7,13 +7,5 @@ namespace Dreamfly.ABPCodeGenerator.Core.Interface
     public interface IProjectBuilder
     {
         Task Build(Entity entity);
-        
-        /// <summary>
-        /// 包含至项目
-        /// </summary>
-        /// <returns></returns>
-        void IncludeToProject();
-
-        Task Insert(Entity entity);
     }
 }

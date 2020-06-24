@@ -26,6 +26,22 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
         public async Task Build(Entity entity)
         {
             await TryBuild(entity);
+
+            InsertCodeToFile(entity);
+        }
+
+        private void InsertCodeToFile(Entity entity)
+        {
+            List<InsertCodeToFileBase> insertCodes = new List<InsertCodeToFileBase>
+            {
+                new ToPermissionNames(entity),
+                new InsertLanguageXml(entity),
+                new ToDbContext(entity),
+                new ToAuthorizationProvider(entity)
+            };
+
+            insertCodes.ForEach(p => p.Remove());
+            insertCodes.ForEach(p=>p.Insert());
         }
 
         private async Task TryBuild(Entity entity)
@@ -54,21 +70,6 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
             string apiOutputPath = Path.Combine(entity.Project.OutputPath, "aspnet-core", "src", folder);
 
             FileHelper.CreateFile(apiOutputPath, fileName, content);
-        }
-
-        public void IncludeToProject()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Insert(Entity entity)
-        {
-            return Task.Run(() =>
-            {
-                new FileInsertCode().Insert(entity); 
-                new InsertLanguageXml().Insert(entity);
-                new InsertDbSet().Insert(entity);
-            });
         }
     }
 }

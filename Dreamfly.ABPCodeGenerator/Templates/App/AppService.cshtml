@@ -13,11 +13,11 @@ using Abp.Application.Services;
 using System;
 using System.Linq;
 using Abp.Authorization;
+using Newcity.ReEstate.Authorization;
 
 namespace @(Model.ProjectName).@(Model.ModuleName)
 {
-    //权限未加
-	public class @(Model.EntityName)AppService :
+    public class @(Model.EntityName)AppService :
         AsyncCrudAppServiceBase<@(Model.EntityName), @(Model.EntityName)Dto, int, GetAll@(Model.EntityName)Input, Create@(Model.EntityName)Input, Update@(Model.EntityName)Input, Get@(Model.EntityName)Input, Delete@(Model.EntityName)Input>,
         I@(Model.EntityName)AppService
     {

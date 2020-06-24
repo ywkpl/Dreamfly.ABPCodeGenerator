@@ -28,8 +28,6 @@ namespace Dreamfly.ABPCodeGenerator.Controllers
 
             //生成Code文件
             await _projectBuilder.Build(entity);
-
-            await _projectBuilder.Insert(entity);
         }
     }
 }
