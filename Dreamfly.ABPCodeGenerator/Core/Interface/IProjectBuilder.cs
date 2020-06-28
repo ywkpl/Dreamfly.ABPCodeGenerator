@@ -7,5 +7,7 @@ namespace Dreamfly.ABPCodeGenerator.Core.Interface
     public interface IProjectBuilder
     {
         Task Build(Entity entity);
+
+        Task Remove(Entity entity);
     }
 }

@@ -20,14 +20,24 @@ namespace Dreamfly.ABPCodeGenerator.Controllers
             _projectBuilder = projectBuilder;
         }
 
-        [HttpPost]
-        public async Task Post(Entity entity)
+        [HttpPost("Generate")]
+        public async Task Generate(Entity entity)
         {
             //转换成Entity
             entity.Project = _project;
 
             //生成Code文件
             await _projectBuilder.Build(entity);
+        }
+
+        [HttpPost("Remove")]
+        public async Task Remove(Entity entity)
+        {
+            //转换成Entity
+            entity.Project = _project;
+
+            //移除Code文件
+            await _projectBuilder.Remove(entity);
         }
     }
 }

@@ -20,7 +20,7 @@ import { ColumnProps } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { EntityItemMapType, EntityItemType } from './model';
 import styles from './index.less';
-import { generatorCode } from './service';
+import { generatorCode, removeCode } from './service';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -270,10 +270,40 @@ const Entity = () => {
     });
   };
 
+  const handleDelete = () => {
+    mainForm.validateFields().then((values) => {
+      if (entityItems.length === 0) {
+        message.error('明细项目必须有值！');
+        return;
+      }
+
+      const para = {
+        name: values.name,
+        module: values.module,
+        description: values.description,
+        entityItems,
+      };
+
+      console.log(para);
+      setSubmitting(true);
+      removeCode(para).then((response: Response) => {
+        if (!response) {
+          message.success('清除成功！');
+        }
+        setSubmitting(false);
+      });
+    });
+  };
+
   const saveButton = (
-    <Button type="primary" htmlType="submit" onClick={handleSave} loading={submitting}>
-      生成
-    </Button>
+    <>
+      <Button type="primary" htmlType="submit" onClick={handleSave} loading={submitting}>
+        生成
+      </Button>
+      <Button type="primary" htmlType="submit" onClick={handleDelete} loading={submitting}>
+        清除
+      </Button>
+    </>
   );
 
   const rowSelection = {

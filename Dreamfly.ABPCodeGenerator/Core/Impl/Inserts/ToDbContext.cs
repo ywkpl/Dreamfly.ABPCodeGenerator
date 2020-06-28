@@ -25,7 +25,7 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
 
         private void InsertUsingToCode()
         {
-            string usingCode = GetUsingCode(entity);
+            string usingCode = GetUsingCode();
             int index = Code.IndexOf(usingCode, StringComparison.Ordinal);
             if (index < 0)
             {
@@ -50,12 +50,12 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
             string insertCode = GetInsertCode();
             Code = Code.Replace(insertCode, "", StringComparison.InvariantCultureIgnoreCase);
 
-            string usingCode = GetUsingCode(entity);
-            Code.Replace(usingCode, "", StringComparison.InvariantCultureIgnoreCase);
+            string usingCode = GetUsingCode();
+            Code = Code.Replace(usingCode, "", StringComparison.InvariantCultureIgnoreCase);
             WriteToFile(Code);
         }
 
-        private string GetUsingCode(Entity entity)
+        private string GetUsingCode()
         {
             return $"using {entity.Project.Name}.{entity.Module};\n";
         }

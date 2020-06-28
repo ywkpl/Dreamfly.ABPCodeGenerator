@@ -21,15 +21,18 @@ namespace Dreamfly.ABPCodeGenerator.Helper
             DirectoryInfo[] dii = dir.GetDirectories();
             foreach (FileInfo f in fil)
             {
-                fileList.Add(f.FullName, f);//添加文件路径到列表中
+                fileList.Add(f.FullName, f); //添加文件路径到列表中
             }
+
             //获取子文件夹内的文件列表，递归遍历
             foreach (DirectoryInfo d in dii)
             {
                 GetFile(d.FullName, fileList);
             }
+
             return fileList;
         }
+
         /// <summary>
         /// 输出文件并新建文件
         /// </summary>
@@ -38,7 +41,8 @@ namespace Dreamfly.ABPCodeGenerator.Helper
         /// <returns></returns>
         public static void OutputFile(string path, string content)
         {
-            using (FileStream fs = new FileStream(path: path, mode: FileMode.OpenOrCreate, access: FileAccess.ReadWrite))
+            using (FileStream fs = new FileStream(path: path, mode: FileMode.OpenOrCreate,
+                access: FileAccess.ReadWrite))
             {
                 StreamWriter sw = new StreamWriter(fs); //创建写入流
                 sw.WriteLine(content); // 写入转换后的模板内容
@@ -46,6 +50,7 @@ namespace Dreamfly.ABPCodeGenerator.Helper
                 fs.Close();
             }
         }
+
         /// <summary>
         /// 得到文件中的内容
         /// </summary>
@@ -55,7 +60,7 @@ namespace Dreamfly.ABPCodeGenerator.Helper
         {
             using (FileStream fs = new FileStream(path: path, mode: FileMode.Open, access: FileAccess.ReadWrite))
             {
-                int fsLen = (int)fs.Length;
+                int fsLen = (int) fs.Length;
                 byte[] heByte = new byte[fsLen];
                 int r = await fs.ReadAsync(heByte, 0, heByte.Length);
                 string content = System.Text.Encoding.UTF8.GetString(heByte);
@@ -63,6 +68,21 @@ namespace Dreamfly.ABPCodeGenerator.Helper
             }
         }
 
+        public static void DeleteFile(string sourcePath, string fileName)
+        {
+            var filePath = Path.Combine(sourcePath, fileName);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            if (Directory.Exists(sourcePath)
+                && Directory.GetDirectories(sourcePath).Length == 0
+                && Directory.GetFiles(sourcePath).Length == 0)
+            {
+                Directory.Delete(sourcePath);
+            }
+        }
 
         public static void CreateFile(string sourePath, string fileName, string content)
         {
@@ -81,11 +101,13 @@ namespace Dreamfly.ABPCodeGenerator.Helper
                 {
                     Directory.CreateDirectory(sourePath);
                 }
+
                 string soureUrl = Path.Combine(sourePath, fileName);
                 if (File.Exists(soureUrl))
                 {
                     File.Delete(soureUrl);
                 }
+
                 File.Copy(file, soureUrl);
             }
             finally
@@ -95,6 +117,7 @@ namespace Dreamfly.ABPCodeGenerator.Helper
         }
 
         #region bool SaveFile(string filePath, byte[] bytes) 文件保存，
+
         /// <summary>
         ///  文件保存，特别是有些文件放到数据库，可以直接从数据取二进制，然后保存到指定文件夹
         /// </summary>
@@ -115,11 +138,14 @@ namespace Dreamfly.ABPCodeGenerator.Helper
             {
                 result = false;
             }
+
             return result;
         }
+
         #endregion
 
         #region 判断文件夹是否存在
+
         /// <summary>
         /// 判断文件夹是否存在
         /// </summary>
@@ -131,11 +157,14 @@ namespace Dreamfly.ABPCodeGenerator.Helper
             {
                 return true;
             }
+
             return false;
         }
+
         #endregion
 
         #region 创建文件夹
+
         /// <summary>
         /// 创建文件夹
         /// </summary>
@@ -148,8 +177,10 @@ namespace Dreamfly.ABPCodeGenerator.Helper
                 Directory.CreateDirectory(path); //新建文件夹  
                 return true;
             }
+
             return false;
         }
+
         #endregion
 
         //#region 获取压缩后的文件路径
