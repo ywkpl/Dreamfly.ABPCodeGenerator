@@ -74,6 +74,7 @@ namespace Dreamfly.ABPCodeGenerator.Core.Impl
             {
                 ProjectName = entity.Project.Name,
                 EntityName = entity.Name,
+                TableName = entity.TableName,
                 ModuleName = entity.Module,
                 Author = entity.Project.Author,
                 Template = template,

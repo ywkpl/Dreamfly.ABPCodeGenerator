@@ -14,6 +14,10 @@ using Abp.Domain.Entities.Auditing;
 
 namespace @(Model.ProjectName).@(Model.ModuleName)
 {
+    @if (!String.IsNullOrEmpty(Model.TableName))
+    {
+    @:[Table("@Model.TableName")]
+    }
     public class @Model.EntityName : FullAuditedEntity
     {
     @foreach (var item in Model.EntityItems)
@@ -31,6 +35,10 @@ namespace @(Model.ProjectName).@(Model.ModuleName)
         if (item.Length.HasValue)
         {
         @:[MaxLength(@item.Length)]
+        }
+        @if (!String.IsNullOrEmpty(item.ColumnName))
+        {
+        @:[Column("@item.ColumnName")]
         }
         @:public @item.Type @item.Name { get; set; }
     }

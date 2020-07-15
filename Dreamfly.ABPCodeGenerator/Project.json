@@ -76,7 +76,7 @@
       {
         "File": "Templates/App/UpdateInputDto.cshtml",
         "Remark": "更新Dto",
-        "IsExecute": true,
+        "IsExecute": false,
         "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
         "OutputName": "Update{{Name}}Input.cs",
         "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"

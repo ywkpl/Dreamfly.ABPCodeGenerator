@@ -6,6 +6,7 @@ export enum EntityItemMapType {
 
 export interface EntityItemType {
   name: string;
+  columnName?: string;
   type: string;
   length?: number;
   isRequired: boolean;
@@ -15,6 +16,7 @@ export interface EntityItemType {
 
 export interface EntityType {
   name: string;
+  tableName?: string;
   module: string;
   description: string;
   entityItems: EntityItemType[];

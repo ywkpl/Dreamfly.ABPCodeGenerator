@@ -39,6 +39,7 @@ const Entity = () => {
     setIsEdit(false);
     editModelForm.setFieldsValue({
       name: '',
+      columnName: '',
       type: '',
       length: null,
       isRequired: false,
@@ -53,6 +54,11 @@ const Entity = () => {
       key: 'name',
       title: '名称',
       dataIndex: 'name',
+    },
+    {
+      key: 'columnName',
+      title: '列名',
+      dataIndex: 'columnName',
     },
     {
       key: 'type',
@@ -105,6 +111,7 @@ const Entity = () => {
             type="link"
             onClick={() => {
               setIsEdit(true);
+              editModelForm.resetFields();
               editModelForm.setFieldsValue(record);
               setEditModelVisible(true);
             }}
@@ -210,6 +217,9 @@ const Entity = () => {
         >
           <Input placeholder="名称" />
         </FormItem>
+        <FormItem {...formAllItemLayout} label="字段名" name="columnName">
+          <Input placeholder="字段名" />
+        </FormItem>
         <FormItem
           {...formAllItemLayout}
           label="变量类型"
@@ -254,6 +264,7 @@ const Entity = () => {
 
       const para = {
         name: values.name,
+        tableName: values.tableName,
         module: values.module,
         description: values.description,
         entityItems,
@@ -279,6 +290,7 @@ const Entity = () => {
 
       const para = {
         name: values.name,
+        tableName: values.tableName,
         module: values.module,
         description: values.description,
         entityItems,
@@ -324,6 +336,9 @@ const Entity = () => {
               rules={[{ required: true, message: '请输入名称' }]}
             >
               <Input placeholder="名称" />
+            </FormItem>
+            <FormItem {...formItemLayout} label="表名" name="tableName">
+              <Input placeholder="表名" />
             </FormItem>
             <FormItem
               {...formItemLayout}
@@ -381,6 +396,7 @@ const Entity = () => {
                   const data = `[
                     {
                         "name": "name",
+                        "columnName":"test_name",
                         "type": "string",
                         "length": 20,
                         "isRequired": true,

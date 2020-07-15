@@ -6,6 +6,7 @@ namespace Dreamfly.ABPCodeGenerator.Models
     {
         public string ProjectName { get; set; }
         public string EntityName { get; set; }
+        public string TableName { get; set; }
         public string ModuleName { get; set; }
         
         public List<EntityItem> EntityItems { get; set; }
