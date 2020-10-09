@@ -1,0 +1,379 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LiteX DbHelper MariaDB</name>
+    </assembly>
+    <members>
+        <member name="T:LiteX.DbHelper.MariaDB.DbHelper">
+            <summary>
+            DbHelper: Utilities methods
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.DbHelper.CreateParameter(System.String,System.Object,System.Data.ParameterDirection)">
+            <summary>
+            Create Parameter
+            </summary>
+            <param name="paramName">Parameter Name</param>
+            <param name="paramValue">Parameter Value</param>
+            <param name="direction">Parameter Direction</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.DbHelper.CreateParameter(System.String,System.Object,MySql.Data.MySqlClient.MySqlDbType,System.Nullable{System.Int32},System.Data.ParameterDirection)">
+            <summary>
+            Create Parameter
+            </summary>
+            <param name="paramName">Parameter Name</param>
+            <param name="paramValue">Parameter Value</param>
+            <param name="dbType">Sql DbType</param>
+            <param name="size">Parameter Size</param>
+            <param name="direction">Parameter Direction</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.DbHelper.CreateOutParameter(System.String,MySql.Data.MySqlClient.MySqlDbType,System.Nullable{System.Int32})">
+            <summary>
+            Create Output Parameter
+            </summary>
+            <param name="paramName">Parameter Name</param>
+            <param name="dbType">Sql DbType</param>
+            <param name="size">Parameter Size</param>
+            <returns></returns>
+        </member>
+        <member name="T:LiteX.DbHelper.MariaDB.MariaDBHelper">
+            <summary>
+            MariaDB Helper
+            </summary>
+        </member>
+        <member name="P:LiteX.DbHelper.MariaDB.MariaDBHelper.DbProvider">
+            <summary>
+            DbProvider type
+            </summary>
+        </member>
+        <member name="P:LiteX.DbHelper.MariaDB.MariaDBHelper.ConnectionString">
+            <summary>
+            Connection String
+            </summary>
+        </member>
+        <member name="F:LiteX.DbHelper.MariaDB.MariaDBHelper._disposed">
+            <summary>
+            Disposed flag
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.#ctor(System.String)">
+            <summary>
+            MariaDB Helper
+            </summary>
+            <param name="connectionString">Db connection string</param>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.Finalize">
+            <summary>
+            Destructor
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.Dispose(System.Boolean)">
+            <summary>
+            Dispose
+            </summary>
+            <param name="disposing">disposing flag</param>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteNonQuery(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute NonQuery
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteNonQuery(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute NonQuery
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteScalar(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get Scalar value
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <seealso cref="T:ExecuteScalar(string, params DbParameter[])"/>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteScalar(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get Scalar value
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <seealso cref="T:ExecuteScalar(string, CommandType, params DbParameter[])">
+            Notice the use of the cref attribute to reference a specific method.
+            </seealso>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteScalar``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get scalar value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get scalar value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteScalar``1(System.String,System.Data.CommandType,System.Converter{System.Object,``0},System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get scalar value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="converter">Converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetDataTable(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get DataTable
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetDataTable(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get DataTable
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetDataSet(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get DataSet
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetDataSet(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get DataSet
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteReder(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get data reader
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Parse data manually from DataReader. 
+            </remarks>
+            <seealso cref="T:GetList(string, params DbParameter[])"/>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.ExecuteReder(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get data reader
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Parse data manually from DataReader. 
+            </remarks>
+            <seealso cref="T:GetList(string, CommandType, params DbParameter[])"/>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetSingle``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetSingle``1(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetSingle``1(System.String,System.Data.CommandType,System.Converter{System.Data.Common.DbDataReader,``0},System.Data.Common.DbParameter[])">
+            <summary>
+            Get value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="converter">Converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetList``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get list of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Recommanded for safe type result. 
+            </remarks>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetList``1(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get list of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Recommanded for safe type result. 
+            </remarks>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetList``1(System.String,System.Data.CommandType,System.Converter{System.Data.Common.DbDataReader,``0},System.Data.Common.DbParameter[])">
+            <summary>
+            Get list of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="converter">Converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Recommanded for safe type result. 
+            </remarks>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetArray``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get array of primitive scalar types
+            e.g. array of - int, string, datetime, decimal, int?, datetime?, decimal?
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetArray``1(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get array of primitive scalar types
+            e.g. array of - int, string, datetime, decimal, int?, datetime?, decimal?
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetArray``1(System.String,System.Data.CommandType,System.Converter{System.Object,``0},System.Data.Common.DbParameter[])">
+            <summary>
+            Get array of primitive scalar types
+            e.g. array of - int, string, datetime, decimal, int?, datetime?, decimal?
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="converter">Converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetDictionary``2(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get key-pair value list (Dictionary)
+            e.g. NameId pair list
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetDictionary``2(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get key-pair value list (Dictionary)
+            e.g. NameId pair list
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetDictionary``2(System.String,System.Data.CommandType,System.Converter{System.Object,``0},System.Converter{System.Object,``1},System.Data.Common.DbParameter[])">
+            <summary>
+            Get key-pair value list (Dictionary)
+            e.g. NameId pair list
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="keyConverter">Key converter</param>
+            <param name="valueConverter">Value converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.CreateCommand(MySql.Data.MySqlClient.MySqlConnection,System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Create Db command
+            </summary>
+            <param name="connection">Db connection</param>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.AttachParameters(System.Data.Common.DbCommand,System.Data.Common.DbParameter[])">
+            <summary>
+            Attach parameters
+            </summary>
+            <param name="command">Db command</param>
+            <param name="dbParameters">Db parameters list</param>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetTypeConverter``1">
+            <summary>
+            Get type converter
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.GetDataReaderConverter``1">
+            <summary>
+            Get DataReader converter
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.MariaDB.MariaDBHelper.FillFromReader(System.Data.Common.DbDataReader,System.Action{System.Data.Common.DbDataReader})">
+            <summary>
+            Fill from DataReader
+            </summary>
+            <param name="reader"></param>
+            <param name="action"></param>
+        </member>
+    </members>
+</doc>

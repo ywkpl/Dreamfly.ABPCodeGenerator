@@ -1,0 +1,1069 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LiteX DbHelper Core</name>
+    </assembly>
+    <members>
+        <member name="T:LiteX.DbHelper.Core.DataReaderConverter`1">
+            <summary>
+            DataReader Converter
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DataReaderConverter`1.Convert(System.Data.Common.DbDataReader)">
+            <summary>
+            Convert to object of type T
+            </summary>
+            <param name="reader"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LiteX.DbHelper.Core.DataReaderExtensions">
+            <summary>
+            DataReader Extensions
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DataReaderExtensions.Get``1(System.Data.Common.DbDataReader,System.Int32,System.IFormatProvider)">
+            <summary>
+            Get object T from DataReader
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="reader"></param>
+            <param name="ordinal"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DataReaderExtensions.Get``1(System.Data.Common.DbDataReader,System.Int32)">
+            <summary>
+            Get object T from DataReader
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="reader"></param>
+            <param name="ordinal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DataReaderExtensions.Get``1(System.Data.Common.DbDataReader,System.String,System.IFormatProvider)">
+            <summary>
+            Get object T from DataReader
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="reader"></param>
+            <param name="name"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DataReaderExtensions.Get``1(System.Data.Common.DbDataReader,System.String)">
+            <summary>
+            Get object T from DataReader
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="reader"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LiteX.DbHelper.Core.DataSetExtensions">
+            <summary>
+            DataSet Extensions
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DataSetExtensions.HasTables(System.Data.DataSet)">
+            <summary>
+            Does data set have any tables?
+            </summary>
+            <param name="ds">DataSet</param>
+            <returns>true if so</returns>
+        </member>
+        <member name="T:LiteX.DbHelper.Core.DataTableExtensions">
+            <summary>
+            DataTable Extensions
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DataTableExtensions.HasRows(System.Data.DataTable)">
+            <summary>
+            Does data table have rows?
+            </summary>
+            <param name="dt">DataTable</param>
+            <returns>true if so</returns>
+        </member>
+        <member name="T:LiteX.DbHelper.Core.DBConvert">
+            <summary>
+            DB converter
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableBoolean(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableBoolean(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToBoolean(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToBoolean(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToSByteInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableSByte(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableSByte(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToSByte(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToSByte(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt16Internal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableInt16(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableInt16(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt16(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt16(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt32Internal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableInt32(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableInt32(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt32(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt32(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt64Internal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableInt64(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableInt64(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt64(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToInt64(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToByteInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableByte(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableByte(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToByte(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToByte(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt16Internal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableUInt16(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableUInt16(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt16(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt16(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt32Internal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableUInt32(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableUInt32(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt32(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt32(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt64Internal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableUInt64(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableUInt64(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt64(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToUInt64(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDecimalInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableDecimal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableDecimal(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDecimal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDecimal(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToSingleInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableSingle(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableSingle(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToSingle(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToSingle(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDoubleInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableDouble(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableDouble(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDouble(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDouble(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToCharInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableChar(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableChar(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToChar(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToChar(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDateTimeInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableDateTime(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableDateTime(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDateTime(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDateTime(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDateTimeOffsetInternal(System.Object,System.IFormatProvider,System.Globalization.DateTimeStyles)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <param name="styles"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDateTimeOffsetInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableDateTimeOffset(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableDateTimeOffset(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDateTimeOffset(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDateTimeOffset(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToStringInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToString(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToString(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToGuidInternal(System.Object,System.IFormatProvider)">
+            <summary>
+            This method accepts IFormatProvider just to match the signature required by
+            </summary>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToNullableGuid(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToGuid(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToByteArray(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.To``1(System.Object)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.To``1(System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.To(System.Type,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.To(System.Type,System.Object,System.IFormatProvider)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="value"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.DBConvert.ToDBValue(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LiteX.DbHelper.Core.DbProvider">
+            <summary>
+            DbProvider type
+            </summary>
+        </member>
+        <member name="F:LiteX.DbHelper.Core.DbProvider.SqlServer">
+            <summary>
+            SqlServer
+            </summary>
+        </member>
+        <member name="F:LiteX.DbHelper.Core.DbProvider.MySql">
+            <summary>
+            MySql
+            </summary>
+        </member>
+        <member name="F:LiteX.DbHelper.Core.DbProvider.NpgSql">
+            <summary>
+            NpgSql
+            </summary>
+        </member>
+        <member name="F:LiteX.DbHelper.Core.DbProvider.MariaDB">
+            <summary>
+            MariaDB
+            </summary>
+        </member>
+        <member name="F:LiteX.DbHelper.Core.DbProvider.Oracle">
+            <summary>
+            Oracle
+            </summary>
+        </member>
+        <member name="F:LiteX.DbHelper.Core.DbProvider.OleDb">
+            <summary>
+            OleDb
+            </summary>
+        </member>
+        <member name="F:LiteX.DbHelper.Core.DbProvider.SQLite">
+            <summary>
+            SQLite
+            </summary>
+        </member>
+        <member name="T:LiteX.DbHelper.Core.IDbHelper">
+            <summary>
+            IDbHelper interface
+            </summary>
+        </member>
+        <member name="P:LiteX.DbHelper.Core.IDbHelper.DbProvider">
+            <summary>
+            DbProvider type
+            </summary>
+        </member>
+        <member name="P:LiteX.DbHelper.Core.IDbHelper.ConnectionString">
+            <summary>
+            Connection String
+            </summary>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteNonQuery(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute NonQuery
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteNonQuery(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute NonQuery
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteScalar(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get Scalar value
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <seealso cref="T:ExecuteScalar(string, params DbParameter[])"/>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteScalar(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get Scalar value
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <seealso cref="T:ExecuteScalar(string, CommandType, params DbParameter[])">
+            Notice the use of the cref attribute to reference a specific method.
+            </seealso>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteScalar``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get scalar value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get scalar value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteScalar``1(System.String,System.Data.CommandType,System.Converter{System.Object,``0},System.Data.Common.DbParameter[])">
+            <summary>
+            Execute Scalar: Get scalar value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="converter">Converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetDataTable(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get DataTable
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetDataTable(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get DataTable
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetDataSet(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get DataSet
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetDataSet(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get DataSet
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteReder(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get data reader
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Parse data manually from DataReader. 
+            </remarks>
+            <seealso cref="T:GetList(string, params DbParameter[])"/>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.ExecuteReder(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get data reader
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Parse data manually from DataReader. 
+            </remarks>
+            <seealso cref="T:GetList(string, CommandType, params DbParameter[])"/>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetSingle``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetSingle``1(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetSingle``1(System.String,System.Data.CommandType,System.Converter{System.Data.Common.DbDataReader,``0},System.Data.Common.DbParameter[])">
+            <summary>
+            Get value of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="converter">Converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetList``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get list of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Recommanded for safe type result. 
+            </remarks>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetList``1(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get list of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Recommanded for safe type result. 
+            </remarks>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetList``1(System.String,System.Data.CommandType,System.Converter{System.Data.Common.DbDataReader,``0},System.Data.Common.DbParameter[])">
+            <summary>
+            Get list of specified type
+            Strong type result (type safe)
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="converter">Converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+            <remarks>
+            Recommanded for safe type result. 
+            </remarks>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetArray``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get array of primitive scalar types
+            e.g. array of - int, string, datetime, decimal, int?, datetime?, decimal?
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetArray``1(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get array of primitive scalar types
+            e.g. array of - int, string, datetime, decimal, int?, datetime?, decimal?
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetArray``1(System.String,System.Data.CommandType,System.Converter{System.Object,``0},System.Data.Common.DbParameter[])">
+            <summary>
+            Get array of primitive scalar types
+            e.g. array of - int, string, datetime, decimal, int?, datetime?, decimal?
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="converter">Converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetDictionary``2(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Get key-pair value list (Dictionary)
+            e.g. NameId pair list
+            </summary>
+            <param name="spName">Stored procedure name</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetDictionary``2(System.String,System.Data.CommandType,System.Data.Common.DbParameter[])">
+            <summary>
+            Get key-pair value list (Dictionary)
+            e.g. NameId pair list
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+        <member name="M:LiteX.DbHelper.Core.IDbHelper.GetDictionary``2(System.String,System.Data.CommandType,System.Converter{System.Object,``0},System.Converter{System.Object,``1},System.Data.Common.DbParameter[])">
+            <summary>
+            Get key-pair value list (Dictionary)
+            e.g. NameId pair list
+            </summary>
+            <param name="cmdText">Command text</param>
+            <param name="cmdType">Command type </param>
+            <param name="keyConverter">Key converter</param>
+            <param name="valueConverter">Value converter</param>
+            <param name="dbParameters">Db parameters list</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
