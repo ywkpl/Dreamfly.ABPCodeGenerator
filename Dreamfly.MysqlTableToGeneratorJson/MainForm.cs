@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LiteX.DbHelper.Core;
@@ -56,6 +57,11 @@ namespace Dreamfly.MysqlTableToGeneratorJson
                     {
                         item.ColumnName = row["Field"].ToString().Replace("_", "");
                     }
+
+                    string type = row["Type"].ToString();
+                    //類型
+                    Regex regex=new Regex(@"varchar\((/d+)\)");
+                    bool isMatch = regex.IsMatch(type);
 
                 }
             }
