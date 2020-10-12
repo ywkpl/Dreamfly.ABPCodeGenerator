@@ -94,6 +94,7 @@
             this.Controls.Add(this.txtTableName);
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "生成Json";
             this.ResumeLayout(false);
             this.PerformLayout();
