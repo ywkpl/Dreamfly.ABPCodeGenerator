@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dreamfly.ABPCodeGenerator",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dreamfly.MysqlTableToGeneratorJson", "Dreamfly.MysqlTableToGeneratorJson\Dreamfly.MysqlTableToGeneratorJson.csproj", "{8739785D-E379-4C86-BEF4-FFB8674C782E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dreamfly.JavaEstateCodeGenerator", "Dreamfly.JavaEstateCodeGenerator\Dreamfly.JavaEstateCodeGenerator.csproj", "{F1E4CA1E-5B54-4D52-A93A-FA74579B48D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dreamfly.JavaEstateCodeGenerator", "Dreamfly.JavaEstateCodeGenerator\Dreamfly.JavaEstateCodeGenerator.csproj", "{F1E4CA1E-5B54-4D52-A93A-FA74579B48D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

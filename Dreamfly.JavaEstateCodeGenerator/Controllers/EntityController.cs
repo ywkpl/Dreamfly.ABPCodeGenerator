@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dreamfly.JavaEstateCodeGenerator.Core.Interface;
 using Dreamfly.JavaEstateCodeGenerator.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

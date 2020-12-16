@@ -1,0 +1,86 @@
+﻿{
+  "Project": {
+    "Name": "Newcity.ReEstate",
+    "OutputPath": "E:\\Development\\Newcity\\Newcity.ReEstate",
+    "Version": "1.0.0",
+    "Author": {
+      "Name": "ywk",
+      "Email": "ywkpl@hotmail.com",
+      "Remark": ""
+    },
+    "Templates": [
+      {
+        "File": "Templates/App/Entity.cshtml",
+        "Remark": "实体接口",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Core/{{Module}}",
+        "OutputName": "{{Name}}.cs",
+        "ProjectFile": "{{Project.Name}}.Core/{{Project.Name}}.Core.csproj"
+      },
+      {
+        "File": "Templates/App/IAppService.cshtml",
+        "Remark": "应用服务接口",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Interface",
+        "OutputName": "I{{Name}}AppService.cs",
+        "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/AppService.cshtml",
+        "Remark": "应用服务",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Impl",
+        "OutputName": "{{Name}}AppService.cs",
+        "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/CreateInputDto.cshtml",
+        "Remark": "新增实体Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
+        "OutputName": "Create{{Name}}Input.cs",
+        "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/DeleteInputDto.cshtml",
+        "Remark": "删除实体Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
+        "OutputName": "Delete{{Name}}Input.cs",
+        "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/EntityDto.cshtml",
+        "Remark": "实体Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
+        "OutputName": "{{Name}}Dto.cs",
+        "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/GetAllInput.cshtml",
+        "Remark": "列表查询Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
+        "OutputName": "GetAll{{Name}}Input.cs",
+        "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/GetInputDto.cshtml",
+        "Remark": "单一查询Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
+        "OutputName": "Get{{Name}}Input.cs",
+        "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"
+      },
+      {
+        "File": "Templates/App/UpdateInputDto.cshtml",
+        "Remark": "更新Dto",
+        "IsExecute": true,
+        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
+        "OutputName": "Update{{Name}}Input.cs",
+        "ProjectFile": "{{Project.Name}}.Application/{{Project.Name}}.Application.csproj"
+      }
+    ]
+  }
+}
