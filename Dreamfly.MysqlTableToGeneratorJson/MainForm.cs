@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using LiteX.DbHelper.Core;
 using LiteX.DbHelper.MariaDB;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Dreamfly.MysqlTableToGeneratorJson
 {
@@ -67,6 +68,10 @@ namespace Dreamfly.MysqlTableToGeneratorJson
         {
             DataTable dt = GetFieldTable();
             GeneratorEntityItems(dt);
+            JsonConvert.DefaultSettings= () => new JsonSerializerSettings()
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
             txtResult.Text = JsonConvert.SerializeObject(_entityItems, Formatting.Indented);
         }
 
