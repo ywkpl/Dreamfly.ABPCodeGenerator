@@ -1,8 +1,9 @@
 ﻿{
   "Project": {
-    "Name": "Newcity.ReEstate",
+    "Name": "baseinfo",
     "OutputPath": "E:\\Development\\Newcity\\Newcity.ReEstate",
     "Version": "1.0.0",
+    "PackagePath": "com.newcity.microestate",
     "Author": {
       "Name": "ywk",
       "Email": "ywkpl@hotmail.com",

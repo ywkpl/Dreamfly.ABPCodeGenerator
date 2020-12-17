@@ -8,6 +8,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string EntityName { get; set; }
         public string TableName { get; set; }
         public string ModuleName { get; set; }
+        public string ProjectPackagePath { get; set; }
 
         public List<EntityItem> EntityItems { get; set; }
         public Template Template { get; set; }

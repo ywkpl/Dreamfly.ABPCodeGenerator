@@ -4,6 +4,7 @@
     {
         public string Name { get; set; }
         public string OutputPath { get; set; }
+        public string PackagePath { get; set; }
         public string Version { get; set; }
         public Author Author { get; set; }
         public Template[] Templates { get; set; }
