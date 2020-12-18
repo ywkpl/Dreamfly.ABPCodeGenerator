@@ -10,7 +10,6 @@ export interface ProjectTemplate {
   isExecute: boolean;
   outputFolder: string;
   outputName: string;
-  projectFile: string;
 }
 
 export interface ProjectType {

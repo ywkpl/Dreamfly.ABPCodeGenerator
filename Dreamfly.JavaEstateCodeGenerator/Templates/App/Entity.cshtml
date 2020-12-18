@@ -1,11 +1,11 @@
 ﻿@{ Layout = null;}
 @using System.Net.Mime
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
-/*
-* 作者: @Model.Author.Name
-* 时间: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
-* 邮箱: @Model.Author.Email
-* 描述: @Model.Author.Remark
+/**
+* @@author: @Model.Author.Name
+* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* @@Email: @Model.Author.Email
+* @@Description: @Model.Author.Remark
 */
 package @(Model.ProjectPackagePath).@(Model.ProjectName).model;
 
@@ -23,7 +23,7 @@ import java.util.Set;
 @@AllArgsConstructor
 @@NoArgsConstructor
 @@Entity
-@@Table(name = "@{String.IsNullOrEmpty(Model.TableName) ? Model.EntityName : Model.TableName}")
+@@Table(name = "@(String.IsNullOrEmpty(Model.TableName) ? Model.EntityName : Model.TableName)")
 //@@EqualsAndHashCode(callSuper = true, exclude = { "tenant"})
 //@@ToString(callSuper = true, exclude = "tenant")
 public class @(Model.EntityName) extends FullAudited implements Serializable {

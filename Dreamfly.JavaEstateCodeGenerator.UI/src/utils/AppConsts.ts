@@ -1,6 +1,6 @@
 const AppConsts = {
-  baseUrl: 'http://localhost:8000',
-  apiUrl: 'http://localhost:14503',
+  baseUrl: 'http://localhost:8733',
+  apiUrl: 'https://localhost:55000',
 };
 
 export default AppConsts;

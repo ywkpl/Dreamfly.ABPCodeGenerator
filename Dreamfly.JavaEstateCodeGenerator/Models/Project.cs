@@ -17,6 +17,5 @@
         public bool IsExecute { get; set; }
         public string OutputFolder { get; set; }
         public string OutputName { get; set; }
-        public string ProjectFile { get; set; }
     }
 }

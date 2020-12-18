@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class EntityController : ControllerBase
     {

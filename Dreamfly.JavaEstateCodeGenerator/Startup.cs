@@ -36,7 +36,7 @@ namespace Dreamfly.JavaEstateCodeGenerator
                     builder =>
                     {
                         builder
-                            .WithOrigins("http://localhost:8000", "http://127.0.0.1:8000")
+                            .WithOrigins("http://localhost:8733", "http://127.0.0.1:8733")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -62,6 +62,8 @@ namespace Dreamfly.JavaEstateCodeGenerator
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors();
 
             app.UseHttpsRedirection();
 

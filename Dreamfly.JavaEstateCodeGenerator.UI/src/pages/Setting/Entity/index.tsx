@@ -265,7 +265,6 @@ const Entity = () => {
       const para = {
         name: values.name,
         tableName: values.tableName,
-        module: values.module,
         description: values.description,
         entityItems,
       };
@@ -291,7 +290,6 @@ const Entity = () => {
       const para = {
         name: values.name,
         tableName: values.tableName,
-        module: values.module,
         description: values.description,
         entityItems,
       };
@@ -347,14 +345,6 @@ const Entity = () => {
               rules={[{ required: true, message: '请输入描述' }]}
             >
               <Input placeholder="描述" />
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="目录"
-              name="module"
-              rules={[{ required: true, message: '请输入目录' }]}
-            >
-              <Input placeholder="目录" />
             </FormItem>
           </Card>
           <Card bordered={false} title="明细">

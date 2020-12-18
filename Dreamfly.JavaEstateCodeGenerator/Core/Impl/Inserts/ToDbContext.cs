@@ -53,7 +53,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
 
         private string GetUsingCode()
         {
-            return $"using {entity.Project.Name}.{entity.Module};\n";
+            return $"using {entity.Project.Name};\n";
         }
 
         public override string GetInsertCode()

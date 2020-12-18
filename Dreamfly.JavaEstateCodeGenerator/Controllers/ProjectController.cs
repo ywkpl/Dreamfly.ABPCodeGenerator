@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {

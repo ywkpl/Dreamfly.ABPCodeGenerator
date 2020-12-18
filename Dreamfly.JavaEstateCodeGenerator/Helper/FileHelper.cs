@@ -84,7 +84,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Helper
             }
         }
 
-        public static void CreateFile(string sourePath, string fileName, string content)
+        public static void CreateFile(string generatePath, string fileName, string content)
         {
             string path = Path.GetTempPath();
             Directory.CreateDirectory(path);
@@ -92,23 +92,23 @@ namespace Dreamfly.JavaEstateCodeGenerator.Helper
             File.WriteAllText(file, content, Encoding.UTF8);
             try
             {
-                if (string.IsNullOrEmpty(sourePath))
+                if (string.IsNullOrEmpty(generatePath))
                 {
-                    sourePath = @"..\..\";
+                    generatePath = @"..\..\";
                 }
 
-                if (!File.Exists(sourePath))
+                if (!Directory.Exists(generatePath))
                 {
-                    Directory.CreateDirectory(sourePath);
+                    Directory.CreateDirectory(generatePath);
                 }
 
-                string soureUrl = Path.Combine(sourePath, fileName);
-                if (File.Exists(soureUrl))
+                string sourceFilePath = Path.Combine(generatePath, fileName);
+                if (File.Exists(sourceFilePath))
                 {
-                    File.Delete(soureUrl);
+                    File.Delete(sourceFilePath);
                 }
 
-                File.Copy(file, soureUrl);
+                File.Copy(file, sourceFilePath);
             }
             finally
             {

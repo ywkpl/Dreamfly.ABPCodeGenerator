@@ -27,10 +27,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
         public override string GetInsertCode()
         {
             return $@"{NewLine}{Tab}{Tab}{Tab}//{entity.Description}
-{Tab}{Tab}{Tab}var page{entity.Module}{entity.Name}=context.CreatePermission(PermissionNames.Pages_{entity.Module}_{entity.Name}, L(""Pages_{entity.Module}_{entity.Name}""));
-{Tab}{Tab}{Tab}page{entity.Module}{entity.Name}.CreateChildPermission(PermissionNames.Pages_{entity.Module}_{entity.Name}_Create, L(""Add""));
-{Tab}{Tab}{Tab}page{entity.Module}{entity.Name}.CreateChildPermission(PermissionNames.Pages_{entity.Module}_{entity.Name}_Update, L(""Edit""));
-{Tab}{Tab}{Tab}page{entity.Module}{entity.Name}.CreateChildPermission(PermissionNames.Pages_{entity.Module}_{entity.Name}_Delete, L(""Delete""));{NewLine}{Tab}{Tab}";
+{Tab}{Tab}{Tab}var page{entity.Name}=context.CreatePermission(PermissionNames.Pages_{entity.Name}, L(""Pages_{entity.Name}""));
+{Tab}{Tab}{Tab}page{entity.Name}.CreateChildPermission(PermissionNames.Pages_{entity.Name}_Create, L(""Add""));
+{Tab}{Tab}{Tab}page{entity.Name}.CreateChildPermission(PermissionNames.Pages_{entity.Name}_Update, L(""Edit""));
+{Tab}{Tab}{Tab}page{entity.Name}.CreateChildPermission(PermissionNames.Pages_{entity.Name}_Delete, L(""Delete""));{NewLine}{Tab}{Tab}";
         }
 
         public ToAuthorizationProvider(Entity entity) : base(entity)

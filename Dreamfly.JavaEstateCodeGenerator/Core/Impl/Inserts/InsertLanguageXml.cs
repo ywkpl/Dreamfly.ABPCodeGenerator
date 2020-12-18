@@ -23,7 +23,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
                 string description = GetDescription(filePath);
 
                 var exElement = new XElement("text",
-                    new XAttribute("name", $"Pages_{entity.Module}_{entity.Name}"),
+                    new XAttribute("name", $"Pages_{entity.Name}"),
                     description);
 
                 if (_xDocument.Root?.Element("texts") != null)
@@ -55,7 +55,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
             EachXml(filePath =>
             {
                 _xDocument.Root?.Element("texts")?.Elements("text")
-                    .Where(p => p.Attribute("name")?.Value == $"Pages_{entity.Module}_{entity.Name}")
+                    .Where(p => p.Attribute("name")?.Value == $"Pages_{entity.Name}")
                     .Remove();
             });
         }

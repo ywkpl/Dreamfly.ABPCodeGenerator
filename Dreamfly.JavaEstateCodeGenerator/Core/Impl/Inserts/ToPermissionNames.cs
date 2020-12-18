@@ -30,10 +30,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
         public override string GetInsertCode()
         {
             return $@"{NewLine}{Tab}{Tab}//{entity.Description}
-{Tab}{Tab}public const string Pages_{entity.Module}_{entity.Name} = ""Pages.{entity.Module}.{entity.Name}"";
-{Tab}{Tab}public const string Pages_{entity.Module}_{entity.Name}_Create = ""Pages.{entity.Module}.{entity.Name}.Create"";
-{Tab}{Tab}public const string Pages_{entity.Module}_{entity.Name}_Update = ""Pages.{entity.Module}.{entity.Name}.Update"";
-{Tab}{Tab}public const string Pages_{entity.Module}_{entity.Name}_Delete = ""Pages.{entity.Module}.{entity.Name}.Delete"";{NewLine}{Tab}";
+{Tab}{Tab}public const string Pages_{entity.Name} = ""Pages..{entity.Name}"";
+{Tab}{Tab}public const string Pages_{entity.Name}_Create = ""Pages..{entity.Name}.Create"";
+{Tab}{Tab}public const string Pages_{entity.Name}_Update = ""Pages..{entity.Name}.Update"";
+{Tab}{Tab}public const string Pages_{entity.Name}_Delete = ""Pages..{entity.Name}.Delete"";{NewLine}{Tab}";
         }
 
         public ToPermissionNames(Entity entity) : base(entity)

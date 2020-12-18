@@ -38,7 +38,6 @@ const Project = () => {
       isExecute: true,
       outputFolder: '',
       outputName: '',
-      projectFile: '',
     });
     setEditModelVisible(true);
   };
@@ -92,11 +91,6 @@ const Project = () => {
       key: 'outputName',
       title: '生成文件名',
       dataIndex: 'outputName',
-    },
-    {
-      key: 'projectFile',
-      title: '项目文件',
-      dataIndex: 'projectFile',
     },
     {
       title: '操作',
@@ -241,19 +235,6 @@ const Project = () => {
         >
           <Input placeholder="生成文件名" />
         </FormItem>
-        <FormItem
-          {...formAllItemLayout}
-          label="项目文件"
-          name="projectFile"
-          rules={[
-            {
-              required: true,
-              message: '请输入项目文件',
-            },
-          ]}
-        >
-          <Input placeholder="项目文件" />
-        </FormItem>
       </Form>
     </Modal>
   );
@@ -305,6 +286,14 @@ const Project = () => {
               rules={[{ required: true, message: '请输入输出目录' }]}
             >
               <Input placeholder="输出目录" />
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="包路径"
+              name="packagePath"
+              rules={[{ required: true, message: '请输入包路径' }]}
+            >
+              <Input placeholder="包路径" />
             </FormItem>
             <FormItem
               {...formItemLayout}

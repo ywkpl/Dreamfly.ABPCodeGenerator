@@ -98,8 +98,15 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             string content = await _templateEngine.Render(entity, template);
             var fileName = Handlebars.Compile(template.OutputName)(entity);
             var folder = Handlebars.Compile(template.OutputFolder)(entity);
-            string apiOutputPath = Path.Combine(entity.Project.OutputPath, "aspnet-core", "src", folder);
-
+            string apiOutputPath =
+                  Path.Combine(
+                entity.Project.OutputPath.Replace("\\", "/"), 
+                "main", 
+                "java", 
+                entity.Project.PackagePath.Replace(".", "/"), 
+                entity.Project.Name,
+                folder);
+            Console.WriteLine(apiOutputPath);
             FileHelper.CreateFile(apiOutputPath, fileName, content);
         }
     }
