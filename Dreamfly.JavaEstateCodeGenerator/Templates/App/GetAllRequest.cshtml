@@ -1,0 +1,37 @@
+﻿@{ Layout = null;}
+@model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
+/**
+* @@author: @Model.Author.Name
+* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* @@Email: @Model.Author.Email
+* @@Description: @Model.Author.Remark
+*/
+package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
+
+import @(Model.ProjectPackagePath).common.dto.PageAndSortRequest;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import javax.validation.constraints.Size;
+
+@@Data
+@@AllArgsConstructor
+@@NoArgsConstructor
+@@SuperBuilder
+public class GetAll@(Model.EntityName)Request extends PageAndSortRequest {
+@foreach (var item in Model.EntityItems)
+{
+if (!String.IsNullOrEmpty(item.Description))
+{
+    @:/**
+    @:* @Html.Raw(item.Description)
+    @:*/
+}
+if (item.Length.HasValue)
+{
+    @:@@Size(max = @item.Length)
+}
+    @:private @item.Type @item.Name;
+}
+}
+

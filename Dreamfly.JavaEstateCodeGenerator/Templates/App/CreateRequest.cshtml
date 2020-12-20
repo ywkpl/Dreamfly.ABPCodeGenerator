@@ -1,0 +1,39 @@
+﻿@{ Layout = null;}
+@model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
+/**
+* @@author: @Model.Author.Name
+* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* @@Email: @Model.Author.Email
+* @@Description: @Model.Author.Remark
+*/
+package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+@@Data
+@@SuperBuilder
+@@NoArgsConstructor
+@@AllArgsConstructor
+public class Create@(Model.EntityName)Request {
+@foreach (var item in Model.EntityItems)
+{
+if (!String.IsNullOrEmpty(item.Description))
+{
+    @:/**
+    @:* @Html.Raw(item.Description)
+    @:*/
+}
+if (item.IsRequired)
+{
+    @:@@NotBlank(message = "@Html.Raw(item.Description)不得為空")
+}
+if (item.Length.HasValue)
+{
+    @:@@Size(max = @item.Length)
+}
+    @:private @item.Type @item.Name;
+}
+}

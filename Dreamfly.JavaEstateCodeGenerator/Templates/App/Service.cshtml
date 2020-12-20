@@ -1,0 +1,45 @@
+﻿@{ Layout = null;}
+@model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
+/**
+* @@author: @Model.Author.Name
+* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* @@Email: @Model.Author.Email
+* @@Description: @Model.Author.Remark
+*/
+package @(Model.ProjectPackagePath).@(Model.ProjectName).service;
+
+import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).*;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).mapper.@(Model.EntityName)Mapper;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).model.@(Model.EntityName);
+import @(Model.ProjectPackagePath).common.dto.EntityRequest;
+import @(Model.ProjectPackagePath).common.exception.ServiceException;
+import @(Model.ProjectPackagePath).common.service.CrudAppService;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@@Service
+public class @(Model.EntityName)Service extends CrudAppService<@(Model.EntityName), @(Model.EntityName)Response, EntityRequest, Create@(Model.EntityName)Request, Update@(Model.EntityName)Request, GetAll@(Model.EntityName)Request> {
+    public @(Model.EntityName)Service(@(Model.EntityName)Mapper mapper) {
+        super(mapper);
+    }
+
+    @@Override
+    public Page<@(Model.EntityName)Response> getAll(GetAll@(Model.EntityName)Request input) {
+        Specification<@(Model.EntityName)> specification= (root, query, builder) -> {
+            List<Predicate> predicates=new ArrayList<>();
+            if(Strings.isNotBlank(input.getName())){
+                predicates.add(builder.like(root.get("name"), "%"+input.getName()+"%"));
+            }
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        return getAll(input, specification);
+    }
+}

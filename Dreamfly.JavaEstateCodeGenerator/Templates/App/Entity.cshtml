@@ -40,19 +40,17 @@ public class @(Model.EntityName) extends FullAudited implements Serializable {
     }
     if (!String.IsNullOrEmpty(item.ColumnName))
     {
-        columns.Add($"name = {item.ColumnName}");
+        columns.Add($"name = \"{item.ColumnName}\"");
     }
     if (!String.IsNullOrEmpty(item.Description))
     {
-        <text>
-            /**
-            * @(item.Description)
-            */
-        </text>
+    @:/**
+    @:* @Html.Raw(item.Description)
+    @:*/
     }
     if (columns.Count > 0)
     {
-        @:@@Column@(String.Join(", ", columns))
+    @:@@Column(@Html.Raw(String.Join(", ", columns)))
     }
     @:private @item.Type @item.Name;
 }

@@ -89,7 +89,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Helper
             string path = Path.GetTempPath();
             Directory.CreateDirectory(path);
             string file = Path.Combine(path, fileName);
-            File.WriteAllText(file, content, Encoding.UTF8);
+            File.WriteAllText(file, content);
             try
             {
                 if (string.IsNullOrEmpty(generatePath))

@@ -19,60 +19,60 @@
         "OutputName": "{{Name}}.java"
       },
       {
-        "File": "Templates/App/IAppService.cshtml",
-        "Remark": "应用服务接口",
-        "IsExecute": false,
-        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Interface",
-        "OutputName": "I{{Name}}AppService.cs"
+        "File": "Templates/App/Mapper.cshtml",
+        "Remark": "映射",
+        "IsExecute": true,
+        "OutputFolder": "mapper",
+        "OutputName": "{{Name}}Mapper.java"
       },
       {
-        "File": "Templates/App/AppService.cshtml",
+        "File": "Templates/App/Service.cshtml",
         "Remark": "应用服务",
-        "IsExecute": false,
-        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Impl",
-        "OutputName": "{{Name}}AppService.cs"
+        "IsExecute": true,
+        "OutputFolder": "service",
+        "OutputName": "{{Name}}Service.java"
       },
       {
-        "File": "Templates/App/CreateInputDto.cshtml",
-        "Remark": "新增实体Dto",
-        "IsExecute": false,
-        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
-        "OutputName": "Create{{Name}}Input.cs"
+        "File": "Templates/App/CreateRequest.cshtml",
+        "Remark": "新增Dto",
+        "IsExecute": true,
+        "OutputFolder": "dto/{{StringLowercase Name}}",
+        "OutputName": "Create{{Name}}Request.java"
       },
       {
-        "File": "Templates/App/DeleteInputDto.cshtml",
-        "Remark": "删除实体Dto",
-        "IsExecute": false,
-        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
-        "OutputName": "Delete{{Name}}Input.cs"
+        "File": "Templates/App/Response.cshtml",
+        "Remark": "回应Dto",
+        "IsExecute": true,
+        "OutputFolder": "dto/{{StringLowercase Name}}",
+        "OutputName": "{{Name}}Response.java"
       },
       {
-        "File": "Templates/App/EntityDto.cshtml",
-        "Remark": "实体Dto",
-        "IsExecute": false,
-        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
-        "OutputName": "{{Name}}Dto.cs"
-      },
-      {
-        "File": "Templates/App/GetAllInput.cshtml",
+        "File": "Templates/App/GetAllRequest.cshtml",
         "Remark": "列表查询Dto",
-        "IsExecute": false,
-        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
-        "OutputName": "GetAll{{Name}}Input.cs"
+        "IsExecute": true,
+        "OutputFolder": "dto/{{StringLowercase Name}}",
+        "OutputName": "GetAll{{Name}}Request.java"
       },
       {
-        "File": "Templates/App/GetInputDto.cshtml",
-        "Remark": "单一查询Dto",
-        "IsExecute": false,
-        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
-        "OutputName": "Get{{Name}}Input.cs"
-      },
-      {
-        "File": "Templates/App/UpdateInputDto.cshtml",
+        "File": "Templates/App/UpdateRequest.cshtml",
         "Remark": "更新Dto",
-        "IsExecute": false,
-        "OutputFolder": "{{Project.Name}}.Application/{{Module}}/Dto/{{Name}}",
-        "OutputName": "Update{{Name}}Input.cs"
+        "IsExecute": true,
+        "OutputFolder": "dto/{{StringLowercase Name}}",
+        "OutputName": "Update{{Name}}Request.java"
+      },
+      {
+        "File": "Templates/App/Repository.cshtml",
+        "Remark": "仓储",
+        "IsExecute": true,
+        "OutputFolder": "repository",
+        "OutputName": "{{Name}}Repository.java"
+      },
+      {
+        "File": "Templates/App/Controller.cshtml",
+        "Remark": "控制器",
+        "IsExecute": true,
+        "OutputFolder": "controller",
+        "OutputName": "{{Name}}Controller.java"
       }
     ]
   }

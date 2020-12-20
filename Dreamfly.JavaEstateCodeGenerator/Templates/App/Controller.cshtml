@@ -1,0 +1,57 @@
+@{Layout = null;}
+@model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
+/**
+* @@author: @Model.Author.Name
+* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* @@Email: @Model.Author.Email
+* @@Description: @Model.Author.Remark
+*/
+package @(Model.ProjectPackagePath).@(Model.ProjectName).controller;
+
+import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).@(Model.EntityName)Response;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).Create@(Model.EntityName)Request;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).GetAll@(Model.EntityName)Request;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).Update@(Model.EntityName)Request;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).service.@(Model.EntityName)Service;
+import @(Model.ProjectPackagePath).common.dto.EntityRequest;
+import @(Model.ProjectPackagePath).common.handler.ResponseResultBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+@@RestController
+@@ResponseResultBody
+@@RequestMapping("/api/@(Model.EntityName.ToLower())")
+@@Validated
+public class @(Model.EntityName)Controller {
+    @@Autowired
+    private @(Model.EntityName)Service service;
+
+    @@GetMapping("getAll")
+    public Page<@(Model.EntityName)Response> getAll(GetAll@(Model.EntityName)Request request){
+        return service.getAll(request);
+    }
+
+    @@GetMapping("get")
+    public @(Model.EntityName)Response get(@@Valid EntityRequest request){
+        return service.get(request);
+    }
+
+    @@DeleteMapping("delete")
+    public void delete(@@Valid EntityRequest request){
+        service.delete(request);
+    }
+
+    @@PostMapping("create")
+    public @(Model.EntityName)Response create(@@RequestBody @@Valid Create@(Model.EntityName)Request request){
+        return service.create(request);
+    }
+
+    @@PutMapping("update")
+    public @(Model.EntityName)Response update(@@RequestBody @@Valid Update@(Model.EntityName)Request request){
+        return service.update(request);
+    }
+}

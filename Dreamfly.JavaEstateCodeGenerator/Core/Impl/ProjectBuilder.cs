@@ -14,6 +14,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
 {
     public class ProjectBuilder : IProjectBuilder
     {
+
+        /* project.json 中 Project下OutputPath節點 配置：
+         * Windows版本："E:\\Development\\Newcity\\microestate\\baseinfo-service\\src",
+         * Docker linux版本：項目PropertyGroup需要設定
+         * <DockerfileRunArguments>-v /f/Development/Newcity/microestate:/share</DockerfileRunArguments>
+         * 即設定磁盤映射
+         * 設定值："/share/baseinfo-service/src"
+         */
         private readonly ITemplateEngine _templateEngine;
         private readonly ILogger<ProjectBuilder> _logger;
 
@@ -21,6 +29,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
         {
             _templateEngine = templateEngine;
             _logger = logger;
+
+            //注册StringLowercase助手
+            Handlebars.RegisterHelper("StringLowercase",
+                (writer, context, parameters) => { writer.Write(parameters[0].ToString()?.ToLower()); });
         }
 
         public async Task Build(Entity entity)
@@ -40,8 +52,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                 }
 
                 //刪除插入代碼
-                var insertCodes = GetInsertCodeBases(entity);
-                insertCodes.ForEach(p => p.Remove());
+                //var insertCodes = GetInsertCodeBases(entity);
+                //insertCodes.ForEach(p => p.Remove());
             });
         }
 
@@ -49,8 +61,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
         {
             var fileName = Handlebars.Compile(template.OutputName)(entity);
             var folder = Handlebars.Compile(template.OutputFolder)(entity);
-            string apiOutputPath = Path.Combine(entity.Project.OutputPath, "aspnet-core", "src", folder);
-
+            string apiOutputPath =
+                Path.Combine(
+                    entity.Project.OutputPath.Replace("\\", "/"),
+                    "main",
+                    "java",
+                    entity.Project.PackagePath.Replace(".", "/"),
+                    entity.Project.Name,
+                    folder);
             FileHelper.DeleteFile(apiOutputPath, fileName);
         }
 
@@ -83,7 +101,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                     await GenerateCodeFile(entity, template);
                 }
 
-                InsertCodeToFile(entity);
+                //InsertCodeToFile(entity);
             }
             catch (Exception e)
             {

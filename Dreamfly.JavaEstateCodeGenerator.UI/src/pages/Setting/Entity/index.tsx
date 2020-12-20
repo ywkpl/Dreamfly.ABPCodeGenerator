@@ -387,7 +387,7 @@ const Entity = () => {
                     {
                         "name": "name",
                         "columnName":"test_name",
-                        "type": "string",
+                        "type": "String",
                         "length": 20,
                         "isRequired": true,
                         "description": "名称",
@@ -399,7 +399,7 @@ const Entity = () => {
                     },
                     {
                         "name": "age",
-                        "type": "int",
+                        "type": "Integer",
                         "description": "年龄",
                         "mapTypes": [
                             0,
@@ -408,7 +408,7 @@ const Entity = () => {
                     },
                     {
                         "name": "memo",
-                        "type": "string",
+                        "type": "String",
                         "length": 400
                     }
                 ]`;

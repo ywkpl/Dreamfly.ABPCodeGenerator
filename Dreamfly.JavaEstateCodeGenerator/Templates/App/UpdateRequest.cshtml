@@ -1,0 +1,26 @@
+﻿@{ Layout = null;}
+@model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
+/**
+* @@author: @Model.Author.Name
+* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* @@Email: @Model.Author.Email
+* @@Description: @Model.Author.Remark
+*/
+package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
+
+import @(Model.ProjectPackagePath).common.dto.IEntityRequest;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import javax.validation.constraints.NotNull;
+
+@@Data
+@@AllArgsConstructor
+@@NoArgsConstructor
+@@SuperBuilder
+public class Update@(Model.EntityName)Request extends Create@(Model.EntityName)Request implements IEntityRequest {
+    @@NotNull
+    private Long id;
+}

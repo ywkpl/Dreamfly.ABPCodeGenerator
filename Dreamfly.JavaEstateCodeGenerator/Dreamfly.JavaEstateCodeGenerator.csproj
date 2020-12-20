@@ -4,11 +4,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>44d581d2-c6f8-4724-9ec4-db539bf85139</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileRunArguments>-v /e/Development/Newcity/microestate:/share</DockerfileRunArguments>
+    <DockerfileRunArguments>-v /f/Development/Newcity/microestate:/share</DockerfileRunArguments>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Handlebars.Net" Version="1.11.5" />
+    <PackageReference Include="Handlebars.Net" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
