@@ -15,6 +15,8 @@ import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.T
 import @(Model.ProjectPackagePath).@(Model.ProjectName).service.@(Model.EntityName)Service;
 import @(Model.ProjectPackagePath).common.dto.EntityRequest;
 import @(Model.ProjectPackagePath).common.handler.ResponseResultBody;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
@@ -26,31 +28,38 @@ import javax.validation.Valid;
 @@ResponseResultBody
 @@RequestMapping("/api/@(Model.EntityName.ToLower())")
 @@Validated
+@@Api(tags = "@Html.Raw(Model.EntityDescription)")
 public class @(Model.EntityName)Controller {
     @@Autowired
     private @(Model.EntityName)Service service;
 
     @@GetMapping("getAll")
-    public Page<@(Model.EntityName)Response> getAll(GetAll@(Model.EntityName)Request request){
+    @@ApiOperation(value = "多筆查詢")
+    public Page<@(Model.EntityName)Response>
+    getAll(GetAll@(Model.EntityName)Request request){
         return service.getAll(request);
     }
 
     @@GetMapping("get")
+    @@ApiOperation(value = "查詢")
     public @(Model.EntityName)Response get(@@Valid EntityRequest request){
         return service.get(request);
     }
 
     @@DeleteMapping("delete")
+    @@ApiOperation(value = "刪除")
     public void delete(@@Valid EntityRequest request){
         service.delete(request);
     }
 
     @@PostMapping("create")
+    @@ApiOperation(value = "新建")
     public @(Model.EntityName)Response create(@@RequestBody @@Valid Create@(Model.EntityName)Request request){
         return service.create(request);
     }
 
     @@PutMapping("update")
+    @@ApiOperation(value = "更新")
     public @(Model.EntityName)Response update(@@RequestBody @@Valid Update@(Model.EntityName)Request request){
         return service.update(request);
     }

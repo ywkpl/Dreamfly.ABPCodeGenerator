@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +22,9 @@ import javax.validation.constraints.NotNull;
 @@AllArgsConstructor
 @@NoArgsConstructor
 @@SuperBuilder
+@@ApiModel(value = "@Html.Raw(Model.EntityDescription)更新表單")
 public class Update@(Model.EntityName)Request extends Create@(Model.EntityName)Request implements IEntityRequest {
     @@NotNull
+    @@ApiModelProperty(value = "編號")
     private Long id;
 }

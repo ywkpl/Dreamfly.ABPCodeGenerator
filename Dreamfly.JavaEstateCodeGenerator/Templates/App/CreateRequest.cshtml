@@ -1,4 +1,5 @@
 ﻿@{ Layout = null;}
+@using Dreamfly.JavaEstateCodeGenerator.Models
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -6,9 +7,15 @@
 * @@Email: @Model.Author.Email
 * @@Description: @Model.Author.Remark
 */
+@{
+    var dtoTemplates = Model.EntityItems
+        .Where(t => t.MapTypes != null && t.MapTypes.Contains(EntityItemMapType.CreateInput));
+}
 package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -17,14 +24,16 @@ import javax.validation.constraints.Size;
 @@SuperBuilder
 @@NoArgsConstructor
 @@AllArgsConstructor
+@@ApiModel(value = "@Html.Raw(Model.EntityDescription)新建表單")
 public class Create@(Model.EntityName)Request {
-@foreach (var item in Model.EntityItems)
+@foreach (var item in dtoTemplates)
 {
 if (!String.IsNullOrEmpty(item.Description))
 {
     @:/**
     @:* @Html.Raw(item.Description)
     @:*/
+    @:@@ApiModelProperty(value = "@Html.Raw(item.Description)")
 }
 if (item.IsRequired)
 {

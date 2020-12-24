@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>44d581d2-c6f8-4724-9ec4-db539bf85139</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileRunArguments>-v /f/Development/Newcity/microestate:/share</DockerfileRunArguments>
+    <DockerfileRunArguments>-v /e/Development/Newcity/microestate:/share</DockerfileRunArguments>
   </PropertyGroup>
 
   <ItemGroup>

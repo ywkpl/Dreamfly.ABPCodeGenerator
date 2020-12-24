@@ -1,4 +1,5 @@
 ﻿@{ Layout = null;}
+@using Dreamfly.JavaEstateCodeGenerator.Models
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -6,8 +7,14 @@
 * @@Email: @Model.Author.Email
 * @@Description: @Model.Author.Remark
 */
+@{
+    var dtoTemplates = Model.EntityItems
+        .Where(t => t.MapTypes != null && t.MapTypes.Contains(EntityItemMapType.Output));
+}
 package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
@@ -18,16 +25,19 @@ import java.util.Date;
 @@Builder
 @@NoArgsConstructor
 @@AllArgsConstructor
+@@ApiModel(value = "@Html.Raw(Model.EntityDescription)返回表單")
 public class @(Model.EntityName)Response {
     @@JsonSerialize(using = ToStringSerializer.class)
+    @@ApiModelProperty(value = "編號")
     private Long id;
-@foreach (var item in Model.EntityItems)
+@foreach (var item in dtoTemplates)
 {
 if (!String.IsNullOrEmpty(item.Description))
 {
     @:/**
     @:* @Html.Raw(item.Description)
     @:*/
+    @:@@ApiModelProperty(value = "@Html.Raw(item.Description)")
 }
     @:private @item.Type @item.Name;
 }
