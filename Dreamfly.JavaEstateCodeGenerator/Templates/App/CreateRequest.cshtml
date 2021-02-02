@@ -1,4 +1,5 @@
 ﻿@{ Layout = null;}
+@using Dreamfly.JavaEstateCodeGenerator.Core
 @using Dreamfly.JavaEstateCodeGenerator.Models
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
@@ -10,6 +11,7 @@
 @{
     var dtoTemplates = Model.EntityItems
         .Where(t => t.MapTypes != null && t.MapTypes.Contains(EntityItemMapType.CreateInput));
+    bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
 import lombok.*;
@@ -19,6 +21,10 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+@if (hasJsonField)
+{
+@:import java.util.List;
+}
 
 @@Data
 @@SuperBuilder
@@ -43,6 +49,6 @@ if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
 }
-    @:private @item.Type @item.Name;
+    @:private @Html.Raw(item.Type) @item.Name;
 }
 }

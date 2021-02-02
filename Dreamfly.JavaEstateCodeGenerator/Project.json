@@ -1,8 +1,7 @@
 {
   "Project": {
-    "Name": "baseinfo",
-    //"OutputPath": "E:\\Development\\Newcity\\microestate\\baseinfo-service\\src", //Windows版本
-    "OutputPath": "/share/baseinfo-service/src", //Docker linux版本,需要 DockerfileRunArguments 设定
+    "Name": "pro",
+    "OutputPath": "/share/pro-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.0",
     "Author": {

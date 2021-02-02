@@ -1,5 +1,6 @@
 ﻿@{ Layout = null;}
 @using System.Net.Mime
+@using Dreamfly.JavaEstateCodeGenerator.Core
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -7,6 +8,7 @@
 * @@Email: @Model.Author.Email
 * @@Description: @Model.Author.Remark
 */
+@{bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);}
 package @(Model.ProjectPackagePath).@(Model.ProjectName).model;
 
 import @(Model.ProjectPackagePath).common.model.FullAudited;
@@ -17,6 +19,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+@if (hasJsonField)
+{
+@:import com.vladmihalcea.hibernate.type.json.JsonStringType;
+@:import org.hibernate.annotations.Type;
+@:import org.hibernate.annotations.TypeDef;
+@:import java.util.List;
+}
 
 @@Data
 @@SuperBuilder
@@ -24,6 +33,10 @@ import java.util.Set;
 @@NoArgsConstructor
 @@Entity
 @@Table(name = "@(String.IsNullOrEmpty(Model.TableName) ? Model.EntityName : Model.TableName)")
+@if (hasJsonField)
+{
+@:@@TypeDef(name="json",typeClass = JsonStringType.class)
+}
 //@@EqualsAndHashCode(callSuper = true, exclude = { "tenant"})
 //@@ToString(callSuper = true, exclude = "tenant")
 public class @(Model.EntityName) extends FullAudited implements Serializable {
@@ -42,6 +55,10 @@ public class @(Model.EntityName) extends FullAudited implements Serializable {
     {
         columns.Add($"name = \"{item.ColumnName}\"");
     }
+    if (@item.Type == "List<String>")
+    {
+        columns.Add($"columnDefinition = \"json\"");
+    }
     if (!String.IsNullOrEmpty(item.Description))
     {
     @:/**
@@ -52,6 +69,10 @@ public class @(Model.EntityName) extends FullAudited implements Serializable {
     {
     @:@@Column(@Html.Raw(String.Join(", ", columns)))
     }
-    @:private @item.Type @item.Name;
+    if (@item.Type == "List<String>")
+    {
+    @:@@Type( type = "json" )
+    }
+    @:private @Html.Raw(item.Type) @item.Name;
 }
 }

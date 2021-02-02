@@ -21,6 +21,7 @@ import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { EntityItemMapType, EntityItemType } from './model';
 import styles from './index.less';
 import { generatorCode, removeCode } from './service';
+import request from '@/utils/request';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -255,6 +256,29 @@ const Entity = () => {
     </Modal>
   );
 
+  const handleTest = () => {
+    var url = 'http://test.dreamfly.com:9201/auth/oauth/token';
+    request(url, {
+      method: 'post',
+      data: {
+        grant_type: 'password',
+        client_id: 'newcity',
+        client_secret: '23101680',
+        username: 'admin',
+        password: '123456',
+      },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleSave = () => {
     mainForm.validateFields().then((values) => {
       if (entityItems.length === 0) {
@@ -307,6 +331,9 @@ const Entity = () => {
 
   const saveButton = (
     <>
+      <Button type="primary" htmlType="submit" onClick={handleTest}>
+        测试
+      </Button>
       <Button type="primary" htmlType="submit" onClick={handleSave} loading={submitting}>
         生成
       </Button>

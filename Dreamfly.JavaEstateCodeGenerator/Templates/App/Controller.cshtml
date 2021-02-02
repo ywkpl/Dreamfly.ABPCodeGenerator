@@ -1,4 +1,4 @@
-@{Layout = null;}
+锘緻{Layout = null;}
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -26,7 +26,7 @@ import javax.validation.Valid;
 
 @@RestController
 @@ResponseResultBody
-@@RequestMapping("/api/@(Model.EntityName.ToLower())")
+@@RequestMapping("/@(Model.EntityName.ToLower())")
 @@Validated
 @@Api(tags = "@Html.Raw(Model.EntityDescription)")
 public class @(Model.EntityName)Controller {
@@ -34,32 +34,31 @@ public class @(Model.EntityName)Controller {
     private @(Model.EntityName)Service service;
 
     @@GetMapping("getAll")
-    @@ApiOperation(value = "多筆查詢")
-    public Page<@(Model.EntityName)Response>
-    getAll(GetAll@(Model.EntityName)Request request){
+    @@ApiOperation(value = "澶氱瓎鏌ヨ")
+    public Page<@(Model.EntityName)Response> getAll(GetAll@(Model.EntityName)Request request){
         return service.getAll(request);
     }
 
     @@GetMapping("get")
-    @@ApiOperation(value = "查詢")
+    @@ApiOperation(value = "鏌ヨ")
     public @(Model.EntityName)Response get(@@Valid EntityRequest request){
         return service.get(request);
     }
 
     @@DeleteMapping("delete")
-    @@ApiOperation(value = "刪除")
+    @@ApiOperation(value = "鍒櫎")
     public void delete(@@Valid EntityRequest request){
         service.delete(request);
     }
 
     @@PostMapping("create")
-    @@ApiOperation(value = "新建")
+    @@ApiOperation(value = "鏂板缓")
     public @(Model.EntityName)Response create(@@RequestBody @@Valid Create@(Model.EntityName)Request request){
         return service.create(request);
     }
 
     @@PutMapping("update")
-    @@ApiOperation(value = "更新")
+    @@ApiOperation(value = "鏇存柊")
     public @(Model.EntityName)Response update(@@RequestBody @@Valid Update@(Model.EntityName)Request request){
         return service.update(request);
     }
