@@ -1,0 +1,34 @@
+﻿@{ Layout = null;}
+@using System.Net.Mime
+@using Dreamfly.JavaEstateCodeGenerator.Core
+@model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
+/**
+* @@author: @Model.Author.Name
+* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+* @@Email: @Model.Author.Email
+* @@Description: @Model.Author.Remark
+*/
+package @(Model.ProjectPackagePath).@(Model.ProjectName).api.client;
+
+import @(Model.ProjectPackagePath).@(Model.ProjectName).api.BaseinfoConstant;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).api.dto.@(Model.EntityName).*;
+import @(Model.ProjectPackagePath).common.dto.EntityRequest;
+import org.springframework.cloud.openfeign.*;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@@FeignClient(value = @(Model.ProjectName)Constant.SERVICE_NAME)
+@@RequestMapping("/@(Model.EntityName.ToLower())")
+public interface @(Model.EntityName)Client {
+    @@GetMapping("getList")
+    List<@(Model.EntityName)Response> getList(@@SpringQueryMap GetAll@(Model.EntityName)Request request);
+
+    @@GetMapping("get")
+    @(Model.EntityName)Response get(@@SpringQueryMap EntityRequest request);
+
+    @@PostMapping("create")
+    @(Model.EntityName)Response create(@@RequestBody Create@(Model.EntityName)Request request);
+
+    @@PutMapping("update")
+    @(Model.EntityName)Response update(@@RequestBody Update@(Model.EntityName)Request request);
+}
