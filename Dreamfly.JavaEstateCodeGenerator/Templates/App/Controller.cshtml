@@ -34,9 +34,15 @@ public class @(Model.EntityName)Controller {
     private @(Model.EntityName)Service service;
 
     @@GetMapping("getAll")
-    @@ApiOperation(value = "多筆查詢")
+    @@ApiOperation(value = "分頁查詢")
     public Page<@(Model.EntityName)Response> getAll(GetAll@(Model.EntityName)Request request){
         return service.getAll(request);
+    }
+    
+    @@GetMapping("getList")
+    @@ApiOperation(value = "列表查詢")
+    public Page<@(Model.EntityName)Response> getList(GetAll@(Model.EntityName)Request request){
+        return service.getList(request);
     }
 
     @@GetMapping("get")

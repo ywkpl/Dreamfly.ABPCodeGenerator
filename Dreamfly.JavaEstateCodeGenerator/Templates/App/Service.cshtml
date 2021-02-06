@@ -27,12 +27,13 @@ import java.util.Optional;
 
 @@Service
 public class @(Model.EntityName)Service extends CrudAppService<@(Model.EntityName), @(Model.EntityName)Response, EntityRequest, Create@(Model.EntityName)Request, Update@(Model.EntityName)Request, GetAll@(Model.EntityName)Request> {
+
     public @(Model.EntityName)Service(@(Model.EntityName)Mapper mapper) {
         super(mapper);
     }
 
     @@Override
-    public Page<@(Model.EntityName)Response> getAll(GetAll@(Model.EntityName)Request input) {
+    public Specification<@(Model.EntityName)Response> makeSpecification(GetAll@(Model.EntityName)Request input) {
         Specification<@(Model.EntityName)> specification= (root, query, builder) -> {
             List<Predicate> predicates=new ArrayList<>();
             if(Strings.isNotBlank(input.getName())){
@@ -40,6 +41,6 @@ public class @(Model.EntityName)Service extends CrudAppService<@(Model.EntityNam
             }
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return getAll(input, specification);
+        return specification;
     }
 }
