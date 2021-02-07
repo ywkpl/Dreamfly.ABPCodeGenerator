@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @@RestController
 @@ResponseResultBody
@@ -35,13 +36,13 @@ public class @(Model.EntityName)Controller {
 
     @@GetMapping("getAll")
     @@ApiOperation(value = "分頁查詢")
-    public Page<@(Model.EntityName)Response> getAll(GetAll@(Model.EntityName)Request request){
+    public Page<@(Model.EntityName)Response> getAll(@@Valid GetAll@(Model.EntityName)Request request){
         return service.getAll(request);
     }
     
     @@GetMapping("getList")
     @@ApiOperation(value = "列表查詢")
-    public Page<@(Model.EntityName)Response> getList(GetAll@(Model.EntityName)Request request){
+    public Page<@(Model.EntityName)Response> getList(@@Valid GetAll@(Model.EntityName)Request request){
         return service.getList(request);
     }
 

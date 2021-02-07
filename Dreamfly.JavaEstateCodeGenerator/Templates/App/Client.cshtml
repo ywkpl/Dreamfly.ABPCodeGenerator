@@ -17,7 +17,7 @@ import org.springframework.cloud.openfeign.*;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@@FeignClient(value = @(Model.ProjectName)Constant.SERVICE_NAME)
+@@FeignClient(value = @(Model.ProjectName)Constant.SERVICE_NAME, contextId = "@(Model.EntityName.ToLower())Client")
 @@RequestMapping("/@(Model.EntityName.ToLower())")
 public interface @(Model.EntityName)Client {
     @@GetMapping("getList")
@@ -25,6 +25,9 @@ public interface @(Model.EntityName)Client {
 
     @@GetMapping("get")
     @(Model.EntityName)Response get(@@SpringQueryMap EntityRequest request);
+    
+    @@DeleteMapping("delete")
+    void delete(@@SpringQueryMap EntityRequest request);
 
     @@PostMapping("create")
     @(Model.EntityName)Response create(@@RequestBody Create@(Model.EntityName)Request request);
