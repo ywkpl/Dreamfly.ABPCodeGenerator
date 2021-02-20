@@ -33,7 +33,7 @@ public class @(Model.EntityName)Service extends CrudAppService<@(Model.EntityNam
     }
 
     @@Override
-    public Specification<@(Model.EntityName)Response> makeSpecification(GetAll@(Model.EntityName)Request input) {
+    public Specification<@(Model.EntityName)> makeSpecification(GetAll@(Model.EntityName)Request input) {
         Specification<@(Model.EntityName)> specification= (root, query, builder) -> {
             List<Predicate> predicates=new ArrayList<>();
             if(Strings.isNotBlank(input.getName())){

@@ -42,7 +42,7 @@ public class @(Model.EntityName)Controller {
     
     @@GetMapping("getList")
     @@ApiOperation(value = "列表查詢")
-    public Page<@(Model.EntityName)Response> getList(@@Valid GetAll@(Model.EntityName)Request request){
+    public List<@(Model.EntityName)Response> getList(@@Valid GetAll@(Model.EntityName)Request request){
         return service.getList(request);
     }
 
