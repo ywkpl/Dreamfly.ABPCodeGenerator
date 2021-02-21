@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:62260",
+      "applicationUrl": "http://localhost:55000",
       "sslPort": 0
     }
   },
@@ -15,7 +15,9 @@
       "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "ancmHostingModel": "OutOfProcess",
+      "applicationUrl": "https://localhost:55001;http://localhost:55000"
     },
     "Dreamfly.JavaEstateCodeGenerator": {
       "commandName": "Project",

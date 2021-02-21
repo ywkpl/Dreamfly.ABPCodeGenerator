@@ -1,7 +1,7 @@
 {
   "Project": {
     "Name": "construction",
-    "OutputPath": "/share/construction-service/src",
+    "OutputPath": "F:/Development/Newcity/microestate/construction-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.0",
     "Author": {

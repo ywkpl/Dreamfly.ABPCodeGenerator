@@ -8,6 +8,13 @@ export async function generatorCode(params: any) {
   });
 }
 
+export async function importEntity(params: any) {
+  return request(`${appConsts.apiUrl}/entity/import`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
 export async function removeCode(params: any) {
   return request(`${appConsts.apiUrl}/entity/remove`, {
     method: 'POST',

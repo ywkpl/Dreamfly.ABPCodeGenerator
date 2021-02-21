@@ -7,6 +7,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string Name { get; set; }
         public string TableName { get; set; }
         public string Description { get; set; }
+        public bool HasIHasCompany { get; set; }
+        public bool HasIHasTenant { get; set; }
         public Project Project { get; set; }
         public List<EntityItem> EntityItems { get; set; }
     }
@@ -18,6 +20,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string Type { get; set; }
         public int? Length { get; set; }
         public bool IsRequired { get; set; }
+        public bool InQuery { get; set; }
+        public bool InResponse { get; set; }
+        public bool InCreate { get; set; }
+        public bool IsSync { get; set; }
         public string Description { get; set; }
         public List<EntityItemMapType> MapTypes { get; set; }
     }

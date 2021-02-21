@@ -20,8 +20,9 @@ import { ColumnProps } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { EntityItemMapType, EntityItemType } from './model';
 import styles from './index.less';
-import { generatorCode, removeCode } from './service';
+import { generatorCode, importEntity, removeCode } from './service';
 import request from '@/utils/request';
+import { values } from 'lodash';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -256,6 +257,12 @@ const Entity = () => {
     </Modal>
   );
 
+  const handleImport = () => {
+    importEntity({ tabIndex: 5, startRow: 15, endRow: 25 }).then((values) => {
+      console.log(values);
+    });
+  };
+
   const handleTest = () => {
     var url = 'http://test.dreamfly.com:9201/auth/oauth/token';
     request(url, {
@@ -331,6 +338,9 @@ const Entity = () => {
 
   const saveButton = (
     <>
+      <Button type="primary" htmlType="submit" onClick={handleImport}>
+        Excel导入
+      </Button>
       <Button type="primary" htmlType="submit" onClick={handleTest}>
         测试
       </Button>
