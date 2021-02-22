@@ -24,9 +24,18 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             {
                 HasIHasCompany = true,
                 HasIHasTenant = true,
+                IsSync = false,
                 EntityItems = new List<EntityItem>()
             };
 
+            AddFieldItems(dto, iSheet, entity);
+            AddCompanyItem(entity);
+            AddTenantItem(entity);
+            return entity;
+        }
+
+        private void AddFieldItems(ImportExcelDto dto, ISheet iSheet, Entity entity)
+        {
             for (int i = dto.StartRow - 1; i < dto.EndRow; i++)
             {
                 var row = iSheet.GetRow(i);
@@ -45,7 +54,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
                 string convertedField = ConvertFieldName(field);
 
-                entity.EntityItems.Add(new EntityItem
+                var item = new EntityItem
                 {
                     Name = convertedField,
                     ColumnName = field,
@@ -54,12 +63,59 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     Type = "String",
                     InQuery = false,
                     InCreate = true,
-                    InResponse = true,
-                    IsSync = false
+                    InResponse = true
+                };
+
+                if (item.Name == "code" || item.Name == "name")
+                {
+                    item.Length = 20;
+                    item.InQuery = true;
+                }
+
+                if (item.Name == "memo")
+                {
+                    item.Length = 1000;
+                    item.InResponse = false;
+                }
+
+                entity.EntityItems.Add(item);
+            }
+        }
+
+        private void AddTenantItem(Entity entity)
+        {
+            if (entity.HasIHasTenant)
+            {
+                entity.EntityItems.Add(new EntityItem
+                {
+                    Name = "tenantId",
+                    ColumnName = "TenantId",
+                    Description = "集團編號",
+                    IsRequired = false,
+                    Type = "Long",
+                    InQuery = false,
+                    InCreate = false,
+                    InResponse = false
                 });
             }
+        }
 
-            return entity;
+        private void AddCompanyItem(Entity entity)
+        {
+            if (entity.HasIHasCompany)
+            {
+                entity.EntityItems.Add(new EntityItem
+                {
+                    Name = "companyId",
+                    ColumnName = "CompanyId",
+                    Description = "公司編號",
+                    IsRequired = false,
+                    Type = "Long",
+                    InQuery = true,
+                    InCreate = false,
+                    InResponse = false
+                });
+            }
         }
 
         private bool IsFilterField(string field)

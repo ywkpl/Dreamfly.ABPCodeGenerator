@@ -10,6 +10,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public bool HasIHasCompany { get; set; }
         public bool HasIHasTenant { get; set; }
         public Project Project { get; set; }
+        public bool IsSync { get; set; }
         public List<EntityItem> EntityItems { get; set; }
     }
 
@@ -23,15 +24,6 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public bool InQuery { get; set; }
         public bool InResponse { get; set; }
         public bool InCreate { get; set; }
-        public bool IsSync { get; set; }
         public string Description { get; set; }
-        public List<EntityItemMapType> MapTypes { get; set; }
-    }
-
-    public enum EntityItemMapType
-    {
-        CreateInput,
-        Output,
-        QueryInput
     }
 }

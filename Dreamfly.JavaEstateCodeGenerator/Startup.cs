@@ -52,6 +52,7 @@ namespace Dreamfly.JavaEstateCodeGenerator
 
             services.AddScoped<ITemplateEngine, RazorTemplateEngine>();
             services.AddScoped<IProjectBuilder, ProjectBuilder>();
+            services.AddScoped<IEntityPersistence, EntityPersistence>();
             services.AddControllersWithViews();
         }
 

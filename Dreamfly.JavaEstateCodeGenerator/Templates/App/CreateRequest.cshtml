@@ -1,6 +1,5 @@
 ﻿@{ Layout = null;}
 @using Dreamfly.JavaEstateCodeGenerator.Core
-@using Dreamfly.JavaEstateCodeGenerator.Models
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -9,8 +8,7 @@
 * @@Description: @Model.Author.Remark
 */
 @{
-    var dtoTemplates = Model.EntityItems
-        .Where(t => t.MapTypes != null && t.MapTypes.Contains(EntityItemMapType.CreateInput));
+    var dtoTemplates = Model.EntityItems.Where(t => t.InCreate);
     bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());

@@ -74,6 +74,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                 ProjectPackagePath=entity.Project.PackagePath,
                 EntityName = entity.Name,
                 EntityDescription = entity.Description,
+                EntityHasICompany = entity.HasIHasCompany,
+                EntityHasITenant = entity.HasIHasTenant,
                 TableName = entity.TableName,
                 Author = entity.Project.Author,
                 Template = template,

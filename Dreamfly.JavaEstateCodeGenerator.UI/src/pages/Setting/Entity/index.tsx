@@ -14,27 +14,33 @@ import {
   Checkbox,
   Tag,
   Select,
+  InputNumber,
 } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ColumnProps } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { EntityItemMapType, EntityItemType } from './model';
+import { EntityItemType } from './model';
 import styles from './index.less';
-import { generatorCode, importEntity, removeCode } from './service';
+import { generatorCode, importEntity, removeCode, getEntity } from './service';
 import request from '@/utils/request';
-import { values } from 'lodash';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
+const Option = Select.Option;
 
 const Entity = () => {
   const [editModelForm] = Form.useForm();
+  const [importModelForm] = Form.useForm();
+  const [loadModelForm] = Form.useForm();
   const [mainForm] = Form.useForm();
   const [entityItems, setEntityItems] = useState<EntityItemType[]>([]);
   const [editModelVisible, setEditModelVisible] = useState<boolean>(false);
+  const [importModelVisible, setImportModelVisible] = useState<boolean>(false);
+  const [loadModelVisible, setLoadModelVisible] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [itemJson, setItemJson] = useState('');
 
   const handleAdd = () => {
@@ -46,7 +52,9 @@ const Entity = () => {
       length: null,
       isRequired: false,
       description: '',
-      mapTypes: [],
+      inQuery: false,
+      inCreate: true,
+      inResponse: false,
     });
     setEditModelVisible(true);
   };
@@ -87,22 +95,30 @@ const Entity = () => {
       dataIndex: 'description',
     },
     {
-      key: 'mapTypes',
-      title: '映射类型',
-      dataIndex: 'mapTypes',
-      render: (value: EntityItemMapType[]) => {
-        return (
-          <div>
-            {value &&
-              value.map((t: EntityItemMapType) => {
-                return (
-                  <Tag key={t} color="processing">
-                    {EntityItemMapType[t]}
-                  </Tag>
-                );
-              })}
-          </div>
-        );
+      key: 'inQuery',
+      title: '查询包含',
+      dataIndex: 'inQuery',
+      align: 'center',
+      render: (value) => {
+        return <Checkbox checked={value} disabled />;
+      },
+    },
+    {
+      key: 'inCreate',
+      title: '新建包含',
+      dataIndex: 'inCreate',
+      align: 'center',
+      render: (value) => {
+        return <Checkbox checked={value} disabled />;
+      },
+    },
+    {
+      key: 'inResponse',
+      title: '响应包含',
+      dataIndex: 'inResponse',
+      align: 'center',
+      render: (value) => {
+        return <Checkbox checked={value} disabled />;
       },
     },
     {
@@ -160,6 +176,36 @@ const Entity = () => {
     setEditModelVisible(false);
   };
 
+  const handleImportModelOk = () => {
+    importModelForm.validateFields().then((values) => {
+      setSelectedRowKeys([]);
+      importEntity(values).then((response) => {
+        mainForm.setFieldsValue(response);
+        setEntityItems(response.entityItems);
+      });
+      setImportModelVisible(false);
+    });
+  };
+
+  const handleLoadModelOk = () => {
+    loadModelForm.validateFields().then((values) => {
+      setSelectedRowKeys([]);
+      getEntity(values.entityName).then((response) => {
+        mainForm.setFieldsValue(response);
+        setEntityItems(response.entityItems);
+      });
+      setLoadModelVisible(false);
+    });
+  };
+
+  const handleImportModelCancel = () => {
+    setImportModelVisible(false);
+  };
+
+  const handleLoadModelCancel = () => {
+    setLoadModelVisible(false);
+  };
+
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -179,21 +225,6 @@ const Entity = () => {
     wrapperCol: {
       span: 17,
     },
-  };
-
-  const mapTypeItems = () => {
-    const options = [];
-    const mapTypes = Object.keys(EntityItemMapType);
-    if (mapTypes && mapTypes.length > 0) {
-      for (let i = 0; i < mapTypes.length / 2; i += 1) {
-        options.push(
-          <Select.Option value={mapTypes[i]} key={mapTypes[i]}>
-            {mapTypes[i + mapTypes.length / 2]}
-          </Select.Option>,
-        );
-      }
-    }
-    return options;
   };
 
   const modelEdit = (
@@ -233,11 +264,19 @@ const Entity = () => {
             },
           ]}
         >
-          <Input placeholder="变量类型" style={{ width: 250 }} />
+          <Select placeholder="变量类型" defaultValue="String" style={{ width: 150 }}>
+            <Option value="String">String</Option>
+            <Option value="Long">Long</Option>
+            <Option value="Integer">Integer</Option>
+            <Option value="Boolean">Boolean</Option>
+            <Option value="Date">Date</Option>
+            <Option value="Float">Float</Option>
+            <Option value="Json">Json</Option>
+          </Select>
         </FormItem>
 
         <FormItem {...formAllItemLayout} label="最大长度" name="length">
-          <Input type="number" placeholder="最大长度" style={{ width: 150 }} />
+          <InputNumber placeholder="最大长度" style={{ width: 150 }} />
         </FormItem>
 
         <FormItem {...formAllItemLayout} label="是否必填" name="isRequired" valuePropName="checked">
@@ -247,20 +286,109 @@ const Entity = () => {
         <FormItem {...formAllItemLayout} label="描述" name="description">
           <Input placeholder="描述" />
         </FormItem>
+        <FormItem {...formAllItemLayout} label="查询包含" name="inQuery" valuePropName="checked">
+          <Switch />
+        </FormItem>
+        <FormItem {...formAllItemLayout} label="新增包含" name="inCreate" valuePropName="checked">
+          <Switch />
+        </FormItem>
+        <FormItem {...formAllItemLayout} label="响应包含" name="inResponse" valuePropName="checked">
+          <Switch />
+        </FormItem>
+      </Form>
+    </Modal>
+  );
 
-        <FormItem {...formAllItemLayout} label="输出类别" name="mapTypes">
-          <Select mode="multiple" style={{ width: '100%' }} placeholder="输出类别">
-            {mapTypeItems()}
-          </Select>
+  const modelImport = (
+    <Modal
+      title="导入条件"
+      destroyOnClose
+      visible={importModelVisible}
+      onOk={handleImportModelOk}
+      okText="确定"
+      onCancel={handleImportModelCancel}
+    >
+      <Form style={{ marginTop: 8 }} form={importModelForm} name="model">
+        <FormItem
+          {...formAllItemLayout}
+          label="页签索引"
+          name="tabIndex"
+          rules={[
+            {
+              required: true,
+              message: '请输入页签索引',
+            },
+          ]}
+        >
+          <InputNumber placeholder="页签索引" style={{ width: '80%' }} />
+        </FormItem>
+        <FormItem
+          {...formAllItemLayout}
+          label="起始行号"
+          name="startRow"
+          rules={[
+            {
+              required: true,
+              message: '请输入起始行号',
+            },
+          ]}
+        >
+          <InputNumber placeholder="起始行号" style={{ width: '80%' }} />
+        </FormItem>
+        <FormItem
+          {...formAllItemLayout}
+          label="截止行号"
+          name="endRow"
+          rules={[
+            {
+              required: true,
+              message: '请输入截止行号',
+            },
+          ]}
+        >
+          <InputNumber placeholder="截止行号" style={{ width: '80%' }} />
+        </FormItem>
+      </Form>
+    </Modal>
+  );
+
+  const modelLoad = (
+    <Modal
+      title="载入条件"
+      destroyOnClose
+      visible={loadModelVisible}
+      onOk={handleLoadModelOk}
+      okText="确定"
+      onCancel={handleLoadModelCancel}
+    >
+      <Form style={{ marginTop: 8 }} form={loadModelForm} name="model">
+        <FormItem
+          {...formAllItemLayout}
+          label="实体名称"
+          name="entityName"
+          rules={[
+            {
+              required: true,
+              message: '请输入实体名称',
+            },
+          ]}
+        >
+          <Input placeholder="实体名称" />
         </FormItem>
       </Form>
     </Modal>
   );
 
   const handleImport = () => {
-    importEntity({ tabIndex: 5, startRow: 15, endRow: 25 }).then((values) => {
-      console.log(values);
-    });
+    importModelForm.resetFields();
+    importModelForm.setFieldsValue({ tabIndex: 0 });
+    setImportModelVisible(true);
+  };
+
+  const handleLoad = () => {
+    loadModelForm.resetFields();
+    loadModelForm.setFieldsValue({ entityName: '' });
+    setLoadModelVisible(true);
   };
 
   const handleTest = () => {
@@ -297,6 +425,9 @@ const Entity = () => {
         name: values.name,
         tableName: values.tableName,
         description: values.description,
+        hasIHasCompany: values.hasIHasCompany,
+        hasIHasTenant: values.hasIHasTenant,
+        isSync: values.isSync,
         entityItems,
       };
 
@@ -341,6 +472,9 @@ const Entity = () => {
       <Button type="primary" htmlType="submit" onClick={handleImport}>
         Excel导入
       </Button>
+      <Button type="primary" htmlType="submit" onClick={handleLoad}>
+        现有载入
+      </Button>
       <Button type="primary" htmlType="submit" onClick={handleTest}>
         测试
       </Button>
@@ -354,8 +488,10 @@ const Entity = () => {
   );
 
   const rowSelection = {
-    onChange: (selectedRowKeys: any[]) => {
-      setSelectedKeys(selectedRowKeys);
+    selectedRowKeys: selectedRowKeys,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+      setSelectedRowKeys(selectedRowKeys);
+      setSelectedRows(selectedRows);
     },
   };
 
@@ -382,6 +518,25 @@ const Entity = () => {
               rules={[{ required: true, message: '请输入描述' }]}
             >
               <Input placeholder="描述" />
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="过滤公司接口"
+              name="hasIHasCompany"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="过滤租户接口"
+              name="hasIHasTenant"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+            <FormItem {...formItemLayout} label="同步状态" name="isSync" valuePropName="checked">
+              <Switch disabled />
             </FormItem>
           </Card>
           <Card bordered={false} title="明细">
@@ -428,20 +583,16 @@ const Entity = () => {
                         "length": 20,
                         "isRequired": true,
                         "description": "名称",
-                        "mapTypes": [
-                            0,
-                            1,
-                            2
-                        ]
+                        "inQuery":true,
+                        "inCreate":true,
+                        "inResponse":true
                     },
                     {
                         "name": "age",
                         "type": "Integer",
                         "description": "年龄",
-                        "mapTypes": [
-                            0,
-                            2
-                        ]
+                        "inQuery":true,
+                        "inResponse":true
                     },
                     {
                         "name": "memo",
@@ -465,11 +616,13 @@ const Entity = () => {
                   type="primary"
                   danger
                   onClick={() => {
-                    const removedItems = entityItems.filter((t) => !selectedKeys.includes(t.name));
+                    const removedItems = entityItems.filter(
+                      (t) => !selectedRowKeys.includes(t.name),
+                    );
                     setEntityItems([...removedItems]);
-                    setSelectedKeys([]);
+                    setSelectedRowKeys([]);
                   }}
-                  disabled={selectedKeys.length === 0}
+                  disabled={selectedRowKeys.length === 0}
                 >
                   删除
                 </Button>
@@ -488,6 +641,8 @@ const Entity = () => {
         </Space>
       </Form>
       {editModelVisible && modelEdit}
+      {importModelVisible && modelImport}
+      {loadModelVisible && modelLoad}
     </PageHeaderWrapper>
   );
 };

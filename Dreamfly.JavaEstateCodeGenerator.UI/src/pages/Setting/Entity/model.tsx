@@ -1,9 +1,3 @@
-export enum EntityItemMapType {
-  CreateInput,
-  Output,
-  QueryInput,
-}
-
 export interface EntityItemType {
   name: string;
   columnName?: string;
@@ -11,7 +5,9 @@ export interface EntityItemType {
   length?: number;
   isRequired: boolean;
   description?: string;
-  mapTypes: EntityItemMapType[];
+  inQuery: boolean;
+  inCreate: boolean;
+  inResponse: boolean;
 }
 
 export interface EntityType {

@@ -42,7 +42,7 @@ import java.util.Set;
 }
 //@@EqualsAndHashCode(callSuper = true, exclude = { "tenant"})
 //@@ToString(callSuper = true, exclude = "tenant")
-public class @(Model.EntityName) extends FullAudited implements Serializable, IHaveCompany, IHaveTenant {
+public class @(Model.EntityName) extends FullAudited implements Serializable@(Model.EntityHasICompany?", IHaveCompany":"")@(Model.EntityHasITenant?", IHaveTenant":"") {
 @foreach (var item in Model.EntityItems)
 {
     var columns = new List<String>();

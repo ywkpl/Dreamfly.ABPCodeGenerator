@@ -15,6 +15,13 @@ export async function importEntity(params: any) {
   });
 }
 
+export async function getEntity(entityName: string) {
+  return request(`${appConsts.apiUrl}/entity/get`, {
+    method: 'GET',
+    params: { entityName: entityName },
+  });
+}
+
 export async function removeCode(params: any) {
   return request(`${appConsts.apiUrl}/entity/remove`, {
     method: 'POST',

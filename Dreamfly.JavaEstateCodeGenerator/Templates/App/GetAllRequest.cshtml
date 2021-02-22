@@ -1,5 +1,4 @@
 ﻿@{ Layout = null;}
-@using Dreamfly.JavaEstateCodeGenerator.Models
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -8,8 +7,7 @@
 * @@Description: @Model.Author.Remark
 */
 @{
-    var dtoTemplates = Model.EntityItems
-        .Where(t => t.MapTypes != null && t.MapTypes.Contains(EntityItemMapType.QueryInput));
+    var dtoTemplates = Model.EntityItems.Where(t=>t.InQuery);
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
 

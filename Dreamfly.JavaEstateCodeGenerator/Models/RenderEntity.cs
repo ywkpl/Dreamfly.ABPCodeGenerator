@@ -7,6 +7,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string ProjectName { get; set; }
         public string EntityName { get; set; }
         public string EntityDescription { get; set; }
+        public bool EntityHasICompany { get; set; }
+        public bool EntityHasITenant { get; set; }
         public string TableName { get; set; }
         public string ProjectPackagePath { get; set; }
 
