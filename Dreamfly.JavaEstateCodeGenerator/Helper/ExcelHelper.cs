@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Dreamfly.JavaEstateCodeGenerator.Models;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -75,7 +76,21 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                 if (item.Name == "memo")
                 {
                     item.Length = 1000;
-                    item.InResponse = false;
+                }
+
+                if (item.ColumnName.EndsWith("_Id"))
+                {
+                    item.Type = "Long";
+                    if (!item.ColumnName.Contains("File"))
+                    {
+                        item.InQuery = true;
+                    }
+                }
+
+                if (item.ColumnName.StartsWith("Code_"))
+                {
+                    item.Type = "Long";
+                    item.InQuery = true;
                 }
 
                 entity.EntityItems.Add(item);
@@ -86,17 +101,30 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         {
             if (entity.HasIHasTenant)
             {
-                entity.EntityItems.Add(new EntityItem
+                var entityItem = entity.EntityItems.FirstOrDefault(t => t.Name == "tenantId");
+                if (entityItem == null)
                 {
-                    Name = "tenantId",
-                    ColumnName = "TenantId",
-                    Description = "集團編號",
-                    IsRequired = false,
-                    Type = "Long",
-                    InQuery = false,
-                    InCreate = false,
-                    InResponse = false
-                });
+                    entity.EntityItems.Add(new EntityItem
+                    {
+                        Name = "tenantId",
+                        ColumnName = "TenantId",
+                        Description = "集團編號",
+                        IsRequired = false,
+                        Type = "Long",
+                        InQuery = false,
+                        InCreate = false,
+                        InResponse = false
+                    });
+                }
+                else
+                {
+                    entityItem.Type = "Long";
+                    entityItem.Description = "集團編號";
+                    entityItem.IsRequired = false;
+                    entityItem.InQuery = false;
+                    entityItem.InCreate = false;
+                    entityItem.InResponse = false;
+                }
             }
         }
 
@@ -104,17 +132,30 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         {
             if (entity.HasIHasCompany)
             {
-                entity.EntityItems.Add(new EntityItem
+                var entityItem = entity.EntityItems.FirstOrDefault(t => t.Name == "companyId");
+                if (entityItem == null)
                 {
-                    Name = "companyId",
-                    ColumnName = "CompanyId",
-                    Description = "公司編號",
-                    IsRequired = false,
-                    Type = "Long",
-                    InQuery = true,
-                    InCreate = false,
-                    InResponse = false
-                });
+                    entity.EntityItems.Add(new EntityItem
+                    {
+                        Name = "companyId",
+                        ColumnName = "CompanyId",
+                        Description = "公司編號",
+                        IsRequired = false,
+                        Type = "Long",
+                        InQuery = true,
+                        InCreate = false,
+                        InResponse = false
+                    });
+                }
+                else
+                {
+                    entityItem.Type = "Long";
+                    entityItem.Description = "公司編號";
+                    entityItem.IsRequired = false;
+                    entityItem.InQuery = true;
+                    entityItem.InCreate = false;
+                    entityItem.InResponse = false;
+                }
             }
         }
 

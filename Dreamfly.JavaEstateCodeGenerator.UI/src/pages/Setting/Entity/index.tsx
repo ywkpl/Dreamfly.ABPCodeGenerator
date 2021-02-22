@@ -154,7 +154,9 @@ const Entity = () => {
   const handleEditModelOk = () => {
     editModelForm.validateFields().then((values) => {
       const entityItem = values as EntityItemType;
-      const editItem = entityItems.find((t) => t.name === entityItem.name);
+      const editItem = entityItems.find(
+        (t) => t.name.toLowerCase() === entityItem.name.toLowerCase(),
+      );
       if (isEdit) {
         if (editItem) {
           const index = entityItems.indexOf(editItem);
