@@ -38,9 +38,9 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         }
 
         [HttpPost("GeneratorCodeSql")]
-        public void GeneratorCodeSql(ImportExcelDto dto)
+        public void GeneratorCodeSql()
         {
-            new CodeSql(_project).GeneraterFile(dto);
+            new CodeSql(_project).GeneratorFile();
         }
     }
 }

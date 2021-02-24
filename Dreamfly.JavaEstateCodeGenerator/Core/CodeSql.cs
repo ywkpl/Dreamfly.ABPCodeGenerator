@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dreamfly.JavaEstateCodeGenerator.Helper;
 using Dreamfly.JavaEstateCodeGenerator.Models;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Core
@@ -15,9 +16,9 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             this._project = project;
         }
 
-        public void GeneraterFile(ImportExcelDto dto)
+        public void GeneratorFile()
         {
-            string sqlString = GeneraterSqlString(dto);
+            string sqlString = GeneratorSqlString();
             Save(sqlString);
         }
 
@@ -28,7 +29,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             File.WriteAllText(filePath, sqlString, Encoding.UTF8);
         }
 
-        private String GeneraterSqlString(ImportExcelDto dto)
+        private String GeneratorSqlString()
         {
             var items = ReadCodeItems();
             var sqlBuilder = GeneratorSqlBuilder(items);
@@ -64,11 +65,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                 {
                     Console.WriteLine(e);
                     //写入日志
+                    SerilogHelper.Instance.Error(e, "code:{code}, name:{name}, items:{items}", t.Code, t.Name,
+                        t.KeyValues);
                 }
-                
-
                 sqlBuilder.Append($"{Environment.NewLine}");
-
                 codeId += 1000;
             });
             return sqlBuilder;
