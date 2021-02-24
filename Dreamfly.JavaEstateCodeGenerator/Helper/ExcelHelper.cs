@@ -15,9 +15,29 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             "seq", "id", "adduser_id", "adddate", "moduser_id", "moddate"
         };
 
+        public List<DBCodeItem> ReadCodeItems(ImportExcelDto dto)
+        {
+            List<DBCodeItem> codeItems=new List<DBCodeItem>();
+            using var stream = new FileStream("Excel\\table.xlsx", FileMode.Open, FileAccess.Read, FileShare.Read);
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(stream);
+            ISheet iSheet = xssfWorkbook.GetSheetAt(dto.TabIndex);
+            for (int i = dto.StartRow - 1; i < dto.EndRow; i++)
+            {
+                var row = iSheet.GetRow(i);
+                codeItems.Add(new DBCodeItem
+                {
+                    Name = row.GetCell(0).StringCellValue,
+                    Code = row.GetCell(1).StringCellValue,
+                    KeyValues = row.GetCell(2).StringCellValue
+                });
+            }
+
+            return codeItems;
+        }
+
         public Entity ToEntity(ImportExcelDto dto)
         {
-            using var stream = new FileStream("Excel\\table.xlsx", FileMode.Open);
+            using var stream = new FileStream("Excel\\table.xlsx", FileMode.Open, FileAccess.Read, FileShare.Read);
             XSSFWorkbook xssfWorkbook = new XSSFWorkbook(stream);
             ISheet iSheet = xssfWorkbook.GetSheetAt(dto.TabIndex);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Dreamfly.JavaEstateCodeGenerator.Core;
 using Dreamfly.JavaEstateCodeGenerator.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             var settingFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Project.json");
             var content = JObject.FromObject(new { Project = project }).ToString();
             System.IO.File.WriteAllText(settingFilePath, content);
+        }
+
+        [HttpPost("GeneratorCodeSql")]
+        public void GeneratorCodeSql(ImportExcelDto dto)
+        {
+            new CodeSql(_project).GeneraterFile(dto);
         }
     }
 }
