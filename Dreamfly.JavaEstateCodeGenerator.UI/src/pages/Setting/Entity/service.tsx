@@ -8,10 +8,17 @@ export async function generatorCode(params: any) {
   });
 }
 
-export async function importEntity(params: any) {
-  return request(`${appConsts.apiUrl}/entity/import`, {
+export async function importEntityFromExcel(params: any) {
+  return request(`${appConsts.apiUrl}/entity/importFromExcel`, {
     method: 'POST',
     data: params,
+  });
+}
+
+export async function importEntityFromDb(params: any) {
+  return request(`${appConsts.apiUrl}/entity/importFromDB`, {
+    method: 'GET',
+    params: params,
   });
 }
 

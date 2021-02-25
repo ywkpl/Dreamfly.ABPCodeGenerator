@@ -38,7 +38,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                     d => d.TablesettingsId,
                     m => m.Id,
                     (d, m) => new {d, m})
-                .Where(t => t.d.Fieldname == _tableName)
+                .Where(t => t.d.Tablename == _tableName)
                 .OrderBy(t => t.d.Seq)
                 .Select(t => new TableFieldDto
                 {

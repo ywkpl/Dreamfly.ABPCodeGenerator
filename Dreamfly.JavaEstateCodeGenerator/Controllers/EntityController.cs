@@ -64,7 +64,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             return new ExcelExternalEntity(dto).ReadEntity();
         }
 
-        [HttpPost("ImportFromDB")]
+        [HttpGet("ImportFromDB")]
         public Entity ImportFromDb(string tableName)
         {
             return new DBExternalEntity(tableName).ReadEntity();

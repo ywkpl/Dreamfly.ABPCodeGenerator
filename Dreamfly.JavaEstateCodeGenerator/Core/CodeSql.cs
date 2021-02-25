@@ -38,13 +38,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         private const int StartId = 20000;
         private const int Interval = 1000;
         private StringBuilder _sqlBuilder;
-        
+
         private StringBuilder GeneratorSqlBuilder(List<DBCodeItem> items)
         {
             _sqlBuilder = new StringBuilder();
             int startId = StartId;
             int endId = startId + items.Count * Interval;
-            while (startId<=endId)
+            while (startId < endId)
             {
                 var item = items.FirstOrDefault(t => t.CodeId == startId.ToString());
                 bool codeNotExists = item == null;
@@ -62,8 +62,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     item.CodeId = startId.ToString();
                     UpdateCodeId(item);
                 }
+
                 startId += Interval;
             }
+
             return _sqlBuilder;
         }
 

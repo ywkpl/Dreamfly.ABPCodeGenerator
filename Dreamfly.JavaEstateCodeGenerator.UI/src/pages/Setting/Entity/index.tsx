@@ -21,7 +21,13 @@ import { ColumnProps } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { EntityItemType } from './model';
 import styles from './index.less';
-import { generatorCode, importEntity, removeCode, getEntity } from './service';
+import {
+  generatorCode,
+  importEntityFromExcel,
+  importEntityFromDb,
+  removeCode,
+  getEntity,
+} from './service';
 import request from '@/utils/request';
 
 const FormItem = Form.Item;
@@ -33,10 +39,12 @@ const Entity = () => {
   const [importModelForm] = Form.useForm();
   const [loadModelForm] = Form.useForm();
   const [mainForm] = Form.useForm();
+  const [importFromDb] = Form.useForm();
   const [entityItems, setEntityItems] = useState<EntityItemType[]>([]);
   const [editModelVisible, setEditModelVisible] = useState<boolean>(false);
   const [importModelVisible, setImportModelVisible] = useState<boolean>(false);
   const [loadModelVisible, setLoadModelVisible] = useState<boolean>(false);
+  const [importFromDbVisible, setImportFromDbVisible] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -181,11 +189,27 @@ const Entity = () => {
   const handleImportModelOk = () => {
     importModelForm.validateFields().then((values) => {
       setSelectedRowKeys([]);
-      importEntity(values).then((response) => {
+      importEntityFromExcel(values).then((response) => {
         mainForm.setFieldsValue(response);
         setEntityItems(response.entityItems);
       });
       setImportModelVisible(false);
+    });
+  };
+
+  const handleImportFromDbCancel = () => {
+    setImportFromDbVisible(false);
+  };
+
+  const handleImportFromDbOk = () => {
+    importFromDb.validateFields().then((values) => {
+      setSelectedRowKeys([]);
+      console.log(values);
+      importEntityFromDb(values).then((response) => {
+        mainForm.setFieldsValue(response);
+        setEntityItems(response.entityItems);
+      });
+      setImportFromDbVisible(false);
     });
   };
 
@@ -354,6 +378,33 @@ const Entity = () => {
     </Modal>
   );
 
+  const modelImportFromDb = (
+    <Modal
+      title="导入条件"
+      destroyOnClose
+      visible={importFromDbVisible}
+      onOk={handleImportFromDbOk}
+      okText="确定"
+      onCancel={handleImportFromDbCancel}
+    >
+      <Form style={{ marginTop: 8 }} form={importFromDb} name="model">
+        <FormItem
+          {...formAllItemLayout}
+          label="表名"
+          name="tableName"
+          rules={[
+            {
+              required: true,
+              message: '请输入表名',
+            },
+          ]}
+        >
+          <Input placeholder="表名" style={{ width: '80%' }} />
+        </FormItem>
+      </Form>
+    </Modal>
+  );
+
   const modelLoad = (
     <Modal
       title="载入条件"
@@ -380,6 +431,12 @@ const Entity = () => {
       </Form>
     </Modal>
   );
+
+  const handleImportFromDb = () => {
+    importFromDb.resetFields();
+    importFromDb.setFieldsValue({ tabIndex: 0 });
+    setImportFromDbVisible(true);
+  };
 
   const handleImport = () => {
     importModelForm.resetFields();
@@ -471,6 +528,9 @@ const Entity = () => {
 
   const saveButton = (
     <>
+      <Button type="primary" htmlType="submit" onClick={handleImportFromDb}>
+        数据库导入
+      </Button>
       <Button type="primary" htmlType="submit" onClick={handleImport}>
         Excel导入
       </Button>
@@ -645,6 +705,7 @@ const Entity = () => {
       {editModelVisible && modelEdit}
       {importModelVisible && modelImport}
       {loadModelVisible && modelLoad}
+      {importFromDbVisible && modelImportFromDb}
     </PageHeaderWrapper>
   );
 };
