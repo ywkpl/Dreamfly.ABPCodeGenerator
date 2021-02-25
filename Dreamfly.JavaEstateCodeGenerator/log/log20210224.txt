@@ -1,9 +1,0 @@
-2021-02-24 21:36:34.464 +08:00 [ERR] code:ParkingSpaceType, name:車位類型, items:01 平面車位.02機械上層.03 機械下層.04 機車位
-System.IndexOutOfRangeException: Index was outside the bounds of the array.
-   at Dreamfly.JavaEstateCodeGenerator.Core.CodeSql.<>c__DisplayClass5_0.<GeneratorSqlBuilder>b__0(DBCodeItem t) in F:\Development\DreamFly\Dreamfly.ABPCodeGenerator\Dreamfly.JavaEstateCodeGenerator\Core\CodeSql.cs:line 58
-2021-02-24 21:36:34.581 +08:00 [ERR] code:HeadOffice, name:代表公司類別, items:owner業主、head客戶代表公司
-System.IndexOutOfRangeException: Index was outside the bounds of the array.
-   at Dreamfly.JavaEstateCodeGenerator.Core.CodeSql.<>c__DisplayClass5_0.<GeneratorSqlBuilder>b__0(DBCodeItem t) in F:\Development\DreamFly\Dreamfly.ABPCodeGenerator\Dreamfly.JavaEstateCodeGenerator\Core\CodeSql.cs:line 58
-2021-02-24 21:36:34.625 +08:00 [ERR] code:PropertyUseType, name:使用類別, items:01 辦公.02 住家.03 廠房.04 金融.05 商場.06 餐廳.07其他
-System.IndexOutOfRangeException: Index was outside the bounds of the array.
-   at Dreamfly.JavaEstateCodeGenerator.Core.CodeSql.<>c__DisplayClass5_0.<GeneratorSqlBuilder>b__0(DBCodeItem t) in F:\Development\DreamFly\Dreamfly.ABPCodeGenerator\Dreamfly.JavaEstateCodeGenerator\Core\CodeSql.cs:line 58
