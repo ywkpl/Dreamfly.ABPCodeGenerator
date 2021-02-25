@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dreamfly.JavaEstateCodeGenerator.Core;
+using Dreamfly.JavaEstateCodeGenerator.Core.Impl;
 using Dreamfly.JavaEstateCodeGenerator.Core.Interface;
 using Dreamfly.JavaEstateCodeGenerator.Models;
 using Microsoft.AspNetCore.Http;
@@ -57,10 +58,16 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             await _projectBuilder.Remove(entity);
         }
 
-        [HttpPost("Import")]
-        public Entity Import(ImportExcelDto dto)
+        [HttpPost("ImportFromExcel")]
+        public Entity ImportFromExcel(ImportExcelDto dto)
         {
-            return new ExcelHelper().ToEntity(dto);
+            return new ExcelExternalEntity(dto).ReadEntity();
+        }
+
+        [HttpPost("ImportFromDB")]
+        public Entity ImportFromDb(string tableName)
+        {
+            return new DBExternalEntity(tableName).ReadEntity();
         }
     }
 }

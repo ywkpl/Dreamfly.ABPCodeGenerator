@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Dreamfly.JavaEstateCodeGenerator
 {
-    public partial class HousingTableSettings1
+    public partial class HousingTableSettings
     {
         public int Id { get; set; }
         public string Protype { get; set; }

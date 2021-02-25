@@ -21,5 +21,6 @@ namespace Dreamfly.JavaEstateCodeGenerator
         public string Addtodb { get; set; }
         public string Del { get; set; }
         public string Property { get; set; }
+        public string CodeId { get; set; }
     }
 }

@@ -19,8 +19,8 @@ namespace Dreamfly.JavaEstateCodeGenerator
         {
         }
 
-        public virtual DbSet<HousingFieldSettings1> HousingFieldSettings1s { get; set; }
-        public virtual DbSet<HousingTableSettings1> HousingTableSettings1s { get; set; }
+        public virtual DbSet<HousingFieldSettings1> HousingFieldSettings1 { get; set; }
+        public virtual DbSet<HousingTableSettings> HousingTableSettings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -91,9 +91,9 @@ namespace Dreamfly.JavaEstateCodeGenerator
                 entity.Property(e => e.TablesettingsId).HasColumnName("Tablesettings_id");
             });
 
-            modelBuilder.Entity<HousingTableSettings1>(entity =>
+            modelBuilder.Entity<HousingTableSettings>(entity =>
             {
-                entity.ToTable("Housing_TableSettings1");
+                entity.ToTable("Housing_TableSettings");
 
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
