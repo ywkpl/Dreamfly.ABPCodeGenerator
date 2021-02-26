@@ -8,81 +8,44 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
     public class DBExternalEntity:ExternalEntity
     {
         private readonly string _tableName;
-        private TableFieldDto _tableField;
-        private List<TableFieldDto> _tableFields;
-
+        
         public DBExternalEntity(string tableName)
         {
             this._tableName = tableName;
         }
 
-        public override Entity ReadEntity()
-        {
-            ReadFieldSettings();
-            if (_tableFields.Count == 0)
-            {
-                return null;
-            }
-            MakeResultEntity();
-            AddFields();
-            AddCompanyField();
-            AddTenantField();
-            return ResultEntity;
-        }
-        
-        private void ReadFieldSettings()
+        protected override TableSetting ReadTableSetting()
         {
             using var dbContext = new ADJUSTDBContext();
-            _tableFields = dbContext.HousingFieldSettings1
+            var query = dbContext.HousingFieldSettings1
                 .Join(dbContext.HousingTableSettings,
                     d => d.TablesettingsId,
                     m => m.Id,
                     (d, m) => new {d, m})
                 .Where(t => t.d.Tablename == _tableName)
                 .OrderBy(t => t.d.Seq)
-                .Select(t => new TableFieldDto
+                .Select(t => new 
                 {
                     TableName = t.d.Tablename,
                     TableDesc = t.m.Description,
                     FieldName = t.d.Fieldname,
                     FieldDesc = t.d.Fielddesc
                 }).ToList();
-        }
 
-        protected override void AddFields()
-        {
-            for (int i = 0; i < _tableFields.Count; i++)
+            var tableSetting = new TableSetting { Fields = new List<TableFieldSetting>() };
+            if (query.Count > 0)
             {
-                _tableField = _tableFields[i];
-                if (i == 0)
+                tableSetting.Name = query[0].TableName;
+                tableSetting.Desc = query[0].TableDesc;
+
+                tableSetting.Fields.AddRange(query.Select(t=> new TableFieldSetting
                 {
-                    ResultEntity.TableName = _tableField.TableName;
-                    ResultEntity.Name = RemoveUnderLine(ResultEntity.TableName);
-                    ResultEntity.Description = _tableField.TableDesc;
-                }
-                if (IsFilterField(_tableField.FieldName)) continue;
-
-                var fieldItem = GetFieldItem();
-                ResultEntity.EntityItems.Add(fieldItem);
+                    Name = t.FieldName,
+                    Desc = t.FieldDesc
+                }));
             }
-        }
 
-        private EntityItem GetFieldItem()
-        {
-            string field = _tableField.FieldName;
-            var item = new EntityItem
-            {
-                Name = ConvertFieldName(field),
-                ColumnName = field,
-                Description = _tableField.FieldDesc,
-                IsRequired = false,
-                Type = "String",
-                InQuery = false,
-                InCreate = true,
-                InResponse = true
-            };
-            SetEntityItemDefaultValues(item);
-            return item;
+            return tableSetting;
         }
     }
 }

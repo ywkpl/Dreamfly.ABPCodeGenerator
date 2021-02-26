@@ -7,6 +7,7 @@
         public string PackagePath { get; set; }
         public string Version { get; set; }
         public Author Author { get; set; }
+        public bool HasApi { get; set; }
         public Template[] Templates { get; set; }
     }
 

@@ -5,6 +5,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
     public class RenderEntity
     {
         public string ProjectName { get; set; }
+        public bool ProjectHasApi { get; set; }
         public string EntityName { get; set; }
         public string EntityDescription { get; set; }
         public bool EntityHasICompany { get; set; }

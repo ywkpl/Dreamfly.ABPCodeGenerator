@@ -1,7 +1,7 @@
 {
   "Project": {
     "Name": "baseinfo",
-    "OutputPath": "f:/Development/Newcity/microestate/baseinfo-service/src",
+    "OutputPath": "e:/Development/Newcity/microestate/baseinfo-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.0",
     "Author": {
@@ -9,6 +9,7 @@
       "Email": "ywkpl@hotmail.com",
       "Remark": ""
     },
+    "HasApi": true,
     "Templates": [
       {
         "File": "Templates/App/Entity.cshtml",
@@ -72,6 +73,13 @@
         "IsExecute": true,
         "OutputFolder": "controller",
         "OutputName": "{{Name}}Controller.java"
+      },
+      {
+        "File": "Templates/App/Client.cshtml",
+        "Remark": "Feign接口",
+        "IsExecute": true,
+        "OutputFolder": "client",
+        "OutputName": "{{Name}}Client.java"
       }
     ]
   }

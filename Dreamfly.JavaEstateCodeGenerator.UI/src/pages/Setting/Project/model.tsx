@@ -17,5 +17,6 @@ export interface ProjectType {
   outputPath?: string;
   author?: AuthorType;
   version?: string;
+  hasApi: boolean;
   templates: ProjectTemplate[];
 }

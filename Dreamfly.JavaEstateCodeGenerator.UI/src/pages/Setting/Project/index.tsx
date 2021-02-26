@@ -303,6 +303,9 @@ const Project = () => {
             >
               <Input placeholder="版本" />
             </FormItem>
+            <FormItem {...formItemLayout} label="包含API项目" name="hasApi" valuePropName="checked">
+              <Switch />
+            </FormItem>
           </Card>
           <Card bordered={false} title="作者">
             <FormItem

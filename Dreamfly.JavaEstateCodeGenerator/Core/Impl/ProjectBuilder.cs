@@ -60,16 +60,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
         private void RemoveCodeFile(Entity entity, Template template)
         {
             var fileName = Handlebars.Compile(template.OutputName)(entity);
-            var folder = Handlebars.Compile(template.OutputFolder)(entity);
-            string apiOutputPath =
-                Path.Combine(
-                    entity.Project.OutputPath.Replace("\\", "/"),
-                    "main",
-                    "java",
-                    entity.Project.PackagePath.Replace(".", "/"),
-                    entity.Project.Name,
-                    folder);
-            FileHelper.DeleteFile(apiOutputPath, fileName);
+            string outputPath = MakeCodeFilePath(entity, template);
+            FileHelper.DeleteFile(outputPath, fileName);
         }
 
         private void InsertCodeToFile(Entity entity)
@@ -83,10 +75,9 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
         {
             List<InsertCodeToFileBase> insertCodes = new List<InsertCodeToFileBase>
             {
-                new ToPermissionNames(entity),
-                new InsertLanguageXml(entity),
-                new ToDbContext(entity),
-                new ToAuthorizationProvider(entity)
+//                new ToPermissionNames(entity),
+//                new ToDbContext(entity),
+//                new ToAuthorizationProvider(entity)
             };
             return insertCodes;
         }
@@ -111,21 +102,34 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             }
         }
 
+        private string MakeCodeFilePath(Entity entity, Template template)
+        {
+            var folder = Handlebars.Compile(template.OutputFolder)(entity);
+            string projectPath = entity.Project.OutputPath.Replace("\\", "/");
+            string packagePath = entity.Project.PackagePath.Replace(".", "/");
+            if (entity.Project.HasApi)
+            {
+                projectPath = projectPath.Replace($"{entity.Project.Name}-service", $"{entity.Project.Name}-api");
+                packagePath = Path.Combine(packagePath, "api");
+            }
+
+            string outputPath =
+                Path.Combine(
+                    projectPath,
+                    "main",
+                    "java",
+                    packagePath,
+                    entity.Project.Name,
+                    folder);
+            return outputPath;
+        }
+
         private async Task GenerateCodeFile(Entity entity, Template template)
         {
             string content = await _templateEngine.Render(entity, template);
             var fileName = Handlebars.Compile(template.OutputName)(entity);
-            var folder = Handlebars.Compile(template.OutputFolder)(entity);
-            string apiOutputPath =
-                  Path.Combine(
-                entity.Project.OutputPath.Replace("\\", "/"), 
-                "main", 
-                "java", 
-                entity.Project.PackagePath.Replace(".", "/"), 
-                entity.Project.Name,
-                folder);
-            Console.WriteLine(apiOutputPath);
-            FileHelper.CreateFile(apiOutputPath, fileName, content);
+            string outputPath = MakeCodeFilePath(entity, template);
+            FileHelper.CreateFile(outputPath, fileName, content);
         }
     }
 }

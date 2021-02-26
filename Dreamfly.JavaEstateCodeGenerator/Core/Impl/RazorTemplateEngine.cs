@@ -71,6 +71,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             return new RenderEntity
             {
                 ProjectName = entity.Project.Name,
+                ProjectHasApi = entity.Project.HasApi,
                 ProjectPackagePath=entity.Project.PackagePath,
                 EntityName = entity.Name,
                 EntityDescription = entity.Description,
