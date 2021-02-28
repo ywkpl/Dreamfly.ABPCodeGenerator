@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Dreamfly.JavaEstateCodeGenerator.Core;
+﻿using Dreamfly.JavaEstateCodeGenerator.Core;
 using Dreamfly.JavaEstateCodeGenerator.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Controllers
 {

@@ -11,7 +11,7 @@
     var dtoTemplates = Model.EntityItems.Where(t => t.InCreate);
     bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
 }
-package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
+package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import io.swagger.annotations.ApiModel;

@@ -1,6 +1,6 @@
 ﻿@{ Layout = null;}
 @using System.Net.Mime
-@using Dreamfly.JavaEstateCodeGenerator.Core
+@using Dreamfly.JavaEstateCodeGenerator.Helper
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -10,15 +10,15 @@
 */
 package @(Model.ProjectPackagePath).@(Model.ProjectName).api.client;
 
-import @(Model.ProjectPackagePath).@(Model.ProjectName).api.BaseinfoConstant;
-import @(Model.ProjectPackagePath).@(Model.ProjectName).api.dto.@(Model.EntityName).*;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).api.@(Model.ProjectName.ToPascalCase())Constant;
+import @(Model.ProjectPackagePath).@(Model.ProjectName).api.dto.@(Model.EntityName.ToLower()).*;
 import @(Model.ProjectPackagePath).common.dto.EntityRequest;
 import org.springframework.cloud.openfeign.*;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@@FeignClient(value = @(Model.ProjectName)Constant.SERVICE_NAME, contextId = "@(Model.EntityName.ToLower())Client")
-@@RequestMapping("/@(Model.EntityName.ToLower())")
+@@FeignClient(value = @(Model.ProjectName.ToPascalCase())Constant.SERVICE_NAME, contextId = "@(Model.EntityName.ToCamelCase())Client")
+@@RequestMapping("/@(Model.EntityName.ToCamelCase())")
 public interface @(Model.EntityName)Client {
     @@GetMapping("getList")
     List<@(Model.EntityName)Response> getList(@@SpringQueryMap GetAll@(Model.EntityName)Request request);

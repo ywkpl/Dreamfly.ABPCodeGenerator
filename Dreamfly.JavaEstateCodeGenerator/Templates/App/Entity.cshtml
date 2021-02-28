@@ -11,9 +11,7 @@
 @{bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);}
 package @(Model.ProjectPackagePath).@(Model.ProjectName).model;
 
-import @(Model.ProjectPackagePath).common.model.FullAudited;
-import @(Model.ProjectPackagePath).common.model.IHaveCompany;
-import @(Model.ProjectPackagePath).common.model.IHaveTenant;
+import @(Model.ProjectPackagePath).common.model.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

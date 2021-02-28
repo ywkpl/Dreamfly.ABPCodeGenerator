@@ -107,10 +107,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             var folder = Handlebars.Compile(template.OutputFolder)(entity);
             string projectPath = entity.Project.OutputPath.Replace("\\", "/");
             string packagePath = entity.Project.PackagePath.Replace(".", "/");
-            if (entity.Project.HasApi)
+            string projectName = entity.Project.Name;
+            if (entity.Project.HasApi && template.InApiProject)
             {
                 projectPath = projectPath.Replace($"{entity.Project.Name}-service", $"{entity.Project.Name}-api");
-                packagePath = Path.Combine(packagePath, "api");
+                projectName = Path.Combine(projectName, "api");
             }
 
             string outputPath =
@@ -119,7 +120,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                     "main",
                     "java",
                     packagePath,
-                    entity.Project.Name,
+                    projectName,
                     folder);
             return outputPath;
         }

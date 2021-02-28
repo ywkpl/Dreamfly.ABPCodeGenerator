@@ -162,6 +162,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 }
             }
 
+            if (item.ColumnName.EndsWith("Date"))
+            {
+                item.Type = "Date";
+            }
+
             if (item.ColumnName.StartsWith("Code_"))
             {
                 item.Type = "Long";
@@ -176,21 +181,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 
         private string ConvertFieldName(string field)
         {
-            return ToCamelCase(RemoveUnderLine(field));
+            return RemoveUnderLine(field).ToCamelCase();
         }
 
         private string RemoveUnderLine(string field)
         {
             return field.Replace("_", "");
-        }
-
-        private string ToCamelCase(string field)
-        {
-            if (String.IsNullOrWhiteSpace(field))
-            {
-                return String.Empty;
-            }
-            return char.ToLowerInvariant(field[0]) + field.Substring(1);
         }
     }
 }

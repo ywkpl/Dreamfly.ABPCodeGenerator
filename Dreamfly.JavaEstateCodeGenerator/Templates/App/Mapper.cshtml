@@ -9,7 +9,7 @@
 
 package @(Model.ProjectPackagePath).@(Model.ProjectName).mapper;
 
-import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).*;
+import @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower()).*;
 import @(Model.ProjectPackagePath).@(Model.ProjectName).model.@(Model.EntityName);
 import @(Model.ProjectPackagePath).common.mapper.BaseMapper;
 import org.mapstruct.Mapper;

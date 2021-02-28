@@ -6,7 +6,7 @@
 * @@Email: @Model.Author.Email
 * @@Description: @Model.Author.Remark
 */
-package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
+package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
 
 import @(Model.ProjectPackagePath).common.dto.IEntityRequest;
 import lombok.AllArgsConstructor;

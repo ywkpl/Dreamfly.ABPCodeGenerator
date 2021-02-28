@@ -1,4 +1,5 @@
 ﻿@{Layout = null;}
+@using Dreamfly.JavaEstateCodeGenerator.Helper
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -8,10 +9,7 @@
 */
 package @(Model.ProjectPackagePath).@(Model.ProjectName).controller;
 
-import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).@(Model.EntityName)Response;
-import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).Create@(Model.EntityName)Request;
-import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).GetAll@(Model.EntityName)Request;
-import @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower()).Update@(Model.EntityName)Request;
+import @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower()).*;
 import @(Model.ProjectPackagePath).@(Model.ProjectName).service.@(Model.EntityName)Service;
 import @(Model.ProjectPackagePath).common.dto.EntityRequest;
 import @(Model.ProjectPackagePath).common.handler.ResponseResultBody;
@@ -27,7 +25,7 @@ import java.util.List;
 
 @@RestController
 @@ResponseResultBody
-@@RequestMapping("/@(Model.EntityName.ToLower())")
+@@RequestMapping("/@(Model.EntityName.ToCamelCase())")
 @@Validated
 @@Api(tags = "@Html.Raw(Model.EntityDescription)")
 public class @(Model.EntityName)Controller {
@@ -39,7 +37,7 @@ public class @(Model.EntityName)Controller {
     public Page<@(Model.EntityName)Response> getAll(@@Valid GetAll@(Model.EntityName)Request request){
         return service.getAll(request);
     }
-    
+
     @@GetMapping("getList")
     @@ApiOperation(value = "列表查詢")
     public List<@(Model.EntityName)Response> getList(@@Valid GetAll@(Model.EntityName)Request request){

@@ -9,7 +9,7 @@
 @{
     var dtoTemplates = Model.EntityItems.Where(t=>t.InQuery);
 }
-package @(Model.ProjectPackagePath).@(Model.ProjectName).dto.@(Model.EntityName.ToLower());
+package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
 
 import @(Model.ProjectPackagePath).common.dto.PageAndSortRequest;
 import lombok.*;
