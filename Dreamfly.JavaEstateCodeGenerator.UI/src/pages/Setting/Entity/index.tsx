@@ -298,11 +298,12 @@ const Entity = () => {
             <Option value="Date">Date</Option>
             <Option value="Float">Float</Option>
             <Option value="Json">Json</Option>
+            <Option value="BigDecimal">BigDecimal</Option>
           </Select>
         </FormItem>
 
-        <FormItem {...formAllItemLayout} label="最大长度" name="length">
-          <InputNumber placeholder="最大长度" style={{ width: 150 }} />
+        <FormItem {...formAllItemLayout} label="长度" name="length">
+          <InputNumber placeholder="长度" style={{ width: 150 }} />
         </FormItem>
 
         <FormItem {...formAllItemLayout} label="是否必填" name="isRequired" valuePropName="checked">

@@ -8,7 +8,10 @@
 * @@Email: @Model.Author.Email
 * @@Description: @Model.Author.Remark
 */
-@{bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);}
+@{
+    bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
+    bool hasDecimal = Model.EntityItems.Any(t => t.Type == "BigDecimal" && t.Length.HasValue);
+}
 package @(Model.ProjectPackagePath).@(Model.ProjectName).model;
 
 import @(Model.ProjectPackagePath).common.model.*;
@@ -20,6 +23,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+@if (hasDecimal)
+{
+@:import javax.validation.constraints.Digits;
+@:import java.math.BigDecimal;
+}
 @if (hasJsonField)
 {
 @:import com.vladmihalcea.hibernate.type.json.JsonStringType;
@@ -44,11 +52,16 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
 @foreach (var item in Model.EntityItems)
 {
     var columns = new List<String>();
+    string[] digits=new string[2];
+    if (item.Type == "BigDecimal" && item.Length.HasValue)
+    {
+        digits = item.Length.Value.ToString().Split(".");
+    }
     if (item.IsRequired)
     {
         columns.Add("nullable = false");
     }
-    if (item.Length.HasValue)
+    if (item.Length.HasValue && item.Type!="BigDecimal")
     {
         columns.Add($"length = {item.Length.Value}");
     }
@@ -70,9 +83,13 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
     {
     @:@@Column(@Html.Raw(String.Join(", ", columns)))
     }
-    if (@item.Type == "List<String>")
+    if (item.Type == "List<String>")
     {
     @:@@Type( type = "json" )
+    }
+    if (item.Type == "BigDecimal" && item.Length.HasValue)
+    {
+    @:@@Digits( integer = @(digits[0]), fraction = @(digits[1]))
     }
     @:private @Html.Raw(item.Type) @item.Name;
 }

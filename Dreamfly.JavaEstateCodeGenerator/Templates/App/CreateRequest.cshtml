@@ -10,6 +10,7 @@
 @{
     var dtoTemplates = Model.EntityItems.Where(t => t.InCreate);
     bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
+    bool hasDecimal = Model.EntityItems.Any(t => t.Type == "BigDecimal" && t.Length.HasValue);
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
 import lombok.*;
@@ -20,6 +21,11 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
+@if (hasDecimal)
+{
+@:import javax.validation.constraints.Digits;
+@:import java.math.BigDecimal;
+}
 @if (hasJsonField)
 {
 @:import java.util.List;
@@ -33,6 +39,11 @@ import java.util.Date;
 public class Create@(Model.EntityName)Request {
 @foreach (var item in dtoTemplates)
 {
+    string[] digits=new string[2];
+    if (item.Type == "BigDecimal" && item.Length.HasValue)
+    {
+        digits = item.Length.Value.ToString().Split(".");
+    }
 if (!String.IsNullOrEmpty(item.Description))
 {
     @:/**
@@ -47,6 +58,10 @@ if (item.IsRequired)
 if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
+}
+if (item.Type == "BigDecimal" && item.Length.HasValue)
+{
+    @:@@Digits( integer = @(digits[0]), fraction = @(digits[1]))
 }
     @:private @Html.Raw(item.Type) @item.Name;
 }

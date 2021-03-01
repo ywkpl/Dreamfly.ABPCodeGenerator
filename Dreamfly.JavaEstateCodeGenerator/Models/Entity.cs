@@ -19,7 +19,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string Name { get; set; }
         public string ColumnName { get; set; }
         public string Type { get; set; }
-        public int? Length { get; set; }
+        public decimal? Length { get; set; }
         public bool IsRequired { get; set; }
         public bool InQuery { get; set; }
         public bool InResponse { get; set; }
