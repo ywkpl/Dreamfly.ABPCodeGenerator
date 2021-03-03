@@ -58,7 +58,7 @@ const Entity = () => {
       columnName: '',
       type: '',
       length: null,
-      fraction: 0,
+      fraction: null,
       isRequired: false,
       description: '',
       inQuery: false,
