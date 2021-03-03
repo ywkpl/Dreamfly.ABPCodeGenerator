@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Linq;
+using Dreamfly.JavaEstateCodeGenerator.Helper;
+using Dreamfly.JavaEstateCodeGenerator.SqliteDbModels;
+using Mapster;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Controllers
 {
@@ -37,5 +41,17 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         {
             new CodeSql(_project).GeneratorFile();
         }
+
+//        [HttpPost("ToDb")]
+//        public void SaveJsonToDb()
+//        {
+//            var entityDtos = JsonDataHelper.ReadEntities();
+//            using (var dbContext = new SettingContext())
+//            {
+//                var entities = entityDtos.AsQueryable().ProjectToType<Entity>();
+//                dbContext.Entity.AddRange(entities);
+//                dbContext.SaveChanges();
+//            }
+//        }
     }
 }

@@ -5,6 +5,6 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 {
     public interface ITemplateEngine
     {
-        Task<string> Render(Entity entity, Template template);
+        Task<string> Render(EntityDto entity, Template template);
     }
 }

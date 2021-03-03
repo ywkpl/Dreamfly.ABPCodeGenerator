@@ -61,7 +61,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
             return $@"{NewLine}{Tab}{Tab}public virtual DbSet<{entity.Name}> {entity.Name} {{ get; set; }}";
         }
 
-        public ToDbContext(Entity entity) : base(entity)
+        public ToDbContext(EntityDto entity) : base(entity)
         {
             FilePath = Path.Combine(entity.Project.OutputPath, "aspnet-core", "src",
                 "Newcity.ReEstate.EntityFrameworkCore", "EntityFrameworkCore", "ReEstateDbContext.cs");

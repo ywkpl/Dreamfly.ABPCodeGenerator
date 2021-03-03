@@ -36,7 +36,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
 {Tab}{Tab}public const string Pages_{entity.Name}_Delete = ""Pages..{entity.Name}.Delete"";{NewLine}{Tab}";
         }
 
-        public ToPermissionNames(Entity entity) : base(entity)
+        public ToPermissionNames(EntityDto entity) : base(entity)
         {
             FilePath = Path.Combine(entity.Project.OutputPath, "aspnet-core", "src",
                 "Newcity.ReEstate.Core", "Authorization", "PermissionNames.cs");

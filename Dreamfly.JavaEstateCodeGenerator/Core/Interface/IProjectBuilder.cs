@@ -5,8 +5,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 {
     public interface IProjectBuilder
     {
-        Task Build(Entity entity);
+        Task Build(EntityDto entity);
 
-        Task Remove(Entity entity);
+        Task Remove(EntityDto entity);
     }
 }

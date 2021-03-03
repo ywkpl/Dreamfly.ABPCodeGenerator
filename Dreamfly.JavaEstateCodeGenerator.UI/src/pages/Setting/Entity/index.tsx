@@ -58,6 +58,7 @@ const Entity = () => {
       columnName: '',
       type: '',
       length: null,
+      fraction: 0,
       isRequired: false,
       description: '',
       inQuery: false,
@@ -87,6 +88,11 @@ const Entity = () => {
       key: 'length',
       title: '长度',
       dataIndex: 'length',
+    },
+    {
+      key: 'fraction',
+      title: '小数精度',
+      dataIndex: 'fraction',
     },
     {
       key: 'isRequired',
@@ -304,6 +310,9 @@ const Entity = () => {
 
         <FormItem {...formAllItemLayout} label="长度" name="length">
           <InputNumber placeholder="长度" style={{ width: 150 }} />
+        </FormItem>
+        <FormItem {...formAllItemLayout} label="小数精度" name="fraction">
+          <InputNumber placeholder="小数精度" style={{ width: 150 }} />
         </FormItem>
 
         <FormItem {...formAllItemLayout} label="是否必填" name="isRequired" valuePropName="checked">

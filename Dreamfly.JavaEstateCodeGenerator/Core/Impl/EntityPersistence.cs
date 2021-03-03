@@ -1,39 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Dreamfly.JavaEstateCodeGenerator.Core.Interface;
-using Dreamfly.JavaEstateCodeGenerator.Helper;
 using Dreamfly.JavaEstateCodeGenerator.Models;
+using Dreamfly.JavaEstateCodeGenerator.SqliteDbModels;
+using EFCore.BulkExtensions;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
 {
     public class EntityPersistence : IEntityPersistence
     {
-        private readonly List<Entity> _entities = JsonDataHelper.ReadEntities();
-
-        public void Save(Entity entity)
+        public void Save(EntityDto dto)
         {
-            var getEntity = Get(entity.Name);
-            if (getEntity != null)
+            var findEntity = GetEntityById(dto.Name);
+            var entity = ToEntity(dto);
+            using var context=new SettingContext();
+            if (findEntity != null)
             {
-                _entities.Remove(getEntity);
+                context.Remove(findEntity);
+                context.SaveChanges();
+                entity.Id = findEntity.Id;
             }
-
-//            if (_entities.Any(t => t.Name == entity.Name))
-//            {
-//                int index = _entities.FindIndex(t => t.Name == entity.Name);
-//                _entities[index] = entity;
-//            }
-//            else
-//            {
-            _entities.Add(entity);
-//            }
-
-            JsonDataHelper.SaveEntities(_entities);
+            context.Add(entity);
+            context.SaveChanges();
         }
 
-        public Entity Get(string entityName)
+        private Entity GetEntityById(string entityName)
         {
-            return _entities.FirstOrDefault(t => t.Name == entityName);
+            using var context = new SettingContext();
+            return context.Entity.Include(t=>t.EntityItems).FirstOrDefault(t => t.Name == entityName);
+        }
+
+        private EntityDto ToEntityDto(Entity entity)
+        {
+            return entity.Adapt<EntityDto>();
+        }
+
+        private Entity ToEntity(EntityDto dto)
+        {
+            return dto.Adapt<Entity>();
+        }
+
+        public EntityDto Get(string entityName)
+        {
+            var entity = GetEntityById(entityName);
+            return ToEntityDto(entity);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             _viewEngine = viewEngine;
         }
 
-        public async Task<string> Render(Entity entity, Template template)
+        public async Task<string> Render(EntityDto entity, Template template)
         {
             var actionContext = GetActionContext();
             var view = FindView(actionContext, template.File);
@@ -66,7 +66,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             );
         }
 
-        private RenderEntity MapperRenderEntity(Entity entity, Template template)
+        private RenderEntity MapperRenderEntity(EntityDto entity, Template template)
         {
             return new RenderEntity
             {

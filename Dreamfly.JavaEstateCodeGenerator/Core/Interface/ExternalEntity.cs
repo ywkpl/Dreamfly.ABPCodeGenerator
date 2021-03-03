@@ -8,14 +8,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 {
     public abstract class ExternalEntity
     {
-        protected Entity ResultEntity;
+        protected EntityDto ResultEntity;
         protected List<string> FilterFields = new List<string>
         {
             "seq", "id", "adduser_id", "adddate", "moduser_id", "moddate"
         };
         private TableSetting _tableSetting;
 
-        public virtual Entity ReadEntity()
+        public virtual EntityDto ReadEntity()
         {
             _tableSetting = ReadTableSetting();
             if (IsNullOrEmpty()) return null;
@@ -46,10 +46,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             }
         }
 
-        private EntityItem GetFieldItem(TableFieldSetting tableField)
+        private EntityItemDto GetFieldItem(TableFieldSetting tableField)
         {
             string field = tableField.Name;
-            var item = new EntityItem
+            var item = new EntityItemDto
             {
                 Name = ConvertFieldName(field),
                 ColumnName = field,
@@ -66,7 +66,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 
         private void MakeResultEntity()
         {
-            ResultEntity = new Entity
+            ResultEntity = new EntityDto
             {
                 HasIHasCompany = true,
                 HasIHasTenant = true,
@@ -74,7 +74,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 TableName = _tableSetting.Name,
                 Name = RemoveUnderLine(_tableSetting.Name),
                 Description = _tableSetting.Desc,
-                EntityItems = new List<EntityItem>()
+                EntityItems = new List<EntityItemDto>()
             };
         }
 
@@ -85,7 +85,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 var entityItem = ResultEntity.EntityItems.FirstOrDefault(t => t.Name == "tenantId");
                 if (entityItem == null)
                 {
-                    ResultEntity.EntityItems.Add(new EntityItem
+                    ResultEntity.EntityItems.Add(new EntityItemDto
                     {
                         Name = "tenantId",
                         ColumnName = "TenantId",
@@ -116,7 +116,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 var entityItem = ResultEntity.EntityItems.FirstOrDefault(t => t.Name == "companyId");
                 if (entityItem == null)
                 {
-                    ResultEntity.EntityItems.Add(new EntityItem
+                    ResultEntity.EntityItems.Add(new EntityItemDto
                     {
                         Name = "companyId",
                         ColumnName = "CompanyId",
@@ -140,37 +140,56 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             }
         }
 
-        private void SetEntityItemDefaultValues(EntityItem item)
+        private void SetEntityItemDefaultValues(EntityItemDto itemDto)
         {
-            if (item.Name == "code" || item.Name == "name")
+            if (itemDto.Name == "code" || itemDto.Name == "name")
             {
-                item.Length = 20;
-                item.InQuery = true;
+                itemDto.Length = 20;
+                itemDto.InQuery = true;
             }
 
-            if (item.Name == "memo")
+            if (itemDto.Name == "memo")
             {
-                item.Length = 1000;
+                itemDto.Length = 1000;
             }
 
-            if (item.ColumnName.EndsWith("_Id"))
+            if (itemDto.ColumnName.EndsWith("_Id"))
             {
-                item.Type = "Long";
-                if (!item.ColumnName.Contains("File"))
+                itemDto.Type = "Long";
+                if (!itemDto.ColumnName.Contains("File"))
                 {
-                    item.InQuery = true;
+                    itemDto.InQuery = true;
                 }
             }
 
-            if (item.ColumnName.EndsWith("Date"))
+            if (itemDto.ColumnName.EndsWith("Date"))
             {
-                item.Type = "Date";
+                itemDto.Type = "Date";
             }
 
-            if (item.ColumnName.StartsWith("Code_"))
+            if (itemDto.ColumnName.EndsWith("Area"))
             {
-                item.Type = "Long";
-                item.InQuery = true;
+                itemDto.Type = "BigDecimal";
+                itemDto.Length = 18;
+                itemDto.Fraction = 4;
+            }
+
+            if (itemDto.ColumnName.EndsWith("Amount"))
+            {
+                itemDto.Type = "BigDecimal";
+                itemDto.Length = 18;
+                itemDto.Fraction = 0;
+            }
+
+            if (itemDto.ColumnName.EndsWith("Qty"))
+            {
+                itemDto.Type = "Integer";
+            }
+
+            if (itemDto.ColumnName.StartsWith("Code_"))
+            {
+                itemDto.Type = "Long";
+                itemDto.InQuery = true;
             }
         }
 

@@ -4,9 +4,9 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 {
     public abstract class InsertCodeToFileBase
     {
-        protected Entity entity;
+        protected EntityDto entity;
 
-        protected InsertCodeToFileBase(Entity entity)
+        protected InsertCodeToFileBase(EntityDto entity)
         {
             this.entity = entity;
         }

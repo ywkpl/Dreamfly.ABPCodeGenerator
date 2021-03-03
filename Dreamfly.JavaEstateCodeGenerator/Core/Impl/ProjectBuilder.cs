@@ -35,12 +35,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                 (writer, context, parameters) => { writer.Write(parameters[0].ToString()?.ToLower()); });
         }
 
-        public async Task Build(Entity entity)
+        public async Task Build(EntityDto entity)
         {
             await TryBuild(entity);
         }
 
-        public Task Remove(Entity entity)
+        public Task Remove(EntityDto entity)
         {
             return Task.Run(() =>
             {
@@ -57,21 +57,21 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             });
         }
 
-        private void RemoveCodeFile(Entity entity, Template template)
+        private void RemoveCodeFile(EntityDto entity, Template template)
         {
             var fileName = Handlebars.Compile(template.OutputName)(entity);
             string outputPath = MakeCodeFilePath(entity, template);
             FileHelper.DeleteFile(outputPath, fileName);
         }
 
-        private void InsertCodeToFile(Entity entity)
+        private void InsertCodeToFile(EntityDto entity)
         {
             var insertCodes = GetInsertCodeBases(entity);
             insertCodes.ForEach(p => p.Remove());
             insertCodes.ForEach(p => p.Insert());
         }
 
-        private static List<InsertCodeToFileBase> GetInsertCodeBases(Entity entity)
+        private static List<InsertCodeToFileBase> GetInsertCodeBases(EntityDto entity)
         {
             List<InsertCodeToFileBase> insertCodes = new List<InsertCodeToFileBase>
             {
@@ -82,7 +82,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             return insertCodes;
         }
 
-        private async Task TryBuild(Entity entity)
+        private async Task TryBuild(EntityDto entity)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             }
         }
 
-        private string MakeCodeFilePath(Entity entity, Template template)
+        private string MakeCodeFilePath(EntityDto entity, Template template)
         {
             var folder = Handlebars.Compile(template.OutputFolder)(entity);
             string projectPath = entity.Project.OutputPath.Replace("\\", "/");
@@ -125,7 +125,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             return outputPath;
         }
 
-        private async Task GenerateCodeFile(Entity entity, Template template)
+        private async Task GenerateCodeFile(EntityDto entity, Template template)
         {
             string content = await _templateEngine.Render(entity, template);
             var fileName = Handlebars.Compile(template.OutputName)(entity);

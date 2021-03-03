@@ -10,6 +10,7 @@
 @{
     var dtoTemplates = Model.EntityItems.Where(t=>t.InResponse);
     bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
+    bool hasDecimal = Model.EntityItems.Any(t => t.Type == "BigDecimal" && t.Length.HasValue);
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
 
@@ -24,7 +25,10 @@ import java.util.Date;
 {
 @:import java.util.List;
 }
-
+@if (hasDecimal)
+{
+@:import java.math.BigDecimal;
+}
 @@Data
 @@Builder
 @@NoArgsConstructor

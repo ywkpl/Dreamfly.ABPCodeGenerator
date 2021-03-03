@@ -23,7 +23,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         }
 
         [HttpPost("Generate")]
-        public async Task Generate(Entity entity)
+        public async Task Generate(EntityDto entity)
         {
             _entityPersistence.Save(entity);
             //转换成Entity
@@ -34,13 +34,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         }
 
         [HttpGet("Get")]
-        public Entity Get(string entityName)
+        public EntityDto Get(string entityName)
         {
             return _entityPersistence.Get(entityName);
         }
 
         [HttpPost("Remove")]
-        public async Task Remove(Entity entity)
+        public async Task Remove(EntityDto entity)
         {
             //转换成Entity
             entity.Project = _project;
@@ -50,13 +50,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         }
 
         [HttpPost("ImportFromExcel")]
-        public Entity ImportFromExcel(ImportExcelDto dto)
+        public EntityDto ImportFromExcel(ImportExcelDto dto)
         {
             return new ExcelExternalEntity(dto).ReadEntity();
         }
 
         [HttpGet("ImportFromDB")]
-        public Entity ImportFromDb(string tableName)
+        public EntityDto ImportFromDb(string tableName)
         {
             return new DBExternalEntity(tableName).ReadEntity();
         }

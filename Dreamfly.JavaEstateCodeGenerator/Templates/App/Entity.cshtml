@@ -52,11 +52,6 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
 @foreach (var item in Model.EntityItems)
 {
     var columns = new List<String>();
-    string[] digits=new string[2];
-    if (item.Type == "BigDecimal" && item.Length.HasValue)
-    {
-        digits = item.Length.Value.ToString().Split(".");
-    }
     if (item.IsRequired)
     {
         columns.Add("nullable = false");
@@ -89,7 +84,7 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
     }
     if (item.Type == "BigDecimal" && item.Length.HasValue)
     {
-    @:@@Digits( integer = @(digits[0]), fraction = @(digits[1]))
+    @:@@Digits( integer = @(item.Length), fraction = @(item.Fraction))
     }
     @:private @Html.Raw(item.Type) @item.Name;
 }

@@ -3,6 +3,7 @@ export interface EntityItemType {
   columnName?: string;
   type: string;
   length?: number;
+  fraction?: number;
   isRequired: boolean;
   description?: string;
   inQuery: boolean;

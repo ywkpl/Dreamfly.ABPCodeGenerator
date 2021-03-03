@@ -11,13 +11,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Helper
     {
         public const String JsonEntityDataFilePath = "data\\entitys.json";
 
-        public static List<Entity> ReadEntities()
+        public static List<EntityDto> ReadEntities()
         {
             String json = ReadJson();
-            return JsonConvert.DeserializeObject<List<Entity>>(json);
+            return JsonConvert.DeserializeObject<List<EntityDto>>(json);
         }
 
-        public static void SaveEntities(List<Entity> entities)
+        public static void SaveEntities(List<EntityDto> entities)
         {
             string json = JsonConvert.SerializeObject(entities);
             WriteJson(json);

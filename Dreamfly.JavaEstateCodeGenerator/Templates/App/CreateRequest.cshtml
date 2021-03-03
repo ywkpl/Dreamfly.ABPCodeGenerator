@@ -39,11 +39,6 @@ import java.util.Date;
 public class Create@(Model.EntityName)Request {
 @foreach (var item in dtoTemplates)
 {
-    string[] digits=new string[2];
-    if (item.Type == "BigDecimal" && item.Length.HasValue)
-    {
-        digits = item.Length.Value.ToString().Split(".");
-    }
 if (!String.IsNullOrEmpty(item.Description))
 {
     @:/**
@@ -55,14 +50,15 @@ if (item.IsRequired)
 {
     @:@@NotBlank(message = "@Html.Raw(item.Description)不得為空")
 }
-if (item.Length.HasValue)
+if (item.Type == "BigDecimal" && item.Length.HasValue)
+{
+    @:@@Digits( integer = @(item.Length), fraction = @(item.Fraction))
+}
+else if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
 }
-if (item.Type == "BigDecimal" && item.Length.HasValue)
-{
-    @:@@Digits( integer = @(digits[0]), fraction = @(digits[1]))
-}
+
     @:private @Html.Raw(item.Type) @item.Name;
 }
 }

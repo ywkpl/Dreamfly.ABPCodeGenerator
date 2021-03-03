@@ -2,7 +2,7 @@
 
 namespace Dreamfly.JavaEstateCodeGenerator.Models
 {
-    public class Entity
+    public class EntityDto
     {
         public string Name { get; set; }
         public string TableName { get; set; }
@@ -11,15 +11,16 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public bool HasIHasTenant { get; set; }
         public Project Project { get; set; }
         public bool IsSync { get; set; }
-        public List<EntityItem> EntityItems { get; set; }
+        public List<EntityItemDto> EntityItems { get; set; }
     }
 
-    public class EntityItem
+    public class EntityItemDto
     {
         public string Name { get; set; }
         public string ColumnName { get; set; }
         public string Type { get; set; }
-        public decimal? Length { get; set; }
+        public int? Length { get; set; }
+        public int? Fraction { get; set; }
         public bool IsRequired { get; set; }
         public bool InQuery { get; set; }
         public bool InResponse { get; set; }

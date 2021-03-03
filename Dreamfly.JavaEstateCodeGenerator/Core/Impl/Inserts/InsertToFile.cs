@@ -11,7 +11,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
         protected const string Tab = "\t";
         protected string Code;
 
-        protected InsertToFile(Entity entity) : base(entity)
+        protected InsertToFile(EntityDto entity) : base(entity)
         {
         }
 

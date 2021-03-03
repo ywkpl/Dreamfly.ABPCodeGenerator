@@ -33,7 +33,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl.Inserts
 {Tab}{Tab}{Tab}page{entity.Name}.CreateChildPermission(PermissionNames.Pages_{entity.Name}_Delete, L(""Delete""));{NewLine}{Tab}{Tab}";
         }
 
-        public ToAuthorizationProvider(Entity entity) : base(entity)
+        public ToAuthorizationProvider(EntityDto entity) : base(entity)
         {
             FilePath = Path.Combine(entity.Project.OutputPath, "aspnet-core", "src",
                 "Newcity.ReEstate.Core", "Authorization", "ReEstateAuthorizationProvider.cs");
