@@ -559,9 +559,9 @@ const Entity = () => {
       <Button type="primary" htmlType="submit" onClick={handleLoad}>
         现有载入
       </Button>
-      <Button type="primary" htmlType="submit" onClick={handleTest}>
+      {/* <Button type="primary" htmlType="submit" onClick={handleTest}>
         测试
-      </Button>
+      </Button> */}
       <Button type="primary" htmlType="submit" onClick={handleSave} loading={submitting}>
         生成
       </Button>
@@ -625,6 +625,36 @@ const Entity = () => {
           </Card>
           <Card bordered={false} title="明细">
             <div className={styles.tableList}>
+              <div className={styles.tableListOperator}>
+                <Button icon={<PlusOutlined />} type="primary" onClick={handleAdd}>
+                  新建
+                </Button>
+                <Button
+                  icon={<DeleteOutlined />}
+                  type="primary"
+                  danger
+                  onClick={() => {
+                    const removedItems = entityItems.filter(
+                      (t) => !selectedRowKeys.includes(t.name),
+                    );
+                    setEntityItems([...removedItems]);
+                    setSelectedRowKeys([]);
+                  }}
+                  disabled={selectedRowKeys.length === 0}
+                >
+                  删除
+                </Button>
+              </div>
+              <Divider />
+              <Table
+                pagination={false}
+                columns={columns}
+                rowKey="name"
+                bordered
+                dataSource={entityItems}
+                rowSelection={rowSelection}
+              />
+              <Divider />
               <FormItem name="itemJson">
                 <TextArea
                   placeholder="明细Json"
@@ -690,36 +720,6 @@ const Entity = () => {
               >
                 生成示范数据
               </Button>
-              <Divider />
-              <div className={styles.tableListOperator}>
-                <Button icon={<PlusOutlined />} type="primary" onClick={handleAdd}>
-                  新建
-                </Button>
-                <Button
-                  icon={<DeleteOutlined />}
-                  type="primary"
-                  danger
-                  onClick={() => {
-                    const removedItems = entityItems.filter(
-                      (t) => !selectedRowKeys.includes(t.name),
-                    );
-                    setEntityItems([...removedItems]);
-                    setSelectedRowKeys([]);
-                  }}
-                  disabled={selectedRowKeys.length === 0}
-                >
-                  删除
-                </Button>
-              </div>
-              <Divider />
-              <Table
-                pagination={false}
-                columns={columns}
-                rowKey="name"
-                bordered
-                dataSource={entityItems}
-                rowSelection={rowSelection}
-              />
             </div>
           </Card>
         </Space>

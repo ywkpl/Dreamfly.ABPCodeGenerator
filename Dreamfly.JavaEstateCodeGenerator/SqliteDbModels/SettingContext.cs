@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
 {
     public class SettingContext:DbContext
     {
-        public DbSet<Entity> Entity { get; set; }
+        public DbSet<Entity> Entities { get; set; }
         public DbSet<EntityItem> EntityItems { get; set; }
+        public DbSet<CodeTrack> CodeTracks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source=./data/setting.db");
@@ -38,5 +40,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         public bool InResponse { get; set; }
         public bool InCreate { get; set; }
         public string Description { get; set; }
+    }
+
+    public class CodeTrack
+    {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string KeyValues { get; set; }
+        public long SysCodeId { get; set; }
     }
 }

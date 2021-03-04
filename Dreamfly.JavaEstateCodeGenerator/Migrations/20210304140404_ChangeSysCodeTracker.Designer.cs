@@ -3,14 +3,16 @@ using System;
 using Dreamfly.JavaEstateCodeGenerator.SqliteDbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Migrations
 {
     [DbContext(typeof(SettingContext))]
-    partial class SettingContextModelSnapshot : ModelSnapshot
+    [Migration("20210304140404_ChangeSysCodeTracker")]
+    partial class ChangeSysCodeTracker
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,14 +27,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("KeyValues")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<long>("SysCodeId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Values")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using Dreamfly.JavaEstateCodeGenerator.Helper;
 using Dreamfly.JavaEstateCodeGenerator.Models;
+using Dreamfly.JavaEstateCodeGenerator.SqliteDbModels;
+using Mapster;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Core
 {
@@ -35,41 +37,67 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             return GeneratorSqlBuilder(items).ToString();
         }
 
-        private const int StartId = 20000;
-        private const int Interval = 1000;
+        private const long StartId = 20000;
+        private const long Interval = 1000;
         private StringBuilder _sqlBuilder;
+
+        private long GetStartCodeId()
+        {
+            using var context = new SettingContext();
+            var maxCodeId = context.CodeTracks
+                .Select(t => t.SysCodeId)
+                .AsEnumerable()
+                .DefaultIfEmpty(StartId)
+                .Max();
+            return maxCodeId + Interval;
+        }
+
+        private CodeTrack GetCodeTrackByCode(String code)
+        {
+            using var context = new SettingContext();
+            return context.CodeTracks.SingleOrDefault(t => t.Code == code);
+        }
+
+        private void InsertCodeTrack(CodeTrack codeTrack)
+        {
+            using var context = new SettingContext();
+            context.Add(codeTrack);
+            context.SaveChanges();
+        }
+
+        // private void InsertCodeTracks(List<CodeTrack> codeTracks)
+        // {
+        //     using var context = new SettingContext();
+        //     context.AddRange(codeTracks);
+        //     context.SaveChanges();
+        // }
 
         private StringBuilder GeneratorSqlBuilder(List<DBCodeItem> items)
         {
             _sqlBuilder = new StringBuilder();
-            int startId = StartId;
-            int endId = startId + items.Count * Interval;
-            while (startId < endId)
+            long startCodeId = GetStartCodeId();
+            items.ForEach(p =>
             {
-                var item = items.FirstOrDefault(t => t.CodeId == startId.ToString());
-                bool codeNotExists = item == null;
-                if (codeNotExists)
+                CodeTrack codeTrack = GetCodeTrackByCode(p.Code);
+                long codeId = codeTrack?.SysCodeId ?? startCodeId;
+
+                //生成Sql
+                GeneratorItemSql(codeId, p);
+                
+                //插入记录、更新Id
+                if (codeTrack == null)
                 {
-                    item = items.First();
+                    var addCodeTrack = p.Adapt<CodeTrack>();
+                    addCodeTrack.SysCodeId = codeId;
+                    InsertCodeTrack(addCodeTrack);
+                    startCodeId += Interval;
                 }
-
-                GeneratorItemSql(startId, item);
-                items.Remove(item);
-
-                //更新CodeId
-                if (codeNotExists)
-                {
-                    item.CodeId = startId.ToString();
-                    UpdateCodeId(item);
-                }
-
-                startId += Interval;
-            }
+            });
 
             return _sqlBuilder;
         }
 
-        private void GeneratorItemSql(int codeId, DBCodeItem item)
+        private void GeneratorItemSql(long codeId, DBCodeItem item)
         {
             _sqlBuilder.Append($"delete from SysCode where pid={codeId};{Environment.NewLine}");
             _sqlBuilder.Append($"delete from SysCode where id={codeId};{Environment.NewLine}");
@@ -101,27 +129,27 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             _sqlBuilder.Append($"{Environment.NewLine}");
         }
 
-        private void UpdateCodeId(DBCodeItem item)
-        {
-            try
-            {
-                using var context = new ADJUSTDBContext();
-                var record = context.HousingFieldSettings1
-                    .SingleOrDefault(t => t.Code == item.Code && t.Selector == item.KeyValues);
-                if (record != null)
-                {
-                    record.CodeId = item.CodeId;
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                SerilogHelper.Instance.Error(e, "code:{code}, name:{name}, items:{items}", item.Code, item.Name,
-                    item.KeyValues);
-            }
-            
-        }
+        // private void UpdateCodeId(DBCodeItem item)
+        // {
+        //     try
+        //     {
+        //         using var context = new ADJUSTDBContext();
+        //         var record = context.HousingFieldSettings1
+        //             .SingleOrDefault(t => t.Code == item.Code && t.Selector == item.KeyValues);
+        //         if (record != null)
+        //         {
+        //             record.CodeId = item.CodeId;
+        //             context.SaveChanges();
+        //         }
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Console.WriteLine(e);
+        //         SerilogHelper.Instance.Error(e, "code:{code}, name:{name}, items:{items}", item.Code, item.Name,
+        //             item.KeyValues);
+        //     }
+        //     
+        // }
 
         private List<DBCodeItem> ReadCodeItems()
         {
@@ -129,14 +157,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             return context.HousingFieldSettings1
                 .Where(p => !(p.Code == null || p.Code.Equals(String.Empty))
                             && !(p.Selector == null || p.Selector.Equals(String.Empty)))
-                .OrderBy(t => t.CodeId)
-                .ThenBy(t=>t.Date)
+                .OrderBy(t=>t.Date)
+                .ThenBy(t=>t.Code)
                 .Select(t => new DBCodeItem
                 {
                     Code = t.Code,
                     Name = t.Fielddesc,
-                    KeyValues = t.Selector,
-                    CodeId = t.CodeId
+                    KeyValues = t.Selector
                 })
                 .ToList();
         }
