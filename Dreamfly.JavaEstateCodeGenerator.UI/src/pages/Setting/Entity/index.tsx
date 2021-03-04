@@ -59,11 +59,12 @@ const Entity = () => {
       type: '',
       length: null,
       fraction: null,
+      hasTime: false,
       isRequired: false,
       description: '',
       inQuery: false,
       inCreate: true,
-      inResponse: false,
+      inResponse: true,
     });
     setEditModelVisible(true);
   };
@@ -93,6 +94,15 @@ const Entity = () => {
       key: 'fraction',
       title: '小数精度',
       dataIndex: 'fraction',
+    },
+    {
+      key: 'hasTime',
+      title: '包含时间',
+      dataIndex: 'hasTime',
+      align: 'center',
+      render: (value) => {
+        return <Checkbox checked={value} disabled />;
+      },
     },
     {
       key: 'isRequired',
@@ -314,7 +324,9 @@ const Entity = () => {
         <FormItem {...formAllItemLayout} label="小数精度" name="fraction">
           <InputNumber placeholder="小数精度" style={{ width: 150 }} />
         </FormItem>
-
+        <FormItem {...formAllItemLayout} label="包含时间" name="hasTime" valuePropName="checked">
+          <Switch />
+        </FormItem>
         <FormItem {...formAllItemLayout} label="是否必填" name="isRequired" valuePropName="checked">
           <Switch />
         </FormItem>

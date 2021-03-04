@@ -2,7 +2,6 @@
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
-* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
 * @@Email: @Model.Author.Email
 * @@Description: @Model.Author.Remark
 */
@@ -14,6 +13,8 @@ package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".
 import @(Model.ProjectPackagePath).common.dto.PageAndSortRequest;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import @(Model.ProjectPackagePath).common.config.AppConstant;
 import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,6 +39,10 @@ if (!String.IsNullOrEmpty(item.Description))
 if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
+}
+if (item.Type=="Date")
+{
+    @:@@JsonFormat(timezone = AppConstant.DATE_FORMAT_TIMEZONE, pattern=@(item.HasTime?"AppConstant.DATE_FORMAT_DATETIME_PATTERN":"AppConstant.DATE_FORMAT_DATE_PATTERN"))
 }
     @:private @item.Type @item.Name;
 }

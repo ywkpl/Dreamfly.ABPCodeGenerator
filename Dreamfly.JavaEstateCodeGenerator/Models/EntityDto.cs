@@ -21,6 +21,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string Type { get; set; }
         public int? Length { get; set; }
         public int? Fraction { get; set; }
+        public bool HasTime { get; set; }
         public bool IsRequired { get; set; }
         public bool InQuery { get; set; }
         public bool InResponse { get; set; }

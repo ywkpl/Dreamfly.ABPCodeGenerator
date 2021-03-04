@@ -3,7 +3,6 @@
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
-* @@Date: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")
 * @@Email: @Model.Author.Email
 * @@Description: @Model.Author.Remark
 */
@@ -20,6 +19,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import @(Model.ProjectPackagePath).common.config.AppConstant;
 import java.util.Date;
 @if (hasDecimal)
 {
@@ -50,6 +51,10 @@ if (item.IsRequired)
 {
     @:@@NotBlank(message = "@Html.Raw(item.Description)不得為空")
 }
+if (item.Type=="Date")
+{
+    @:@@JsonFormat(timezone = AppConstant.DATE_FORMAT_TIMEZONE, pattern=@(item.HasTime?"AppConstant.DATE_FORMAT_DATETIME_PATTERN":"AppConstant.DATE_FORMAT_DATE_PATTERN"))
+}
 if (item.Type == "BigDecimal" && item.Length.HasValue)
 {
     @:@@Digits( integer = @(item.Length), fraction = @(item.Fraction))
@@ -58,7 +63,6 @@ else if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
 }
-
     @:private @Html.Raw(item.Type) @item.Name;
 }
 }

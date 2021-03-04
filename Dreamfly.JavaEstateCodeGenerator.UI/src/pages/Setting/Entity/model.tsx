@@ -4,6 +4,7 @@ export interface EntityItemType {
   type: string;
   length?: number;
   fraction?: number;
+  hasTime: boolean;
   isRequired: boolean;
   description?: string;
   inQuery: boolean;

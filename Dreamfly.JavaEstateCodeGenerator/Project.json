@@ -1,7 +1,7 @@
 {
   "Project": {
-    "Name": "baseinfo",
-    "OutputPath": "e:/Development/Newcity/microestate/baseinfo-service/src",
+    "Name": "construction",
+    "OutputPath": "e:/Development/Newcity/microestate/construction-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.0",
     "Author": {
@@ -16,70 +16,80 @@
         "Remark": "实体",
         "IsExecute": true,
         "OutputFolder": "model",
-        "OutputName": "{{Name}}.java"
+        "OutputName": "{{Name}}.java",
+        "InApiProject": false
       },
       {
         "File": "Templates/App/Mapper.cshtml",
         "Remark": "映射",
         "IsExecute": true,
         "OutputFolder": "mapper",
-        "OutputName": "{{Name}}Mapper.java"
+        "OutputName": "{{Name}}Mapper.java",
+        "InApiProject": false
       },
       {
         "File": "Templates/App/Service.cshtml",
         "Remark": "应用服务",
         "IsExecute": true,
         "OutputFolder": "service",
-        "OutputName": "{{Name}}Service.java"
+        "OutputName": "{{Name}}Service.java",
+        "InApiProject": false
       },
       {
         "File": "Templates/App/CreateRequest.cshtml",
         "Remark": "新增Dto",
         "IsExecute": true,
         "OutputFolder": "dto/{{StringLowercase Name}}",
-        "OutputName": "Create{{Name}}Request.java"
+        "OutputName": "Create{{Name}}Request.java",
+        "InApiProject": true
       },
       {
         "File": "Templates/App/Response.cshtml",
         "Remark": "回应Dto",
         "IsExecute": true,
         "OutputFolder": "dto/{{StringLowercase Name}}",
-        "OutputName": "{{Name}}Response.java"
+        "OutputName": "{{Name}}Response.java",
+        "InApiProject": true
       },
       {
         "File": "Templates/App/GetAllRequest.cshtml",
         "Remark": "列表查询Dto",
         "IsExecute": true,
         "OutputFolder": "dto/{{StringLowercase Name}}",
-        "OutputName": "GetAll{{Name}}Request.java"
+        "OutputName": "GetAll{{Name}}Request.java",
+        "InApiProject": true
       },
       {
         "File": "Templates/App/UpdateRequest.cshtml",
         "Remark": "更新Dto",
         "IsExecute": true,
         "OutputFolder": "dto/{{StringLowercase Name}}",
-        "OutputName": "Update{{Name}}Request.java"
+        "OutputName": "Update{{Name}}Request.java",
+        "InApiProject": true
       },
       {
         "File": "Templates/App/Repository.cshtml",
         "Remark": "仓储",
         "IsExecute": true,
         "OutputFolder": "repository",
-        "OutputName": "{{Name}}Repository.java"
+        "OutputName": "{{Name}}Repository.java",
+        "InApiProject": false
       },
       {
         "File": "Templates/App/Controller.cshtml",
         "Remark": "控制器",
         "IsExecute": true,
         "OutputFolder": "controller",
-        "OutputName": "{{Name}}Controller.java"
+        "OutputName": "{{Name}}Controller.java",
+        "InApiProject": false
       },
       {
         "File": "Templates/App/Client.cshtml",
         "Remark": "Feign接口",
         "IsExecute": true,
         "OutputFolder": "client",
-        "OutputName": "{{Name}}Client.java"
+        "OutputName": "{{Name}}Client.java",
+        "InApiProject": true
       }
     ]
   }
