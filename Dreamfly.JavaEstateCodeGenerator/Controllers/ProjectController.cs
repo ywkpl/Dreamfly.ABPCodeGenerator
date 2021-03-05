@@ -42,6 +42,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             new CodeSql(_project).GeneratorFile();
         }
 
+        [HttpPost("UpdateCodeKeyValues")]
+        public void UpdateCodeKeyValues()
+        {
+            new CodeSql(_project).UpdateSqliteCodeKeyValues();
+        }
+
 //        [HttpPost("ToDb")]
 //        public void SaveJsonToDb()
 //        {

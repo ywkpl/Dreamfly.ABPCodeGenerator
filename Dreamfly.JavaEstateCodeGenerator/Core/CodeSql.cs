@@ -13,6 +13,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
     public class CodeSql
     {
         private readonly Project _project;
+        private const long StartId = 19000;
+        private const long Interval = 1000;
+        private StringBuilder _sqlBuilder;
+
         public CodeSql(Project project)
         {
             this._project = project;
@@ -20,6 +24,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
         public void GeneratorFile()
         {
+            ValidateRepeatCode();
             string sqlString = GeneratorSqlString();
             Save(sqlString);
         }
@@ -31,20 +36,36 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             File.WriteAllText(filePath, sqlString, Encoding.UTF8);
         }
 
+        private void ValidateRepeatCode()
+        {
+            using var context=new ADJUSTDBContext();
+            var repeatCodes= context.HousingFieldSettings1
+                .Where(t => (t.Code != null && t.Code != "")
+                            && (t.Selector != null && t.Selector != "")
+                            && (t.Code != null && t.Code != "")
+                )
+                .GroupBy(t => t.Code)
+                .Select(g => new {Code = g.Key, Count = g.Count()})
+                .Where(t => t.Count > 1)
+                .ToList();
+            if (repeatCodes.Count > 0)
+            {
+                var codeMessage = String.Join(",", repeatCodes.Select(t => t.Code + " 數量:" + t.Count));
+                SerilogHelper.Instance.Error("發現重複Code:" + codeMessage);
+                throw new Exception("發現重複Code");
+            }
+        }
+
         private String GeneratorSqlString()
         {
             var items = ReadCodeItems();
             return GeneratorSqlBuilder(items).ToString();
         }
 
-        private const long StartId = 20000;
-        private const long Interval = 1000;
-        private StringBuilder _sqlBuilder;
-
         private long GetStartCodeId()
         {
             using var context = new SettingContext();
-            var maxCodeId = context.CodeTracks
+            var maxCodeId = context.CodeTrack
                 .Select(t => t.SysCodeId)
                 .AsEnumerable()
                 .DefaultIfEmpty(StartId)
@@ -55,27 +76,38 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         private CodeTrack GetCodeTrackByCode(String code)
         {
             using var context = new SettingContext();
-            return context.CodeTracks.SingleOrDefault(t => t.Code == code);
+            return context.CodeTrack.SingleOrDefault(t => t.Code == code);
         }
 
-        private void InsertCodeTrack(CodeTrack codeTrack)
+//        private void InsertCodeTrack(CodeTrack codeTrack)
+//        {
+//            using var context = new SettingContext();
+//            context.Add(codeTrack);
+//            context.SaveChanges();
+//        }
+
+        private void InsertCodeTracks(List<CodeTrack> codeTracks)
         {
             using var context = new SettingContext();
-            context.Add(codeTrack);
-            context.SaveChanges();
+            using var tran = context.Database.BeginTransaction();
+            try
+            {
+                context.AddRange(codeTracks);
+                context.SaveChanges();
+                tran.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                SerilogHelper.Instance.Error(e, "批次插入代码不成功");
+            }
         }
-
-        // private void InsertCodeTracks(List<CodeTrack> codeTracks)
-        // {
-        //     using var context = new SettingContext();
-        //     context.AddRange(codeTracks);
-        //     context.SaveChanges();
-        // }
 
         private StringBuilder GeneratorSqlBuilder(List<DBCodeItem> items)
         {
             _sqlBuilder = new StringBuilder();
             long startCodeId = GetStartCodeId();
+             var codeTracks=new List<CodeTrack>();
             items.ForEach(p =>
             {
                 CodeTrack codeTrack = GetCodeTrackByCode(p.Code);
@@ -89,11 +121,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                 {
                     var addCodeTrack = p.Adapt<CodeTrack>();
                     addCodeTrack.SysCodeId = codeId;
-                    InsertCodeTrack(addCodeTrack);
+                    addCodeTrack.UpdateTime=DateTime.Now;
+                    codeTracks.Add(addCodeTrack);
                     startCodeId += Interval;
                 }
             });
 
+            InsertCodeTracks(codeTracks);
             return _sqlBuilder;
         }
 
@@ -129,6 +163,29 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             _sqlBuilder.Append($"{Environment.NewLine}");
         }
 
+        public void UpdateSqliteCodeKeyValues()
+        {
+            using var context = new SettingContext();
+            var codeTrack = context.CodeTrack.ToList();
+            using var context96 = new ADJUSTDBContext();
+            codeTrack.ForEach(t =>
+            {
+                var fieldSetting = context96.HousingFieldSettings1
+                    .FirstOrDefault(p =>
+                        p.Code == t.Code
+                        && !(p.Selector == null || p.Selector.Equals(String.Empty))
+                        && p.Selector != t.KeyValues
+                    );
+                if (fieldSetting != null)
+                {
+                    t.KeyValues = fieldSetting.Selector;
+                    t.UpdateTime=DateTime.Now;
+                    context.CodeTrack.Update(t);
+                    context.SaveChanges();
+                }
+            });
+        }
+
         // private void UpdateCodeId(DBCodeItem item)
         // {
         //     try
@@ -157,7 +214,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             return context.HousingFieldSettings1
                 .Where(p => !(p.Code == null || p.Code.Equals(String.Empty))
                             && !(p.Selector == null || p.Selector.Equals(String.Empty)))
-                .OrderBy(t=>t.Date)
+                .OrderBy(t=>t.CodeId)
+                .ThenBy(t=>t.Date)
                 .ThenBy(t=>t.Code)
                 .Select(t => new DBCodeItem
                 {

@@ -28,7 +28,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
         private Entity GetEntityById(string entityName)
         {
             using var context = new SettingContext();
-            return context.Entities.Include(t=>t.EntityItems).FirstOrDefault(t => t.Name == entityName);
+            return context.Entity.Include(t=>t.EntityItems).FirstOrDefault(t => t.Name == entityName);
         }
 
         private EntityDto ToEntityDto(Entity entity)
