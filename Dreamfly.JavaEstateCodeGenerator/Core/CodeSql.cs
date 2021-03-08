@@ -133,6 +133,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
         private void GeneratorItemSql(long codeId, DBCodeItem item)
         {
+            bool hasThreeItem = item.KeyValues.Contains("*");
+            if (hasThreeItem)
+            {
+                _sqlBuilder.Append($"delete from SysCode where pid in(select id from SysCode where pid={codeId});{Environment.NewLine}");
+            }
             _sqlBuilder.Append($"delete from SysCode where pid={codeId};{Environment.NewLine}");
             _sqlBuilder.Append($"delete from SysCode where id={codeId};{Environment.NewLine}");
             _sqlBuilder.Append($"# {item.Name} {item.Code} {item.KeyValues}{Environment.NewLine}");
@@ -147,8 +152,29 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     var itemSplit = subItem.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                     string code = itemSplit[0].Replace(" ", "");
                     string name = itemSplit[1].Replace(" ", "");
-                    _sqlBuilder.Append(
-                        $"insert into SysCode(id, code, name, ord, pid) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId});{Environment.NewLine}");
+
+                    if (hasThreeItem)
+                    {
+                        var subItemSplit = name.Split("*", StringSplitOptions.RemoveEmptyEntries);
+                        name = subItemSplit[0];
+                        _sqlBuilder.Append(
+                            $"insert into SysCode(id, code, name, ord, pid) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId});{Environment.NewLine}");
+
+                        var threeItems = subItemSplit[1].Split("|", StringSplitOptions.RemoveEmptyEntries);
+                        int threeOrder = 10;
+                        foreach (var threeItem in threeItems)
+                        {
+                            var threeItemSplit = threeItem.Split("&", StringSplitOptions.RemoveEmptyEntries);
+                            _sqlBuilder.Append(
+                                $"insert into SysCode(id, code, name, ord, pid) value({(codeId + orderNum) * 100 + threeOrder}, '{threeItemSplit[0]}', '{threeItemSplit[1]}', {threeOrder} , {(codeId + orderNum)});{Environment.NewLine}");
+                            threeOrder += 10;
+                        }
+                    }
+                    else
+                    {
+                        _sqlBuilder.Append(
+                            $"insert into SysCode(id, code, name, ord, pid) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId});{Environment.NewLine}");
+                    }
                     orderNum += 10;
                 }
             }
@@ -214,8 +240,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             return context.HousingFieldSettings1
                 .Where(p => !(p.Code == null || p.Code.Equals(String.Empty))
                             && !(p.Selector == null || p.Selector.Equals(String.Empty)))
-                .OrderBy(t=>t.CodeId)
-                .ThenBy(t=>t.Date)
+                .OrderBy(t => t.Date)
                 .ThenBy(t=>t.Code)
                 .Select(t => new DBCodeItem
                 {
