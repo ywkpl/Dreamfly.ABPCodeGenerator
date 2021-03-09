@@ -33,6 +33,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             await _projectBuilder.Build(entity);
         }
 
+        [HttpPost("Save")]
+        public async Task Save(EntityDto entity)
+        {
+            _entityPersistence.Save(entity);
+        }
+
         [HttpGet("Get")]
         public EntityDto Get(string entityName)
         {

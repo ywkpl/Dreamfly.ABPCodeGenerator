@@ -186,6 +186,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     item.KeyValues);
             }
 
+
+            UpdateNewcityCodeId(item, codeId);
             _sqlBuilder.Append($"{Environment.NewLine}");
         }
 
@@ -212,27 +214,29 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             });
         }
 
-        // private void UpdateCodeId(DBCodeItem item)
-        // {
-        //     try
-        //     {
-        //         using var context = new ADJUSTDBContext();
-        //         var record = context.HousingFieldSettings1
-        //             .SingleOrDefault(t => t.Code == item.Code && t.Selector == item.KeyValues);
-        //         if (record != null)
-        //         {
-        //             record.CodeId = item.CodeId;
-        //             context.SaveChanges();
-        //         }
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Console.WriteLine(e);
-        //         SerilogHelper.Instance.Error(e, "code:{code}, name:{name}, items:{items}", item.Code, item.Name,
-        //             item.KeyValues);
-        //     }
-        //     
-        // }
+        private void UpdateNewcityCodeId(DBCodeItem item, long codeId)
+        {
+            try
+            {
+                using var context = new ADJUSTDBContext();
+                var record = context.HousingFieldSettings1
+                    .FirstOrDefault(t => t.Code == item.Code
+                                         && t.Selector == item.KeyValues
+                                         && t.CodeId == null);
+                if (record != null)
+                {
+                    record.CodeId = codeId.ToString();
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                SerilogHelper.Instance.Error(e, "code:{code}, name:{name}, items:{items}", item.Code, item.Name,
+                    item.KeyValues);
+            }
+            
+        }
 
         private List<DBCodeItem> ReadCodeItems()
         {
@@ -240,7 +244,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             return context.HousingFieldSettings1
                 .Where(p => !(p.Code == null || p.Code.Equals(String.Empty))
                             && !(p.Selector == null || p.Selector.Equals(String.Empty)))
-                .OrderBy(t => t.Date)
+                .OrderBy(t=>t.CodeId)
+                .ThenBy(t => t.Date)
                 .ThenBy(t=>t.Code)
                 .Select(t => new DBCodeItem
                 {

@@ -27,6 +27,7 @@ import {
   importEntityFromDb,
   removeCode,
   getEntity,
+  save,
 } from './service';
 import request from '@/utils/request';
 
@@ -523,6 +524,34 @@ const Entity = () => {
     });
   };
 
+  const handleOnlySave = () => {
+    mainForm.validateFields().then((values) => {
+      if (entityItems.length === 0) {
+        message.error('明细项目必须有值！');
+        return;
+      }
+
+      const para = {
+        name: values.name,
+        tableName: values.tableName,
+        description: values.description,
+        hasIHasCompany: values.hasIHasCompany,
+        hasIHasTenant: values.hasIHasTenant,
+        isSync: values.isSync,
+        entityItems,
+      };
+
+      console.log(para);
+      setSubmitting(true);
+      save(para).then((response: Response) => {
+        if (!response) {
+          message.success('保存成功！');
+        }
+        setSubmitting(false);
+      });
+    });
+  };
+
   const handleDelete = () => {
     mainForm.validateFields().then((values) => {
       if (entityItems.length === 0) {
@@ -562,6 +591,9 @@ const Entity = () => {
       {/* <Button type="primary" htmlType="submit" onClick={handleTest}>
         测试
       </Button> */}
+      <Button type="primary" htmlType="submit" onClick={handleOnlySave} loading={submitting}>
+        保存修改
+      </Button>
       <Button type="primary" htmlType="submit" onClick={handleSave} loading={submitting}>
         生成
       </Button>

@@ -8,6 +8,13 @@ export async function generatorCode(params: any) {
   });
 }
 
+export async function save(params: any) {
+  return request(`${appConsts.apiUrl}/entity/save`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
 export async function importEntityFromExcel(params: any) {
   return request(`${appConsts.apiUrl}/entity/importFromExcel`, {
     method: 'POST',
