@@ -1,7 +1,7 @@
 {
   "Project": {
     "Name": "baseinfo",
-    "OutputPath": "e:/Development/Newcity/microestate/baseinfo-service/src",
+    "OutputPath": "f:/Development/Newcity/microestate/baseinfo-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.0",
     "Author": {

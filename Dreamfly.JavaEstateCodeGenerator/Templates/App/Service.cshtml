@@ -1,10 +1,14 @@
 ﻿@{ Layout = null;}
+@using Dreamfly.JavaEstateCodeGenerator.Helper
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
 * @@Email: @Model.Author.Email
 * @@Description: @Model.Author.Remark
 */
+@{
+    var dtoTemplates = Model.EntityItems.Where(t=>t.InQuery);
+}
 package @(Model.ProjectPackagePath).@(Model.ProjectName).service;
 
 import @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower()).*;
@@ -35,9 +39,21 @@ public class @(Model.EntityName)Service extends CrudAppService<@(Model.EntityNam
     public Specification<@(Model.EntityName)> makeSpecification(GetAll@(Model.EntityName)Request input) {
         Specification<@(Model.EntityName)> specification= (root, query, builder) -> {
             List<Predicate> predicates=new ArrayList<>();
-            if(Strings.isNotBlank(input.getName())){
-                predicates.add(builder.like(root.get("name"), "%"+input.getName()+"%"));
-            }
+    @foreach (var item in dtoTemplates)
+    {
+        if (item.Type == "String")
+        {
+            @:if (Strings.isNotBlank(input.get@(item.Name.ToPascalCase())())) {
+                @:predicates.add(builder.like(root.get("@(item.Name.ToCamelCase())"), "%" + input.get@(item.Name.ToPascalCase())() + "%"));
+            @:}
+        }
+        if (item.Type == "Long")
+        {
+            @:if (input.get@(item.Name.ToPascalCase())() != null){
+                @:predicates.add(builder.equal(root.get("@(item.Name.ToCamelCase())"), input.get@(item.Name.ToPascalCase())()));
+            @:}
+        }
+    }
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         return specification;
