@@ -85,6 +85,11 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
     {
     @:@@Digits( integer = @(item.Length), fraction = @(item.Fraction))
     }
+    if (item.Type == "Text")
+    {
+        item.Type = "String";
+    @:@@Lob
+    }
     @:private @Html.Raw(item.Type) @item.Name;
 }
 }

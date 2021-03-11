@@ -63,6 +63,10 @@ else if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
 }
+if (item.Type == "Text")
+{
+    item.Type = "String";
+}
     @:private @Html.Raw(item.Type) @item.Name;
 }
 }

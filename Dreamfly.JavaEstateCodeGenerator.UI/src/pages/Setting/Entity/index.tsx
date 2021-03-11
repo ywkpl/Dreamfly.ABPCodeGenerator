@@ -316,6 +316,7 @@ const Entity = () => {
             <Option value="Float">Float</Option>
             <Option value="Json">Json</Option>
             <Option value="BigDecimal">BigDecimal</Option>
+            <Option value="Text">Text</Option>
           </Select>
         </FormItem>
 

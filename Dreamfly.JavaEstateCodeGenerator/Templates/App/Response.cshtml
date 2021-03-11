@@ -52,6 +52,10 @@ if (item.Type=="Date")
 {
     @:@@JsonFormat(timezone = AppConstant.DATE_FORMAT_TIMEZONE, pattern=@(item.HasTime?"AppConstant.DATE_FORMAT_DATETIME_PATTERN":"AppConstant.DATE_FORMAT_DATE_PATTERN"))
 }
+if (item.Type == "Text")
+{
+    item.Type = "String";
+}
     @:private @Html.Raw(item.Type) @item.Name;
 }
 }
