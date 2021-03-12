@@ -66,6 +66,10 @@ const Entity = () => {
       inQuery: false,
       inCreate: true,
       inResponse: true,
+      isRelateSelf: false,
+      foreignKeyName: '',
+      relateType: null,
+      relateEntityName: null,
     });
     setEditModelVisible(true);
   };
@@ -98,7 +102,7 @@ const Entity = () => {
     },
     {
       key: 'hasTime',
-      title: '包含时间',
+      title: '含时间',
       dataIndex: 'hasTime',
       align: 'center',
       render: (value) => {
@@ -107,7 +111,7 @@ const Entity = () => {
     },
     {
       key: 'isRequired',
-      title: '是否必填',
+      title: '必填',
       dataIndex: 'isRequired',
       align: 'center',
       render: (value) => {
@@ -120,8 +124,32 @@ const Entity = () => {
       dataIndex: 'description',
     },
     {
+      key: 'relateType',
+      title: '关联关系',
+      dataIndex: 'relateType',
+    },
+    {
+      key: 'relateEntityName',
+      title: '关联实体名',
+      dataIndex: 'relateEntityName',
+    },
+    {
+      key: 'foreignKeyName',
+      title: '外键名称',
+      dataIndex: 'foreignKeyName',
+    },
+    {
+      key: 'isRelateSelf',
+      title: '自关联',
+      dataIndex: 'isRelateSelf',
+      align: 'center',
+      render: (value) => {
+        return <Checkbox checked={value} disabled />;
+      },
+    },
+    {
       key: 'inQuery',
-      title: '查询包含',
+      title: '查询',
       dataIndex: 'inQuery',
       align: 'center',
       render: (value) => {
@@ -130,7 +158,7 @@ const Entity = () => {
     },
     {
       key: 'inCreate',
-      title: '新建包含',
+      title: '新建',
       dataIndex: 'inCreate',
       align: 'center',
       render: (value) => {
@@ -139,7 +167,7 @@ const Entity = () => {
     },
     {
       key: 'inResponse',
-      title: '响应包含',
+      title: '响应',
       dataIndex: 'inResponse',
       align: 'center',
       render: (value) => {
@@ -331,6 +359,29 @@ const Entity = () => {
         </FormItem>
         <FormItem {...formAllItemLayout} label="是否必填" name="isRequired" valuePropName="checked">
           <Switch />
+        </FormItem>
+
+        <FormItem {...formAllItemLayout} label="关联关系" name="relateType">
+          <Select placeholder="关联关系" style={{ width: 150 }}>
+            <Option value="OneToOne">一对一</Option>
+            <Option value="OneToMany">一对多</Option>
+            <Option value="ManyToOne">多对一</Option>
+            <Option value="ManyToMany">多对多</Option>
+          </Select>
+        </FormItem>
+        <FormItem {...formAllItemLayout} label="关联实体名" name="relateEntityName">
+          <Input placeholder="关联实体名" />
+        </FormItem>
+        <FormItem
+          {...formAllItemLayout}
+          label="是否自关联"
+          name="isRelateSelf"
+          valuePropName="checked"
+        >
+          <Switch />
+        </FormItem>
+        <FormItem {...formAllItemLayout} label="外键名称" name="foreignKeyName">
+          <Input placeholder="外键名称" />
         </FormItem>
 
         <FormItem {...formAllItemLayout} label="描述" name="description">

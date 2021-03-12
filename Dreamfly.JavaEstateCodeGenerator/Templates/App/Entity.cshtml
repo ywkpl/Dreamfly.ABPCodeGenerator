@@ -90,6 +90,13 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
         item.Type = "String";
     @:@@Lob
     }
+    if (!String.IsNullOrEmpty(item.RelateType)){
+    @:@@@(item.RelateType)
+        if(item.RelateType=="ManyToOne"){
+            
+        }
+        item.Type=item.RelateEntityName;
+    }
     @:private @Html.Raw(item.Type) @item.Name;
 }
 }

@@ -20,6 +20,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string ColumnName { get; set; }
         public string Type { get; set; }
         public int? Length { get; set; }
+        public string RelateType { get; set; }
+        public string RelateEntityName { get; set; }
+        public bool NeedForeignKey { get; set; }
+        public bool IsRelateSelf { get; set; }
+        public string ForeignKeyName { get; set; }
         public int? Fraction { get; set; }
         public bool HasTime { get; set; }
         public bool IsRequired { get; set; }
