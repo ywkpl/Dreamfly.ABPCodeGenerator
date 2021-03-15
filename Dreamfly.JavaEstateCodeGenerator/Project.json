@@ -1,7 +1,7 @@
 {
   "Project": {
-    "Name": "pro",
-    "OutputPath": "e:/Development/Newcity/microestate/pro-service/src",
+    "Name": "baseinfo",
+    "OutputPath": "e:/Development/Newcity/microestate/baseinfo-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.0",
     "Author": {
@@ -9,7 +9,7 @@
       "Email": "ywkpl@hotmail.com",
       "Remark": ""
     },
-    "HasApi": false,
+    "HasApi": true,
     "Templates": [
       {
         "File": "Templates/App/Entity.cshtml",
@@ -86,7 +86,7 @@
       {
         "File": "Templates/App/Client.cshtml",
         "Remark": "Feign接口",
-        "IsExecute": false,
+        "IsExecute": true,
         "OutputFolder": "client",
         "OutputName": "{{Name}}Client.java",
         "InApiProject": true

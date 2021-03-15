@@ -1,5 +1,5 @@
 ﻿@{ Layout = null;}
-@using System.Net.Mime
+@using Dreamfly.JavaEstateCodeGenerator.Helper
 @using Dreamfly.JavaEstateCodeGenerator.Core
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
@@ -10,6 +10,7 @@
 @{
     bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
     bool hasDecimal = Model.EntityItems.Any(t => t.Type == "BigDecimal" && t.Length.HasValue);
+    var sets=Model.EntityItems.Where(t=>t.Type=="Set").Select(t=>"\""+t.Name+"\"").ToList();
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName).model;
 
@@ -45,37 +46,84 @@ import java.util.Set;
 {
 @:@@TypeDef(name="json",typeClass = JsonStringType.class)
 }
-//@@EqualsAndHashCode(callSuper = true, exclude = { "tenant"})
-//@@ToString(callSuper = true, exclude = "tenant")
+@if(sets.Count>0){
+@:@@EqualsAndHashCode(callSuper = true, exclude = { @Html.Raw(String.Join(", ", sets)) })
+@:@@ToString(callSuper = true, exclude = { @Html.Raw(String.Join(", ", sets)) })    
+}
 public class @(Model.EntityName) extends FullAudited implements Serializable@(Model.EntityHasICompany?", IHaveCompany":"")@(Model.EntityHasITenant?", IHaveTenant":"") {
 @foreach (var item in Model.EntityItems)
 {
-    var columns = new List<String>();
-    if (item.IsRequired)
-    {
-        columns.Add("nullable = false");
-    }
-    if (item.Length.HasValue && item.Type!="BigDecimal")
-    {
-        columns.Add($"length = {item.Length.Value}");
-    }
-    if (!String.IsNullOrEmpty(item.ColumnName))
-    {
-        columns.Add($"name = \"{item.ColumnName}\"");
-    }
-    if (@item.Type == "List<String>")
-    {
-        columns.Add($"columnDefinition = \"json\"");
-    }
-    if (!String.IsNullOrEmpty(item.Description))
-    {
+    if (!String.IsNullOrEmpty(item.Description)){
     @:/**
     @:* @Html.Raw(item.Description)
     @:*/
     }
-    if (columns.Count > 0)
-    {
+    string itemType=item.Type;
+    string itemName=item.Name;
+    string relateTypeStr="", joinStr="";
+    //存在关联
+    if(!String.IsNullOrEmpty(item.RelateType)){
+        relateTypeStr=$"@{item.RelateType}";
+        bool hasCascade=!String.IsNullOrEmpty(item.CascadeType);
+        bool hasMappedBy=item.RelateDirection=="MappedBy";
+        var relateAttributes = new List<String>();        
+        //关联名称暂未确定
+        if(hasMappedBy) {relateAttributes.Add($"mappedBy = \"{item.ColumnName}\"");}
+        if(hasCascade) {relateAttributes.Add($"cascade = {item.CascadeType}");}
+        if(relateAttributes.Count>0) {
+            relateTypeStr += $"({String.Join(", ", relateAttributes)})";
+        }
+
+        if(item.RelateDirection=="Join"){
+            var joinAttributes = new List<String>();        
+            if(item.RelateType=="ManyToMany"){
+                joinStr=$"@JoinTable";
+                joinAttributes.Add($"name = \"{item.ColumnName}\"");
+                joinAttributes.Add($"joinColumns = @JoinColumn(name = \"{Model.EntityName}Id\", foreignKey = @ForeignKey(name = \"FK_{item.ColumnName}_{Model.EntityName}Id\"))");
+                joinAttributes.Add($"inverseJoinColumns = @JoinColumn(name =\"{item.RelateEntity}Id\", foreignKey = @ForeignKey(name = \"FK_{item.ColumnName}_{item.RelateEntity}Id\"))");
+            }else{
+                joinStr=$"@JoinColumn";
+                joinAttributes.Add($"name = \"{item.ColumnName}\"");
+                string foreignStr= String.IsNullOrEmpty(item.ForeignKeyName)?
+                    $"foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)":
+                    $"foreignKey = @ForeignKey(name = \"{item.ForeignKeyName}\")";
+                joinAttributes.Add(foreignStr);
+            }
+            if(joinAttributes.Count>0){
+                joinStr+=$"({String.Join(", ", joinAttributes)})";
+            }
+        }
+
+        if(item.RelateType=="OneToOne" || item.RelateType=="ManyToOne") {
+            itemType=item.RelateEntity;
+        }
+        if(item.RelateType=="OneToMany" || item.RelateType=="ManyToMany"){
+            itemType=$"{itemType}<{item.RelateEntity}>";
+            //名称添加new HashSet<>()
+            itemName +=" = new HashSet<>()";
+        }
+    }else{
+        var columns = new List<String>();
+        if (item.IsRequired)
+        {
+            columns.Add("nullable = false");
+        }
+        if (item.Length.HasValue && item.Type!="BigDecimal")
+        {
+            columns.Add($"length = {item.Length.Value}");
+        }
+        if (!String.IsNullOrEmpty(item.ColumnName) && String.IsNullOrEmpty(item.RelateType))
+        {
+            columns.Add($"name = \"{item.ColumnName}\"");
+        }
+        if (@item.Type == "List<String>")
+        {
+            columns.Add($"columnDefinition = \"json\"");
+        }
+        if (columns.Count > 0)
+        {
     @:@@Column(@Html.Raw(String.Join(", ", columns)))
+        }
     }
     if (item.Type == "List<String>")
     {
@@ -87,16 +135,17 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
     }
     if (item.Type == "Text")
     {
-        item.Type = "String";
+        itemType = "String";
     @:@@Lob
     }
     if (!String.IsNullOrEmpty(item.RelateType)){
-    @:@@@(item.RelateType)
-        if(item.RelateType=="ManyToOne"){
-            
-        }
-        item.Type=item.RelateEntityName;
+    if(!String.IsNullOrEmpty(relateTypeStr)){
+    @:@Html.Raw(relateTypeStr)
     }
-    @:private @Html.Raw(item.Type) @item.Name;
+    if(!String.IsNullOrEmpty(joinStr)){
+    @:@Html.Raw(joinStr)
+    }
+    }
+    @:private @Html.Raw(itemType) @Html.Raw(itemName);
 }
 }

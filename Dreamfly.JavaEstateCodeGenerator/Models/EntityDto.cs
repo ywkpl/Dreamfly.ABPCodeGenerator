@@ -20,11 +20,6 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string ColumnName { get; set; }
         public string Type { get; set; }
         public int? Length { get; set; }
-        public string RelateType { get; set; }
-        public string RelateEntityName { get; set; }
-        public bool NeedForeignKey { get; set; }
-        public bool IsRelateSelf { get; set; }
-        public string ForeignKeyName { get; set; }
         public int? Fraction { get; set; }
         public bool HasTime { get; set; }
         public bool IsRequired { get; set; }
@@ -32,5 +27,32 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public bool InResponse { get; set; }
         public bool InCreate { get; set; }
         public string Description { get; set; }
+        /// <summary>
+        /// 关联类型[OneToOne, OneToMany, ManyToOne, ManyToMany]
+        /// </summary>
+        public string RelateType { get; set; }
+        /// <summary>
+        /// 维护类型/级联类型[CascadeType]
+        /// </summary>
+        public string CascadeType { get; set; }
+        /// <summary>
+        /// 关联实体
+        /// </summary>
+        public string RelateEntity { get; set; }
+
+        /// <summary>
+        /// 关联方向：Join / MappedBy
+        /// </summary>
+        public string RelateDirection { get; set; }
+
+        /// <summary>
+        /// Join关联名称，看能否自动
+        /// </summary>
+        public string JoinName { get; set; }
+
+        /// <summary>
+        /// 外键名称
+        /// </summary>
+        public string ForeignKeyName { get; set; }
     }
 }

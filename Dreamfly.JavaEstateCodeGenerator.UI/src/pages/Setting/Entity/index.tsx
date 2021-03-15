@@ -13,8 +13,10 @@ import {
   Popconfirm,
   Checkbox,
   Tag,
+  Row,
   Select,
   InputNumber,
+  Col,
 } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ColumnProps } from 'antd/es/table';
@@ -66,10 +68,12 @@ const Entity = () => {
       inQuery: false,
       inCreate: true,
       inResponse: true,
-      isRelateSelf: false,
-      foreignKeyName: '',
       relateType: null,
-      relateEntityName: null,
+      cascadeType: null,
+      relateEntity: null,
+      relateDirection: null,
+      joinName: null,
+      foreignKeyName: null,
     });
     setEditModelVisible(true);
   };
@@ -129,23 +133,29 @@ const Entity = () => {
       dataIndex: 'relateType',
     },
     {
-      key: 'relateEntityName',
+      key: 'cascadeType',
+      title: '主维护属性',
+      dataIndex: 'cascadeType',
+    },
+    {
+      key: 'relateEntity',
       title: '关联实体名',
-      dataIndex: 'relateEntityName',
+      dataIndex: 'relateEntity',
+    },
+    {
+      key: 'relateDirection',
+      title: '关联方向',
+      dataIndex: 'relateDirection',
+    },
+    {
+      key: 'joinName',
+      title: '连接名',
+      dataIndex: 'joinName',
     },
     {
       key: 'foreignKeyName',
       title: '外键名称',
       dataIndex: 'foreignKeyName',
-    },
-    {
-      key: 'isRelateSelf',
-      title: '自关联',
-      dataIndex: 'isRelateSelf',
-      align: 'center',
-      render: (value) => {
-        return <Checkbox checked={value} disabled />;
-      },
     },
     {
       key: 'inQuery',
@@ -306,96 +316,162 @@ const Entity = () => {
       onOk={handleEditModelOk}
       okText="保存"
       onCancel={handleEditModelCancel}
+      width={800}
     >
       <Form style={{ marginTop: 8 }} form={editModelForm} name="model">
-        <FormItem
-          {...formAllItemLayout}
-          label="名称"
-          name="name"
-          rules={[
-            {
-              required: true,
-              message: '请输入名称',
-            },
-          ]}
-        >
-          <Input placeholder="名称" />
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="字段名" name="columnName">
-          <Input placeholder="字段名" />
-        </FormItem>
-        <FormItem
-          {...formAllItemLayout}
-          label="变量类型"
-          name="type"
-          rules={[
-            {
-              required: true,
-              message: '请输入变量类型',
-            },
-          ]}
-        >
-          <Select placeholder="变量类型" defaultValue="String" style={{ width: 150 }}>
-            <Option value="String">String</Option>
-            <Option value="Long">Long</Option>
-            <Option value="Integer">Integer</Option>
-            <Option value="Boolean">Boolean</Option>
-            <Option value="Date">Date</Option>
-            <Option value="Float">Float</Option>
-            <Option value="Json">Json</Option>
-            <Option value="BigDecimal">BigDecimal</Option>
-            <Option value="Text">Text</Option>
-          </Select>
-        </FormItem>
+        <Row>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="名称"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入名称',
+                },
+              ]}
+            >
+              <Input placeholder="名称" />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="列名/MappedBy" name="columnName">
+              <Input placeholder="列名/MappedBy" />
+            </FormItem>
+          </Col>
 
-        <FormItem {...formAllItemLayout} label="长度" name="length">
-          <InputNumber placeholder="长度" style={{ width: 150 }} />
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="小数精度" name="fraction">
-          <InputNumber placeholder="小数精度" style={{ width: 150 }} />
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="包含时间" name="hasTime" valuePropName="checked">
-          <Switch />
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="是否必填" name="isRequired" valuePropName="checked">
-          <Switch />
-        </FormItem>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="变量类型"
+              name="type"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入变量类型',
+                },
+              ]}
+            >
+              <Select placeholder="变量类型" defaultValue="String" style={{ width: 150 }}>
+                <Option value="String">String</Option>
+                <Option value="Long">Long</Option>
+                <Option value="Integer">Integer</Option>
+                <Option value="Boolean">Boolean</Option>
+                <Option value="Date">Date</Option>
+                <Option value="Float">Float</Option>
+                <Option value="Json">Json</Option>
+                <Option value="BigDecimal">BigDecimal</Option>
+                <Option value="Text">Text</Option>
+                <Option value="Set">Set</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="长度" name="length">
+              <InputNumber placeholder="长度" style={{ width: 150 }} />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="小数精度" name="fraction">
+              <InputNumber placeholder="小数精度" style={{ width: 150 }} />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="包含时间"
+              name="hasTime"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="是否必填"
+              name="isRequired"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+          </Col>
 
-        <FormItem {...formAllItemLayout} label="关联关系" name="relateType">
-          <Select placeholder="关联关系" style={{ width: 150 }}>
-            <Option value="OneToOne">一对一</Option>
-            <Option value="OneToMany">一对多</Option>
-            <Option value="ManyToOne">多对一</Option>
-            <Option value="ManyToMany">多对多</Option>
-          </Select>
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="关联实体名" name="relateEntityName">
-          <Input placeholder="关联实体名" />
-        </FormItem>
-        <FormItem
-          {...formAllItemLayout}
-          label="是否自关联"
-          name="isRelateSelf"
-          valuePropName="checked"
-        >
-          <Switch />
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="外键名称" name="foreignKeyName">
-          <Input placeholder="外键名称" />
-        </FormItem>
-
-        <FormItem {...formAllItemLayout} label="描述" name="description">
-          <Input placeholder="描述" />
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="查询包含" name="inQuery" valuePropName="checked">
-          <Switch />
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="新增包含" name="inCreate" valuePropName="checked">
-          <Switch />
-        </FormItem>
-        <FormItem {...formAllItemLayout} label="响应包含" name="inResponse" valuePropName="checked">
-          <Switch />
-        </FormItem>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="关联关系" name="relateType">
+              <Select placeholder="关联关系" style={{ width: 150 }} allowClear>
+                <Option value="OneToOne">一对一</Option>
+                <Option value="OneToMany">一对多</Option>
+                <Option value="ManyToOne">多对一</Option>
+                <Option value="ManyToMany">多对多</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="主维护属性" name="cascadeType">
+              <Select placeholder="主维护属性" style={{ width: 150 }} allowClear>
+                <Option value="CascadeType.ALL">ALL</Option>
+                <Option value="CascadeType.MERGE">MERGE</Option>
+                <Option value="CascadeType.DETACH">DETACH</Option>
+                <Option value="CascadeType.REMOVE">REMOVE</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="关联实体名" name="relateEntity">
+              <Input placeholder="关联实体名" />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="关联方向" name="relateDirection">
+              <Select placeholder="关联方向" style={{ width: 150 }} allowClear>
+                <Option value="Join">Join</Option>
+                <Option value="MappedBy">MappedBy</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="外键名称" name="foreignKeyName">
+              <Input placeholder="外键名称" />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="描述" name="description">
+              <Input placeholder="描述" />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="查询包含"
+              name="inQuery"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="新增包含"
+              name="inCreate"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="响应包含"
+              name="inResponse"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

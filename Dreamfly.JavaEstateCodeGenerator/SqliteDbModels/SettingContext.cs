@@ -40,14 +40,6 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         [MaxLength(50)]
         public string Type { get; set; }
         public int? Length { get; set; }
-        [MaxLength(20)]
-        public string RelateType { get; set; }
-        [MaxLength(50)]
-        public string RelateEntityName { get; set; }
-        public bool NeedForeignKey { get; set; }
-        public bool IsRelateSelf { get; set; }
-        [MaxLength(100)]
-        public string ForeignKeyName { get; set; }
         public int? Fraction { get; set; }
         public bool HasTime { get; set; }
         public bool IsRequired { get; set; }
@@ -56,6 +48,40 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         public bool InCreate { get; set; }
         [MaxLength(50)]
         public string Description { get; set; }
+
+        /// <summary>
+        /// 关联类型[OneToOne, OneToMany, ManyToOne, ManyToMany]
+        /// </summary>
+        [MaxLength(20)]
+        public string RelateType { get; set; }
+        /// <summary>
+        /// 维护类型/级联类型[CascadeType]
+        /// </summary>
+        [MaxLength(20)]
+        public string CascadeType { get; set; }
+        /// <summary>
+        /// 关联实体
+        /// </summary>
+        [MaxLength(50)]
+        public string RelateEntity { get; set; }
+
+        /// <summary>
+        /// 关联方向：Join / MappedBy
+        /// </summary>
+        [MaxLength(50)]
+        public string RelateDirection { get; set; }
+
+        /// <summary>
+        /// Join关联名称，看能否自动
+        /// </summary>
+        [MaxLength(50)]
+        public string JoinName { get; set; }
+        
+        /// <summary>
+        /// 外键名称
+        /// </summary>
+        [MaxLength(100)]
+        public string ForeignKeyName { get; set; }
     }
 
     public class CodeTrack

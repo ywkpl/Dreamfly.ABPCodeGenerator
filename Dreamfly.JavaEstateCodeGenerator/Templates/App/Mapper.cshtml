@@ -1,5 +1,9 @@
 ﻿@{ Layout = null;}
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
+@{
+    var mappingItems=Model.EntityItems.Where(t=>t.RelateType=="OneToOne" || t.RelateType=="ManyToOne").ToList();
+    var reference=mappingItems.Count>0?", uses = {ReferenceMapper.class}":"";
+}
 /**
 * @@author: @Model.Author.Name
 * @@Email: @Model.Author.Email
@@ -10,14 +14,13 @@ package @(Model.ProjectPackagePath).@(Model.ProjectName).mapper;
 
 import @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower()).*;
 import @(Model.ProjectPackagePath).@(Model.ProjectName).model.@(Model.EntityName);
-import @(Model.ProjectPackagePath).common.mapper.BaseMapper;
+import @(Model.ProjectPackagePath).common.mapper.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@@Mapper(componentModel = "spring")
+@@Mapper(componentModel = "spring"@reference)
 public interface @(Model.EntityName)Mapper extends BaseMapper<@(Model.EntityName), @(Model.EntityName)Response, Create@(Model.EntityName)Request, Update@(Model.EntityName)Request>
 {
-    //@@Mapping(source = "tenant.id", target = "tenantId")
     @(Model.EntityName)Response toResponse(@(Model.EntityName) entity);
     @(Model.EntityName) toEntity(Create@(Model.EntityName)Request request);
     @(Model.EntityName) toEntity(Update@(Model.EntityName)Request request);
