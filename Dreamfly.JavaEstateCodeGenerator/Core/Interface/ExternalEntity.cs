@@ -142,7 +142,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 
         private void SetEntityItemDefaultValues(EntityItemDto itemDto)
         {
-            if (itemDto.Name == "code" || itemDto.Name == "name")
+            if (itemDto.Name == "code" || itemDto.Name == "name" || itemDto.Name == "shortName")
             {
                 itemDto.Length = 20;
                 itemDto.InQuery = true;
@@ -156,9 +156,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             if (itemDto.ColumnName.EndsWith("_Id"))
             {
                 itemDto.Type = "Long";
-                if (!itemDto.ColumnName.Contains("File"))
+                if (!itemDto.ColumnName.Contains("File") 
+                    && !itemDto.ColumnName.ToLower().Equals("company_id") 
+                    && !itemDto.ColumnName.ToLower().Equals("tenant_id"))
                 {
                     itemDto.InQuery = true;
+                    itemDto.RelateType = "ManyToOne";
+                    itemDto.RelateEntity = itemDto.ColumnName.Replace("_Id", "").ToPascalCase();
+                    itemDto.RelateDirection = "Join";
                 }
             }
 
@@ -190,6 +195,9 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             {
                 itemDto.Type = "Long";
                 itemDto.InQuery = true;
+                itemDto.RelateType = "ManyToOne";
+                itemDto.RelateEntity = "SysCode";
+                itemDto.RelateDirection = "Join";
             }
         }
 
