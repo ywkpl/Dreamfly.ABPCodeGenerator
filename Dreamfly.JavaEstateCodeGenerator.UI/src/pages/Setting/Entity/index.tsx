@@ -37,7 +37,7 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 const Option = Select.Option;
 
-const Entity = () => {
+const Entity = (): JSX.Element => {
   const [editModelForm] = Form.useForm();
   const [importModelForm] = Form.useForm();
   const [loadModelForm] = Form.useForm();
@@ -53,6 +53,7 @@ const Entity = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [itemJson, setItemJson] = useState('');
+  const [checkEntityName, setCheckEntityName] = useState(false);
 
   const handleAdd = () => {
     setIsEdit(false);
@@ -74,6 +75,7 @@ const Entity = () => {
       relateDirection: null,
       joinName: null,
       foreignKeyName: null,
+      relateEntityInModule: false,
     });
     setEditModelVisible(true);
   };
@@ -100,20 +102,6 @@ const Entity = () => {
       dataIndex: 'length',
     },
     {
-      key: 'fraction',
-      title: '小数精度',
-      dataIndex: 'fraction',
-    },
-    {
-      key: 'hasTime',
-      title: '含时间',
-      dataIndex: 'hasTime',
-      align: 'center',
-      render: (value) => {
-        return <Checkbox checked={value} disabled />;
-      },
-    },
-    {
       key: 'isRequired',
       title: '必填',
       dataIndex: 'isRequired',
@@ -133,29 +121,14 @@ const Entity = () => {
       dataIndex: 'relateType',
     },
     {
-      key: 'cascadeType',
-      title: '主维护属性',
-      dataIndex: 'cascadeType',
-    },
-    {
       key: 'relateEntity',
-      title: '关联实体名',
+      title: '关联实体',
       dataIndex: 'relateEntity',
     },
     {
       key: 'relateDirection',
       title: '关联方向',
       dataIndex: 'relateDirection',
-    },
-    {
-      key: 'joinName',
-      title: '连接名',
-      dataIndex: 'joinName',
-    },
-    {
-      key: 'foreignKeyName',
-      title: '外键名称',
-      dataIndex: 'foreignKeyName',
     },
     {
       key: 'inQuery',
@@ -194,6 +167,7 @@ const Entity = () => {
               setIsEdit(true);
               editModelForm.resetFields();
               editModelForm.setFieldsValue(record);
+              setCheckEntityName(record.relateType != null);
               setEditModelVisible(true);
             }}
           >
@@ -238,6 +212,7 @@ const Entity = () => {
   };
 
   const handleEditModelCancel = () => {
+    setCheckEntityName(false);
     setEditModelVisible(false);
   };
 
@@ -308,6 +283,14 @@ const Entity = () => {
     },
   };
 
+  const handleRelateTypeChange = (value: string) => {
+    if (value) {
+      setCheckEntityName(true);
+    } else {
+      setCheckEntityName(false);
+    }
+  };
+
   const modelEdit = (
     <Modal
       title="实体明细"
@@ -316,7 +299,7 @@ const Entity = () => {
       onOk={handleEditModelOk}
       okText="保存"
       onCancel={handleEditModelCancel}
-      width={800}
+      width={900}
     >
       <Form style={{ marginTop: 8 }} form={editModelForm} name="model">
         <Row>
@@ -400,7 +383,12 @@ const Entity = () => {
 
           <Col span={12}>
             <FormItem {...formAllItemLayout} label="关联关系" name="relateType">
-              <Select placeholder="关联关系" style={{ width: 150 }} allowClear>
+              <Select
+                placeholder="关联关系"
+                style={{ width: 150 }}
+                allowClear
+                onChange={handleRelateTypeChange}
+              >
                 <Option value="OneToOne">一对一</Option>
                 <Option value="OneToMany">一对多</Option>
                 <Option value="ManyToOne">多对一</Option>
@@ -419,12 +407,42 @@ const Entity = () => {
             </FormItem>
           </Col>
           <Col span={12}>
-            <FormItem {...formAllItemLayout} label="关联实体名" name="relateEntity">
+            <FormItem
+              {...formAllItemLayout}
+              label="关联实体名"
+              name="relateEntity"
+              rules={[
+                {
+                  required: checkEntityName,
+                  message: '请输入关联实体名',
+                },
+              ]}
+            >
               <Input placeholder="关联实体名" />
             </FormItem>
           </Col>
           <Col span={12}>
-            <FormItem {...formAllItemLayout} label="关联方向" name="relateDirection">
+            <FormItem
+              {...formAllItemLayout}
+              label="本模组中"
+              name="relateEntityInModule"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="关联方向"
+              name="relateDirection"
+              rules={[
+                {
+                  required: checkEntityName,
+                  message: '请选择关联方向',
+                },
+              ]}
+            >
               <Select placeholder="关联方向" style={{ width: 150 }} allowClear>
                 <Option value="Join">Join</Option>
                 <Option value="MappedBy">MappedBy</Option>
@@ -437,7 +455,17 @@ const Entity = () => {
             </FormItem>
           </Col>
           <Col span={12}>
-            <FormItem {...formAllItemLayout} label="描述" name="description">
+            <FormItem
+              {...formAllItemLayout}
+              label="描述"
+              name="description"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入描述',
+                },
+              ]}
+            >
               <Input placeholder="描述" />
             </FormItem>
           </Col>

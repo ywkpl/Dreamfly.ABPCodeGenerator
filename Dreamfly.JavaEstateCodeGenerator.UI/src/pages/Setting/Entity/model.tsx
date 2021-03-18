@@ -10,6 +10,13 @@ export interface EntityItemType {
   inQuery: boolean;
   inCreate: boolean;
   inResponse: boolean;
+  relateType?: string;
+  cascadeType?: string;
+  relateEntity?: string;
+  relateDirection?: string;
+  joinName?: string;
+  foreignKeyName?: string;
+  relateEntityInModule: boolean;
 }
 
 export interface EntityType {
