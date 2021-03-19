@@ -17,6 +17,7 @@ export interface EntityItemType {
   joinName?: string;
   foreignKeyName?: string;
   relateEntityInModule: boolean;
+  order?: number;
 }
 
 export interface EntityType {

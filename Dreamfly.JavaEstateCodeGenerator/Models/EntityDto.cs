@@ -59,5 +59,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         /// 外键名称
         /// </summary>
         public string ForeignKeyName { get; set; }
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int Order { get; set; }
     }
 }

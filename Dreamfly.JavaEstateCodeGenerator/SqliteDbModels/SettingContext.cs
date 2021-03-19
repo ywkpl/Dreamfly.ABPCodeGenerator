@@ -88,7 +88,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         [MaxLength(100)]
         public string ForeignKeyName { get; set; }
 
-        
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int Order { get; set; }
     }
 
     public class CodeTrack

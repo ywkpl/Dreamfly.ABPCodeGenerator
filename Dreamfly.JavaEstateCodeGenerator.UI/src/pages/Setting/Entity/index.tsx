@@ -76,6 +76,7 @@ const Entity = (): JSX.Element => {
       joinName: null,
       foreignKeyName: null,
       relateEntityInModule: false,
+      order: 10,
     });
     setEditModelVisible(true);
   };
@@ -129,6 +130,12 @@ const Entity = (): JSX.Element => {
       key: 'relateDirection',
       title: '关联方向',
       dataIndex: 'relateDirection',
+    },
+    {
+      key: 'order',
+      title: '排序',
+      dataIndex: 'order',
+      sorter: true,
     },
     {
       key: 'inQuery',
@@ -467,6 +474,11 @@ const Entity = (): JSX.Element => {
               ]}
             >
               <Input placeholder="描述" />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="排序" name="order">
+              <InputNumber placeholder="排序" style={{ width: 150 }} step={10} />
             </FormItem>
           </Col>
           <Col span={12}>

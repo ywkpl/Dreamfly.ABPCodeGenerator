@@ -36,13 +36,15 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 
         private void AddFields()
         {
-            for (int i = 0; i < _tableSetting.Fields.Count; i++)
+            int index = 10;
+            foreach (var tableFieldSetting in _tableSetting.Fields)
             {
-                var tableFieldSetting = _tableSetting.Fields[i];
                 if (IsFilterField(tableFieldSetting.Name)) continue;
 
                 var fieldItem = GetFieldItem(tableFieldSetting);
+                fieldItem.Order = index;
                 ResultEntity.EntityItems.Add(fieldItem);
+                index += 10;
             }
         }
 

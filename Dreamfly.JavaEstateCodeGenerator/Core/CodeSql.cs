@@ -15,7 +15,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         private readonly Project _project;
         private const long StartId = 19000;
         private const long Interval = 1000;
-        private StringBuilder _sqlBuilder;
+        private List<Tuple<long, string>> _sqlTuples;
 
         public CodeSql(Project project)
         {
@@ -59,7 +59,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         private String GeneratorSqlString()
         {
             var items = ReadCodeItems();
-            return GeneratorSqlBuilder(items).ToString();
+            GeneratorSqlBuilder(items);
+            var sqlList = _sqlTuples
+                .OrderBy(t => t.Item1)
+                .Select(t => t.Item2);
+            return String.Join("", sqlList);
         }
 
         private long GetStartCodeId()
@@ -103,9 +107,9 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             }
         }
 
-        private StringBuilder GeneratorSqlBuilder(List<DBCodeItem> items)
+        private void GeneratorSqlBuilder(List<DBCodeItem> items)
         {
-            _sqlBuilder = new StringBuilder();
+            _sqlTuples = new List<Tuple<long, string>>();
             long startCodeId = GetStartCodeId();
              var codeTracks=new List<CodeTrack>();
             items.ForEach(p =>
@@ -128,20 +132,24 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             });
 
             InsertCodeTracks(codeTracks);
-            return _sqlBuilder;
         }
+
+
 
         private void GeneratorItemSql(long codeId, DBCodeItem item)
         {
+            StringBuilder sqlBuilder = new StringBuilder();
             bool hasThreeItem = item.KeyValues.Contains("*");
             if (hasThreeItem)
             {
-                _sqlBuilder.Append($"delete from SysCode where pid in(select id from SysCode where pid={codeId});{Environment.NewLine}");
+                sqlBuilder.Append(
+                    $"delete from SysCode where pid in(select id from SysCode where pid={codeId});{Environment.NewLine}");
             }
-            _sqlBuilder.Append($"delete from SysCode where pid={codeId};{Environment.NewLine}");
-            _sqlBuilder.Append($"delete from SysCode where id={codeId};{Environment.NewLine}");
-            _sqlBuilder.Append($"# {item.Name} {item.Code} {item.KeyValues}{Environment.NewLine}");
-            _sqlBuilder.Append(
+
+            sqlBuilder.Append($"delete from SysCode where pid={codeId};{Environment.NewLine}");
+            sqlBuilder.Append($"delete from SysCode where id={codeId};{Environment.NewLine}");
+            sqlBuilder.Append($"# {item.Name} {item.Code} {item.KeyValues}{Environment.NewLine}");
+            sqlBuilder.Append(
                 $"insert into SysCode(id, code, name, ord, pid) value({codeId}, '{item.Code}', '{item.Name}', 0 , null);{Environment.NewLine}");
             var subItems = item.KeyValues.Split(".");
             int orderNum = 10;
@@ -157,7 +165,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     {
                         var subItemSplit = name.Split("*", StringSplitOptions.RemoveEmptyEntries);
                         name = subItemSplit[0];
-                        _sqlBuilder.Append(
+                        sqlBuilder.Append(
                             $"insert into SysCode(id, code, name, ord, pid) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId});{Environment.NewLine}");
 
                         var threeItems = subItemSplit[1].Split("|", StringSplitOptions.RemoveEmptyEntries);
@@ -165,16 +173,17 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                         foreach (var threeItem in threeItems)
                         {
                             var threeItemSplit = threeItem.Split("&", StringSplitOptions.RemoveEmptyEntries);
-                            _sqlBuilder.Append(
+                            sqlBuilder.Append(
                                 $"insert into SysCode(id, code, name, ord, pid) value({(codeId + orderNum) * 100 + threeOrder}, '{threeItemSplit[0]}', '{threeItemSplit[1]}', {threeOrder} , {(codeId + orderNum)});{Environment.NewLine}");
                             threeOrder += 10;
                         }
                     }
                     else
                     {
-                        _sqlBuilder.Append(
+                        sqlBuilder.Append(
                             $"insert into SysCode(id, code, name, ord, pid) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId});{Environment.NewLine}");
                     }
+
                     orderNum += 10;
                 }
             }
@@ -186,9 +195,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     item.KeyValues);
             }
 
-
             UpdateNewcityCodeId(item, codeId);
-            _sqlBuilder.Append($"{Environment.NewLine}");
+            sqlBuilder.Append($"{Environment.NewLine}");
+            
+            _sqlTuples.Add(new Tuple<long, string>(codeId, sqlBuilder.ToString()));
         }
 
         public void UpdateSqliteCodeKeyValues()
