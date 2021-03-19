@@ -10,13 +10,21 @@
     var dtoTemplates = Model.EntityItems.Where(t=>t.InResponse);
     bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
     bool hasDecimal = Model.EntityItems.Any(t => t.Type == "BigDecimal" && t.Length.HasValue);
-    var relateItems=Model.EntityItems.Where(t=>t.RelateType=="OneToOne" || t.RelateType=="ManyToOne").ToList();
+    var relateItems=Model.EntityItems
+                    .Where(t=>t.RelateType=="OneToOne" || t.RelateType=="ManyToOne")
+                    .GroupBy(t=>new {t.RelateEntity, t.RelateEntityInModule})
+                    .Select(t=>t.Key)
+                    .ToList();
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
 
 @foreach (var item in relateItems){
-if(item.RelateEntity!=Model.EntityName){    
+if(item.RelateEntity!=Model.EntityName){ 
+if(item.RelateEntityInModule){
 @:import @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(item.RelateEntity.ToLower()).@(item.RelateEntity)Response;
+}else{
+@:import @(Model.ProjectPackagePath).baseinfo@(Model.ProjectHasApi?".api":"").dto.@(item.RelateEntity.ToLower()).@(item.RelateEntity)Response;
+}
 }
 }
 import io.swagger.annotations.ApiModel;

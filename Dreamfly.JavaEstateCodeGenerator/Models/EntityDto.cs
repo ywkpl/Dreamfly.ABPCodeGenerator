@@ -39,6 +39,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         /// 关联实体
         /// </summary>
         public string RelateEntity { get; set; }
+        
+        /// <summary>
+        /// 关联实体是否本模组
+        /// </summary>
+        public bool RelateEntityInModule { get; set; }
 
         /// <summary>
         /// 关联方向：Join / MappedBy

@@ -66,6 +66,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         public string RelateEntity { get; set; }
 
         /// <summary>
+        /// 关联实体是否本模组
+        /// </summary>
+        public bool RelateEntityInModule { get; set; }
+
+        /// <summary>
         /// 关联方向：Join / MappedBy
         /// </summary>
         [MaxLength(50)]
@@ -82,6 +87,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         /// </summary>
         [MaxLength(100)]
         public string ForeignKeyName { get; set; }
+
+        
     }
 
     public class CodeTrack

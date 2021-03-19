@@ -162,7 +162,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 {
                     itemDto.InQuery = true;
                     itemDto.RelateType = "ManyToOne";
-                    itemDto.RelateEntity = itemDto.ColumnName.Replace("_Id", "").ToPascalCase();
+                    itemDto.RelateEntity = itemDto.ColumnName.Replace("_Id", "").Replace("_","").ToPascalCase();
                     itemDto.RelateDirection = "Join";
                 }
             }
@@ -180,6 +180,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             }
 
             if (itemDto.ColumnName.EndsWith("Amount"))
+            {
+                itemDto.Type = "BigDecimal";
+                itemDto.Length = 18;
+                itemDto.Fraction = 0;
+            }
+
+            if (itemDto.ColumnName.EndsWith("Price"))
             {
                 itemDto.Type = "BigDecimal";
                 itemDto.Length = 18;
