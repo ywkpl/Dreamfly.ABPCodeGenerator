@@ -14,6 +14,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             "seq", "id", "adduser_id", "adddate", "moduser_id", "moddate"
         };
         private TableSetting _tableSetting;
+        private const int CompanyOrder = 9990;
+        private const int TenantOrder = 9999;
 
         public virtual EntityDto ReadEntity()
         {
@@ -41,14 +43,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             {
                 if (IsFilterField(tableFieldSetting.Name)) continue;
 
-                var fieldItem = GetFieldItem(tableFieldSetting);
-                fieldItem.Order = index;
+                var fieldItem = GetFieldItem(tableFieldSetting, index);
                 ResultEntity.EntityItems.Add(fieldItem);
                 index += 10;
             }
         }
 
-        private EntityItemDto GetFieldItem(TableFieldSetting tableField)
+        private EntityItemDto GetFieldItem(TableFieldSetting tableField, int index)
         {
             string field = tableField.Name;
             var item = new EntityItemDto
@@ -60,8 +61,9 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 Type = "String",
                 InQuery = false,
                 InCreate = true,
-                InResponse = true,
-                InAllResponse = true
+                InResponse = false,
+                InAllResponse = true,
+                Order = tableField.Order ?? index
             };
             SetEntityItemDefaultValues(item);
             return item;
@@ -99,6 +101,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                         InCreate = false,
                         InResponse = false,
                         InAllResponse = false,
+                        Order = TenantOrder
                     });
                 }
                 else
@@ -110,6 +113,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                     entityItem.InCreate = false;
                     entityItem.InResponse = false;
                     entityItem.InAllResponse = false;
+                    entityItem.Order = TenantOrder;
                 }
             }
         }
@@ -128,10 +132,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                         Description = "公司編號",
                         IsRequired = false,
                         Type = "Long",
-                        InQuery = true,
+                        InQuery = false,
                         InCreate = false,
                         InResponse = false,
                         InAllResponse = false,
+                        Order = CompanyOrder
                     });
                 }
                 else
@@ -139,10 +144,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                     entityItem.Type = "Long";
                     entityItem.Description = "公司編號";
                     entityItem.IsRequired = false;
-                    entityItem.InQuery = true;
+                    entityItem.InQuery = false;
                     entityItem.InCreate = false;
                     entityItem.InResponse = false;
                     entityItem.InAllResponse = false;
+                    entityItem.Order = CompanyOrder;
                 }
             }
         }
@@ -153,6 +159,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             {
                 itemDto.Length = 20;
                 itemDto.InQuery = true;
+                itemDto.InResponse = true;
             }
 
             if (itemDto.Name == "memo")
@@ -177,6 +184,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             if (itemDto.ColumnName.EndsWith("Date"))
             {
                 itemDto.Type = "Date";
+                itemDto.InResponse = true;
             }
 
             if (itemDto.ColumnName.EndsWith("Area"))
@@ -212,6 +220,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 itemDto.RelateType = "ManyToOne";
                 itemDto.RelateEntity = "SysCode";
                 itemDto.RelateDirection = "Join";
+                itemDto.InResponse = true;
             }
         }
 
@@ -222,7 +231,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 
         private string ConvertFieldName(string field)
         {
-            return RemoveUnderLine(field).ToCamelCase();
+            var name = RemoveUnderLine(field).ToCamelCase();
+            if (name == "default")
+            {
+                name = "isDefault";
+            }
+            return name;
         }
 
         private string RemoveUnderLine(string field)

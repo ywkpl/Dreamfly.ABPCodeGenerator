@@ -25,7 +25,7 @@ import javax.validation.constraints.Size;
 @@AllArgsConstructor
 @@NoArgsConstructor
 @@SuperBuilder
-@@ApiModel(value = "@Html.Raw(Model.EntityDescription)多筆查詢表單")
+@@ApiModel(value = "@Html.Raw(Model.EntityDescription)查詢請求表單")
 public class GetAll@(Model.EntityName)Request extends PageAndSortRequest {
 @foreach (var item in dtoTemplates)
 {
@@ -39,10 +39,6 @@ if (!String.IsNullOrEmpty(item.Description))
 if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
-}
-if (item.Type=="Date")
-{
-    @:@@JsonFormat(timezone = AppConstant.DATE_FORMAT_TIMEZONE, pattern=@(item.HasTime?"AppConstant.DATE_FORMAT_DATETIME_PATTERN":"AppConstant.DATE_FORMAT_DATE_PATTERN"))
 }
     @:private @item.Type @item.Name;
 }

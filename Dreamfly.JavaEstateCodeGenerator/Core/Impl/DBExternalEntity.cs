@@ -24,12 +24,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                     (d, m) => new {d, m})
                 .Where(t => t.d.Tablename == _tableName)
                 .OrderBy(t => t.d.Seq)
-                .Select(t => new 
+                .Select(t => new
                 {
                     TableName = t.d.Tablename,
                     TableDesc = t.m.Description,
                     FieldName = t.d.Fieldname,
-                    FieldDesc = t.d.Fielddesc
+                    FieldDesc = t.d.Fielddesc,
+                    Order = t.d.Seq
                 }).ToList();
 
             var tableSetting = new TableSetting { Fields = new List<TableFieldSetting>() };
@@ -41,7 +42,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                 tableSetting.Fields.AddRange(query.Select(t=> new TableFieldSetting
                 {
                     Name = t.FieldName,
-                    Desc = t.FieldDesc
+                    Desc = t.FieldDesc,
+                    Order = t.Order
                 }));
             }
 

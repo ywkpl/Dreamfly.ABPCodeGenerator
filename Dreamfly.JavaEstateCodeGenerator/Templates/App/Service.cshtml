@@ -16,7 +16,7 @@ import @(Model.ProjectPackagePath).@(Model.ProjectName).mapper.@(Model.EntityNam
 import @(Model.ProjectPackagePath).@(Model.ProjectName).model.@(Model.EntityName);
 import @(Model.ProjectPackagePath).common.dto.EntityRequest;
 import @(Model.ProjectPackagePath).common.exception.ServiceException;
-import @(Model.ProjectPackagePath).common.service.CrudAppService;
+import @(Model.ProjectPackagePath).common.service.CrudApplicationService;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @@Service
-public class @(Model.EntityName)Service extends CrudAppService<@(Model.EntityName), @(Model.EntityName)Response, EntityRequest, Create@(Model.EntityName)Request, Update@(Model.EntityName)Request, GetAll@(Model.EntityName)Request> {
+public class @(Model.EntityName)Service extends CrudApplicationService<@(Model.EntityName), @(Model.EntityName)AllResponse, @(Model.EntityName)Response, EntityRequest, Create@(Model.EntityName)Request, Update@(Model.EntityName)Request, GetAll@(Model.EntityName)Request> {
 
     public @(Model.EntityName)Service(@(Model.EntityName)Mapper mapper) {
         super(mapper);

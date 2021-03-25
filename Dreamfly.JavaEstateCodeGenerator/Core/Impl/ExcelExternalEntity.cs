@@ -36,7 +36,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                 tableSetting.Fields.Add(new TableFieldSetting
                 {
                     Name = row.Cells[3].StringCellValue,
-                    Desc = row.Cells[2].StringCellValue
+                    Desc = row.Cells[2].StringCellValue,
+                    Order = i - _importExcelDto.StartRow + 2
                 });
             }
 

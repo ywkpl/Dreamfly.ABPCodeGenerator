@@ -20,17 +20,17 @@ import java.util.List;
 @@RequestMapping("/@(Model.EntityName.ToCamelCase())")
 public interface @(Model.EntityName)Client {
     @@GetMapping("getList")
-    List<@(Model.EntityName)Response> getList(@@SpringQueryMap GetAll@(Model.EntityName)Request request);
+    List<@(Model.EntityName)AllResponse> getList(@@SpringQueryMap GetAll@(Model.EntityName)Request request);
 
     @@GetMapping("get")
-    @(Model.EntityName)Response get(@@SpringQueryMap EntityRequest request);
+    @(Model.EntityName)AllResponse get(@@SpringQueryMap EntityRequest request);
     
     @@DeleteMapping("delete")
     void delete(@@SpringQueryMap EntityRequest request);
 
     @@PostMapping("create")
-    @(Model.EntityName)Response create(@@RequestBody Create@(Model.EntityName)Request request);
+    @(Model.EntityName)AllResponse create(@@RequestBody Create@(Model.EntityName)Request request);
 
     @@PutMapping("update")
-    @(Model.EntityName)Response update(@@RequestBody Update@(Model.EntityName)Request request);
+    @(Model.EntityName)AllResponse update(@@RequestBody Update@(Model.EntityName)Request request);
 }

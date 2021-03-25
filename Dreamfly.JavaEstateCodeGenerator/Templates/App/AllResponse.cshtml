@@ -48,8 +48,8 @@ import java.util.Date;
 @@Builder
 @@NoArgsConstructor
 @@AllArgsConstructor
-@@ApiModel(value = "@Html.Raw(Model.EntityDescription)返回表單")
-public class @(Model.EntityName)Response {
+@@ApiModel(value = "@Html.Raw(Model.EntityDescription)返回表單全部")
+public class @(Model.EntityName)AllResponse {
     @@JsonSerialize(using = ToStringSerializer.class)
     @@ApiModelProperty(value = "編號")
     private Long id;

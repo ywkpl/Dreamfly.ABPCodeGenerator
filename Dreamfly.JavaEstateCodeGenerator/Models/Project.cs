@@ -26,6 +26,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
             "Templates/App/Client.cshtml",
             "Templates/App/CreateRequest.cshtml",
             "Templates/App/Response.cshtml",
+            "Templates/App/AllResponse.cshtml",
             "Templates/App/GetAllRequest.cshtml",
             "Templates/App/UpdateRequest.cshtml"
         };
