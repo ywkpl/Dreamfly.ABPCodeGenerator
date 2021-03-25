@@ -63,12 +63,12 @@ const Entity = (): JSX.Element => {
       type: '',
       length: null,
       fraction: null,
-      hasTime: false,
       isRequired: false,
       description: '',
       inQuery: false,
       inCreate: true,
-      inResponse: true,
+      inAllResponse: true,
+      inResponse: false,
       relateType: null,
       cascadeType: null,
       relateEntity: null,
@@ -156,8 +156,17 @@ const Entity = (): JSX.Element => {
       },
     },
     {
+      key: 'inAllResponse',
+      title: '全部响应',
+      dataIndex: 'inAllResponse',
+      align: 'center',
+      render: (value) => {
+        return <Checkbox checked={value} disabled />;
+      },
+    },
+    {
       key: 'inResponse',
-      title: '响应',
+      title: '一般响应',
       dataIndex: 'inResponse',
       align: 'center',
       render: (value) => {
@@ -370,16 +379,6 @@ const Entity = (): JSX.Element => {
           <Col span={12}>
             <FormItem
               {...formAllItemLayout}
-              label="包含时间"
-              name="hasTime"
-              valuePropName="checked"
-            >
-              <Switch />
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem
-              {...formAllItemLayout}
               label="是否必填"
               name="isRequired"
               valuePropName="checked"
@@ -504,7 +503,17 @@ const Entity = (): JSX.Element => {
           <Col span={12}>
             <FormItem
               {...formAllItemLayout}
-              label="响应包含"
+              label="全部响应"
+              name="inAllResponse"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              {...formAllItemLayout}
+              label="一般响应"
               name="inResponse"
               valuePropName="checked"
             >
@@ -899,7 +908,8 @@ const Entity = (): JSX.Element => {
                         "description": "名称",
                         "inQuery":true,
                         "inCreate":true,
-                        "inResponse":true
+                        "inResponse":false,
+                        "inAllResponse":true
                     },
                     {
                         "name": "age",

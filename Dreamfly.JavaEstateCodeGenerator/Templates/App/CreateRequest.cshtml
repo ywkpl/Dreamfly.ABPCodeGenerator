@@ -51,10 +51,6 @@ if (item.IsRequired)
 {
     @:@@NotBlank(message = "@Html.Raw(item.Description)不得為空")
 }
-if (item.Type=="Date")
-{
-    @:@@JsonFormat(timezone = AppConstant.DATE_FORMAT_TIMEZONE, pattern=@(item.HasTime?"AppConstant.DATE_FORMAT_DATETIME_PATTERN":"AppConstant.DATE_FORMAT_DATE_PATTERN"))
-}
 if (item.Type == "BigDecimal" && item.Length.HasValue)
 {
     @:@@Digits( integer = @(item.Length), fraction = @(item.Fraction))

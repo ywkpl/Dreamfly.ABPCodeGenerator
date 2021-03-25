@@ -4,12 +4,12 @@ export interface EntityItemType {
   type: string;
   length?: number;
   fraction?: number;
-  hasTime: boolean;
   isRequired: boolean;
   description?: string;
   inQuery: boolean;
   inCreate: boolean;
   inResponse: boolean;
+  inAllResponse: boolean;
   relateType?: string;
   cascadeType?: string;
   relateEntity?: string;

@@ -19,8 +19,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @@Mapper(componentModel = "spring"@reference)
-public interface @(Model.EntityName)Mapper extends BaseMapper<@(Model.EntityName), @(Model.EntityName)Response, Create@(Model.EntityName)Request, Update@(Model.EntityName)Request>
+public interface @(Model.EntityName)Mapper extends BaseMapper<@(Model.EntityName), @(Model.EntityName)AllResponse, Create@(Model.EntityName)Request, Update@(Model.EntityName)Request>
 {
+    @(Model.EntityName)AllResponse toAllResponse(@(Model.EntityName) entity);
     @(Model.EntityName)Response toResponse(@(Model.EntityName) entity);
     @(Model.EntityName) toEntity(Create@(Model.EntityName)Request request);
     @(Model.EntityName) toEntity(Update@(Model.EntityName)Request request);

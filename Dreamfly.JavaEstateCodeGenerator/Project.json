@@ -45,10 +45,18 @@
       },
       {
         "File": "Templates/App/Response.cshtml",
-        "Remark": "回应Dto",
+        "Remark": "一般回应Dto",
         "IsExecute": true,
         "OutputFolder": "dto/{{StringLowercase Name}}",
         "OutputName": "{{Name}}Response.java",
+        "InApiProject": true
+      },
+      {
+        "File": "Templates/App/AllResponse.cshtml",
+        "Remark": "全部回应Dto",
+        "IsExecute": true,
+        "OutputFolder": "dto/{{StringLowercase Name}}",
+        "OutputName": "{{Name}}AllResponse.java",
         "InApiProject": true
       },
       {

@@ -24,6 +24,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public bool HasTime { get; set; }
         public bool IsRequired { get; set; }
         public bool InQuery { get; set; }
+        public bool InAllResponse { get; set; }
         public bool InResponse { get; set; }
         public bool InCreate { get; set; }
         public string Description { get; set; }

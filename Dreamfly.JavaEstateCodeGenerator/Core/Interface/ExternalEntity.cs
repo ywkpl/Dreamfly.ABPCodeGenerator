@@ -60,7 +60,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 Type = "String",
                 InQuery = false,
                 InCreate = true,
-                InResponse = true
+                InResponse = true,
+                InAllResponse = true
             };
             SetEntityItemDefaultValues(item);
             return item;
@@ -96,7 +97,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                         Type = "Long",
                         InQuery = false,
                         InCreate = false,
-                        InResponse = false
+                        InResponse = false,
+                        InAllResponse = false,
                     });
                 }
                 else
@@ -107,6 +109,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                     entityItem.InQuery = false;
                     entityItem.InCreate = false;
                     entityItem.InResponse = false;
+                    entityItem.InAllResponse = false;
                 }
             }
         }
@@ -127,7 +130,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                         Type = "Long",
                         InQuery = true,
                         InCreate = false,
-                        InResponse = false
+                        InResponse = false,
+                        InAllResponse = false,
                     });
                 }
                 else
@@ -138,6 +142,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                     entityItem.InQuery = true;
                     entityItem.InCreate = false;
                     entityItem.InResponse = false;
+                    entityItem.InAllResponse = false;
                 }
             }
         }
