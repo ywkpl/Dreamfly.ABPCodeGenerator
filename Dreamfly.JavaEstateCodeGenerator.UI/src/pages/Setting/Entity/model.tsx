@@ -12,6 +12,7 @@ export interface EntityItemType {
   inAllResponse: boolean;
   relateType?: string;
   cascadeType?: string;
+  fetchType?: string;
   relateEntity?: string;
   relateDirection?: string;
   joinName?: string;

@@ -52,7 +52,7 @@ import java.util.Set;
 @:@@ToString(callSuper = true, exclude = { @Html.Raw(String.Join(", ", sets)) })    
 }
 public class @(Model.EntityName) extends FullAudited implements Serializable@(Model.EntityHasICompany?", IHaveCompany":"")@(Model.EntityHasITenant?", IHaveTenant":"") {
-@foreach (var item in Model.EntityItems)
+@foreach (var item in Model.EntityItems.OrderBy(t=>t.Order))
 {
     if (!String.IsNullOrEmpty(item.Description)){
     @:/**
@@ -66,11 +66,13 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
     if(!String.IsNullOrEmpty(item.RelateType)){
         relateTypeStr=$"@{item.RelateType}";
         bool hasCascade=!String.IsNullOrEmpty(item.CascadeType);
+        bool hasFetchType=!String.IsNullOrEmpty(item.FetchType);
         bool hasMappedBy=item.RelateDirection=="MappedBy";
         var relateAttributes = new List<String>();        
         //关联名称暂未确定
         if(hasMappedBy) {relateAttributes.Add($"mappedBy = \"{item.ColumnName}\"");}
         if(hasCascade) {relateAttributes.Add($"cascade = {item.CascadeType}");}
+        if(hasFetchType) {relateAttributes.Add($"fetch = {item.FetchType}");}
         if(relateAttributes.Count>0) {
             relateTypeStr += $"({String.Join(", ", relateAttributes)})";
         }

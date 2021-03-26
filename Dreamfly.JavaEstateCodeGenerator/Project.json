@@ -1,7 +1,7 @@
 {
   "Project": {
-    "Name": "baseinfo",
-    "OutputPath": "f:/Development/Newcity/microestate/baseinfo-service/src",
+    "Name": "construction",
+    "OutputPath": "e:/Development/Newcity/microestate/construction-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.0",
     "Author": {
@@ -57,7 +57,7 @@
         "IsExecute": true,
         "OutputFolder": "dto/{{StringLowercase Name}}",
         "OutputName": "{{Name}}AllResponse.java",
-        "InApiProject": false
+        "InApiProject": true
       },
       {
         "File": "Templates/App/GetAllRequest.cshtml",

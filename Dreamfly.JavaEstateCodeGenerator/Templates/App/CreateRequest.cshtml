@@ -7,7 +7,7 @@
 * @@Description: @Model.Author.Remark
 */
 @{
-    var dtoTemplates = Model.EntityItems.Where(t => t.InCreate);
+    var dtoTemplates = Model.EntityItems.Where(t => t.InCreate).OrderBy(t=>t.Order);
     bool hasJsonField = Model.EntityItems.Any(t => t.Type == AppConstants.JsonMapType);
     bool hasDecimal = Model.EntityItems.Any(t => t.Type == "BigDecimal" && t.Length.HasValue);
 }

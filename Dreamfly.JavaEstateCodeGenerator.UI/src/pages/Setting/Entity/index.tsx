@@ -71,6 +71,7 @@ const Entity = (): JSX.Element => {
       inResponse: false,
       relateType: null,
       cascadeType: null,
+      fetchType: null,
       relateEntity: null,
       relateDirection: null,
       joinName: null,
@@ -302,6 +303,15 @@ const Entity = (): JSX.Element => {
   const handleRelateTypeChange = (value: string) => {
     if (value) {
       setCheckEntityName(true);
+      if (value == 'OneToOne' || value == 'ManyToOne') {
+        editModelForm.setFieldsValue({
+          fetchType: 'FetchType.LAZY',
+        });
+      } else {
+        editModelForm.setFieldsValue({
+          fetchType: null,
+        });
+      }
     } else {
       setCheckEntityName(false);
     }
@@ -409,6 +419,14 @@ const Entity = (): JSX.Element => {
                 <Option value="CascadeType.MERGE">MERGE</Option>
                 <Option value="CascadeType.DETACH">DETACH</Option>
                 <Option value="CascadeType.REMOVE">REMOVE</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem {...formAllItemLayout} label="读取方式" name="fetchType">
+              <Select placeholder="读取方式" style={{ width: 150 }} allowClear>
+                <Option value="FetchType.LAZY">LAZY</Option>
+                <Option value="FetchType.EAGER">EAGER</Option>
               </Select>
             </FormItem>
           </Col>

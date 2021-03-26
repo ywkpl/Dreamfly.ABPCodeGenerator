@@ -6,7 +6,7 @@
 * @@Description: @Model.Author.Remark
 */
 @{
-    var dtoTemplates = Model.EntityItems.Where(t=>t.InQuery);
+    var dtoTemplates = Model.EntityItems.Where(t=>t.InQuery).OrderBy(t=>t.Order);
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
 

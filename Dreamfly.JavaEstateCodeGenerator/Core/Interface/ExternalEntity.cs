@@ -178,6 +178,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                     itemDto.RelateType = "ManyToOne";
                     itemDto.RelateEntity = itemDto.ColumnName.Replace("_Id", "").Replace("_","").ToPascalCase();
                     itemDto.RelateDirection = "Join";
+                    itemDto.FetchType = "FetchType.LAZY";
                 }
             }
 
@@ -221,6 +222,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 itemDto.RelateEntity = "SysCode";
                 itemDto.RelateDirection = "Join";
                 itemDto.InResponse = true;
+                itemDto.FetchType = "FetchType.LAZY";
             }
         }
 

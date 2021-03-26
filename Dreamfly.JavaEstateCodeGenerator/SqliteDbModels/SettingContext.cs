@@ -78,6 +78,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         public string RelateDirection { get; set; }
 
         /// <summary>
+        /// 读取方式：LAZY / EAGER
+        /// </summary>
+        public string FetchType { get; set; }
+
+        /// <summary>
         /// Join关联名称，看能否自动
         /// </summary>
         [MaxLength(50)]
