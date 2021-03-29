@@ -12,7 +12,7 @@
     bool hasDecimal = Model.EntityItems.Any(t => t.Type == "BigDecimal" && t.Length.HasValue);
     var sets=Model.EntityItems.Where(t=>t.Type=="Set").Select(t=>"\""+t.Name+"\"").ToList();
 }
-package @(Model.ProjectPackagePath).@(Model.ProjectName).model;
+package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectIsShare?".api":"").model;
 
 import @(Model.ProjectPackagePath).baseinfo.api.model.*;
 import @(Model.ProjectPackagePath).common.model.*;

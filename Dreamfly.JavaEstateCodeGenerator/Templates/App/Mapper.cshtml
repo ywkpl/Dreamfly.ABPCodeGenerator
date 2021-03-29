@@ -1,8 +1,10 @@
 ﻿@{ Layout = null;}
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 @{
-    var mappingItems=Model.EntityItems.Where(t=>t.RelateType=="OneToOne" || t.RelateType=="ManyToOne").ToList();
-    var reference=mappingItems.Count>0?", uses = {ReferenceMapper.class}":"";
+    var mappingItems=Model.EntityItems
+    .Where(t=>!String.IsNullOrEmpty(t.RelateEntity) && t.RelateEntity!=Model.EntityName)
+    .Select(t=>$"{t.RelateEntity}Mapper.class");
+    var reference=mappingItems.Count()>0?", uses = {ReferenceMapper.class, "+String.Join(", ", mappingItems)+"}":", uses = {ReferenceMapper.class}";
 }
 /**
 * @@author: @Model.Author.Name
@@ -10,11 +12,12 @@
 * @@Description: @Model.Author.Remark
 */
 
-package @(Model.ProjectPackagePath).@(Model.ProjectName).mapper;
+package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectIsShare?".api":"").mapper;
 
 import @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower()).*;
-import @(Model.ProjectPackagePath).@(Model.ProjectName).model.@(Model.EntityName);
+import @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectIsShare?".api":"").model.@(Model.EntityName);
 import @(Model.ProjectPackagePath).common.mapper.*;
+import @(Model.ProjectPackagePath).baseinfo.api.mapper.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

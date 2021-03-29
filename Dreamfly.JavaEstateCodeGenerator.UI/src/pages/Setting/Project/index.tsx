@@ -306,6 +306,9 @@ const Project = () => {
             <FormItem {...formItemLayout} label="包含API项目" name="hasApi" valuePropName="checked">
               <Switch />
             </FormItem>
+            <FormItem {...formItemLayout} label="共享項目否" name="isShare" valuePropName="checked">
+              <Switch />
+            </FormItem>
           </Card>
           <Card bordered={false} title="作者">
             <FormItem

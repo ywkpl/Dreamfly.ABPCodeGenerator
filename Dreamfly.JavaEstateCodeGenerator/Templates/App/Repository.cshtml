@@ -7,7 +7,7 @@
 */
 package @(Model.ProjectPackagePath).@(Model.ProjectName).repository;
 
-import @(Model.ProjectPackagePath).@(Model.ProjectName).model.@(Model.EntityName);
+import @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectIsShare?".api":"").model.@(Model.EntityName);
 import @(Model.ProjectPackagePath).common.repository.IRepositoryBase;
 
 public interface @(Model.EntityName)Repository extends IRepositoryBase<@(Model.EntityName)>{

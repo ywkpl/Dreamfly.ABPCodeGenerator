@@ -108,7 +108,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             string projectPath = entity.Project.OutputPath.Replace("\\", "/");
             string packagePath = entity.Project.PackagePath.Replace(".", "/");
             string projectName = entity.Project.Name;
-            if (entity.Project.HasApi && template.InApiProject)
+            if (entity.Project.HasApi && template.InApiProject(entity.Project.IsShare))
             {
                 projectPath = projectPath.Replace($"{entity.Project.Name}-service", $"{entity.Project.Name}-api");
                 projectName = Path.Combine(projectName, "api");

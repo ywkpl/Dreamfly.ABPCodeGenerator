@@ -27,6 +27,7 @@ if(item.RelateEntityInModule){
 }
 }
 }
+import com.newcity.microestate.common.dto.BaseResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -34,6 +35,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import @(Model.ProjectPackagePath).common.config.AppConstant;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 @if (hasJsonField)
@@ -45,14 +47,11 @@ import java.util.Date;
 @:import java.math.BigDecimal;
 }
 @@Data
-@@Builder
+@@SuperBuilder
 @@NoArgsConstructor
 @@AllArgsConstructor
 @@ApiModel(value = "@Html.Raw(Model.EntityDescription)返回表單")
-public class @(Model.EntityName)Response {
-    @@JsonSerialize(using = ToStringSerializer.class)
-    @@ApiModelProperty(value = "編號")
-    private Long id;
+public class @(Model.EntityName)Response extends BaseResponse{
 @foreach (var item in dtoTemplates)
 {
     var itemType=item.Type;

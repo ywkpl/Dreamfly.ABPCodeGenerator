@@ -72,6 +72,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             {
                 ProjectName = entity.Project.Name,
                 ProjectHasApi = entity.Project.HasApi,
+                ProjectIsShare = entity.Project.IsShare,
                 ProjectPackagePath=entity.Project.PackagePath,
                 EntityName = entity.Name,
                 EntityDescription = entity.Description,
