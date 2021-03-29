@@ -3,7 +3,8 @@
 @{
     var mappingItems=Model.EntityItems
     .Where(t=>!String.IsNullOrEmpty(t.RelateEntity) && t.RelateEntity!=Model.EntityName)
-    .Select(t=>$"{t.RelateEntity}Mapper.class");
+    .GroupBy(t=>new {t.RelateEntity})
+    .Select(t=>$"{t.Key.RelateEntity}Mapper.class");
     var reference=mappingItems.Count()>0?", uses = {ReferenceMapper.class, "+String.Join(", ", mappingItems)+"}":", uses = {ReferenceMapper.class}";
 }
 /**
