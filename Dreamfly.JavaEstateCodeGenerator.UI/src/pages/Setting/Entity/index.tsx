@@ -448,7 +448,7 @@ const Entity = (): JSX.Element => {
           <Col span={12}>
             <FormItem
               {...formAllItemLayout}
-              label="本模组中"
+              label="本模块中"
               name="relateEntityInModule"
               valuePropName="checked"
             >
