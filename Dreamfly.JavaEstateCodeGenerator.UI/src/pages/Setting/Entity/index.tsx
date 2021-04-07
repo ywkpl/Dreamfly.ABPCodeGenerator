@@ -208,7 +208,7 @@ const Entity = (): JSX.Element => {
   const handleEditModelOk = () => {
     editModelForm.validateFields().then((values) => {
       const entityItem = values as EntityItemType;
-      const editItem = entityItems.find(
+      const editItem = entityItems?.find(
         (t) => t.name.toLowerCase() === entityItem.name.toLowerCase(),
       );
       if (isEdit) {
