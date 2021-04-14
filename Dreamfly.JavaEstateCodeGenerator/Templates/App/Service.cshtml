@@ -7,7 +7,7 @@
 * @@Description: @Model.Author.Remark
 */
 @{
-    var dtoTemplates = Model.EntityItems.Where(t=>t.InQuery);
+    var entityItems = Model.EntityItems.Where(t=>t.InQuery);
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName).service;
 
@@ -24,6 +24,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class @(Model.EntityName)Service extends CrudApplicationService<@(Model.E
     public Specification<@(Model.EntityName)> makeSpecification(GetAll@(Model.EntityName)Request input) {
         Specification<@(Model.EntityName)> specification= (root, query, builder) -> {
             List<Predicate> predicates=new ArrayList<>();
-    @foreach (var item in dtoTemplates)
+    @foreach (var item in entityItems)
     {
         if (item.Type == "String")
         {
@@ -51,6 +52,15 @@ public class @(Model.EntityName)Service extends CrudApplicationService<@(Model.E
         {
             @:if (input.get@(item.Name.ToPascalCase())() != null){
                 @:predicates.add(builder.equal(root.get("@(item.Name.ToCamelCase())"), input.get@(item.Name.ToPascalCase())()));
+            @:}
+        }
+        if (item.Type == "Date")
+        {
+            @:if (input.getStart@(item.Name.ToPascalCase())() != null){
+                @:predicates.add(builder.greaterThanOrEqualTo(root.get("@(item.Name.ToCamelCase())"), input.getStart@(item.Name.ToPascalCase())()));
+            @:}
+            @:if (input.getEnd@(item.Name.ToPascalCase())() != null){
+                @:predicates.add(builder.lessThanOrEqualTo(root.get("@(item.Name.ToCamelCase())"), input.getEnd@(item.Name.ToPascalCase())()));
             @:}
         }
     }

@@ -1,4 +1,6 @@
 ﻿@{ Layout = null;}
+@using Dreamfly.JavaEstateCodeGenerator.Models;
+@using Dreamfly.JavaEstateCodeGenerator.Helper;
 @model Dreamfly.JavaEstateCodeGenerator.Models.RenderEntity
 /**
 * @@author: @Model.Author.Name
@@ -6,7 +8,24 @@
 * @@Description: @Model.Author.Remark
 */
 @{
-    var dtoTemplates = Model.EntityItems.Where(t=>t.InQuery).OrderBy(t=>t.Order).ThenBy(t=>t.Name);
+    var entityItems = Model.EntityItems.Where(t=>t.InQuery).OrderBy(t=>t.Order).ThenBy(t=>t.Name).ToList();
+    var startDateItems=entityItems.Where(q=>q.Type=="Date").ToList();
+    var endDateItems=entityItems.Where(q=>q.Type=="Date").ToList();
+    bool hasDate = entityItems.Any(t => t.Type == "Date");
+    if(startDateItems.Count()>0){
+        entityItems.RemoveAll(t=>t.Type=="Date");
+        startDateItems.ForEach(q=>{
+            q.Name="start"+q.Name.ToPascalCase();
+            q.Description="起始"+q.Description;
+            entityItems.Add(q);
+        });
+        endDateItems.ForEach(q=>{
+            q.Name="end"+q.Name.ToPascalCase();
+            q.Description="訖止"+q.Description;
+            entityItems.Add(q);
+        });
+        //entityItems=entityItems.OrderBy(t=>t.Order).ThenBy(t=>t.Name).ToList();
+    }
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
 
@@ -18,6 +37,7 @@ import @(Model.ProjectPackagePath).common.config.AppConstant;
 import java.util.Date;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Size;
 
@@ -27,7 +47,7 @@ import javax.validation.constraints.Size;
 @@SuperBuilder
 @@ApiModel(value = "@Html.Raw(Model.EntityDescription)查詢請求表單")
 public class GetAll@(Model.EntityName)Request extends PageAndSortRequest {
-@foreach (var item in dtoTemplates)
+@foreach (var item in entityItems)
 {
 if (!String.IsNullOrEmpty(item.Description))
 {
@@ -39,6 +59,9 @@ if (!String.IsNullOrEmpty(item.Description))
 if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
+}
+if(item.Type=="Date"){
+    @:@@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 }
     @:private @item.Type @item.Name;
 }
