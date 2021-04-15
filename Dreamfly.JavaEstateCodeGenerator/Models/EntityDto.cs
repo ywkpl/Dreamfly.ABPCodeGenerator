@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Models
 {
@@ -14,7 +15,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public List<EntityItemDto> EntityItems { get; set; }
     }
 
-    public class EntityItemDto
+    public class EntityItemDto : ICloneable
     {
         public string Name { get; set; }
         public string ColumnName { get; set; }
@@ -70,5 +71,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         /// 排序
         /// </summary>
         public int Order { get; set; }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }

@@ -164,7 +164,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 
             if (itemDto.Name == "memo")
             {
-                itemDto.Length = 1000;
+                itemDto.Length = 2000;
+            }
+
+            if (itemDto.Name == "title")
+            {
+                itemDto.Length = 100;
             }
 
             if (itemDto.ColumnName.EndsWith("_Id"))

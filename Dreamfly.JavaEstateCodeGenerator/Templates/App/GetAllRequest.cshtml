@@ -9,22 +9,20 @@
 */
 @{
     var entityItems = Model.EntityItems.Where(t=>t.InQuery).OrderBy(t=>t.Order).ThenBy(t=>t.Name).ToList();
-    var startDateItems=entityItems.Where(q=>q.Type=="Date").ToList();
-    var endDateItems=entityItems.Where(q=>q.Type=="Date").ToList();
-    bool hasDate = entityItems.Any(t => t.Type == "Date");
-    if(startDateItems.Count()>0){
+    var dateItems=entityItems.Where(q=>q.Type=="Date").ToList();
+    if(dateItems.Any()){
         entityItems.RemoveAll(t=>t.Type=="Date");
-        startDateItems.ForEach(q=>{
-            q.Name="start"+q.Name.ToPascalCase();
-            q.Description="起始"+q.Description;
-            entityItems.Add(q);
+        dateItems.ForEach(q=>{
+            var startItem=(EntityItemDto)q.Clone();
+            var endItem=(EntityItemDto)q.Clone();
+            startItem.Name="start"+startItem.Name.ToPascalCase();
+            endItem.Name="end"+endItem.Name.ToPascalCase();
+            startItem.Description="起始"+startItem.Description;
+            endItem.Description="訖止"+endItem.Description;
+            entityItems.Add(startItem);
+            entityItems.Add(endItem);
         });
-        endDateItems.ForEach(q=>{
-            q.Name="end"+q.Name.ToPascalCase();
-            q.Description="訖止"+q.Description;
-            entityItems.Add(q);
-        });
-        //entityItems=entityItems.OrderBy(t=>t.Order).ThenBy(t=>t.Name).ToList();
+        entityItems=entityItems.OrderBy(t=>t.Order).ThenByDescending(t=>t.Name).ToList();
     }
 }
 package @(Model.ProjectPackagePath).@(Model.ProjectName)@(Model.ProjectHasApi?".api":"").dto.@(Model.EntityName.ToLower());
