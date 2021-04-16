@@ -17,14 +17,12 @@ import lombok.experimental.SuperBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import @(Model.ProjectPackagePath).common.config.AppConstant;
 import java.util.Date;
 @if (hasDecimal)
 {
-@:import javax.validation.constraints.Digits;
 @:import java.math.BigDecimal;
 }
 @if (hasJsonField)
@@ -49,7 +47,11 @@ if (!String.IsNullOrEmpty(item.Description))
 }
 if (item.IsRequired)
 {
+    if(item.Type=="String"||item.Type == "Text"||item.Type == "Json"){
     @:@@NotBlank(message = "@Html.Raw(item.Description)不得為空")
+    }else{
+    @:@@NotNull(message = "@Html.Raw(item.Description)不得為空")    
+    }
 }
 if (item.Type == "BigDecimal" && item.Length.HasValue)
 {
