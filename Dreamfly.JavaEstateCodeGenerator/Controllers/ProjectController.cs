@@ -48,18 +48,24 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             new CodeSql(_project).UpdateSqliteCodeKeyValues();
         }
 
+        [HttpPost("InitializeSql")]
+        public void InitializeSql()
+        {
+            new InitializeSql(_project).GeneratorCheckSetting();
+        }
 
 
-//        [HttpPost("ToDb")]
-//        public void SaveJsonToDb()
-//        {
-//            var entityDtos = JsonDataHelper.ReadEntities();
-//            using (var dbContext = new SettingContext())
-//            {
-//                var entities = entityDtos.AsQueryable().ProjectToType<Entity>();
-//                dbContext.Entity.AddRange(entities);
-//                dbContext.SaveChanges();
-//            }
-//        }
+
+        //        [HttpPost("ToDb")]
+        //        public void SaveJsonToDb()
+        //        {
+        //            var entityDtos = JsonDataHelper.ReadEntities();
+        //            using (var dbContext = new SettingContext())
+        //            {
+        //                var entities = entityDtos.AsQueryable().ProjectToType<Entity>();
+        //                dbContext.Entity.AddRange(entities);
+        //                dbContext.SaveChanges();
+        //            }
+        //        }
     }
 }
