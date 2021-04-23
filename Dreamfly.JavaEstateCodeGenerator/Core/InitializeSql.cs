@@ -15,6 +15,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         private readonly Project _project;
         private readonly String filePath;
         private const string ExcelFilePath = "Excel\\InitializeData.xlsx";
+//        private const int DefaultCompanyId = 1;
+//        private const int DefaultTenantId = 1;
 
         public InitializeSql(Project project)
         {
@@ -26,53 +28,56 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
         public void GeneratorCheckSetting()
         {
-            
-            var mapper=new Mapper(ExcelFilePath);
+
+            var mapper = new Mapper(ExcelFilePath);
             var excelData = mapper
                 .Take<CheckSettingDto>(1)
-                .Where(t=>t.Value!=null && !String.IsNullOrEmpty(t.Value.Code))
-                .Select(t=>t.Value)
+                .Where(t => t.Value != null && !String.IsNullOrEmpty(t.Value.Code) && t.Value.Code!="A19")
+                //A19待修正長度，後緒再增加進來
+                .Select(t => t.Value)
                 .ToList();
 
             var checkSettings = excelData
                 .GroupBy(t => new {t.Code, t.Name})
                 .Select(t => new {t.Key.Code, t.Key.Name})
-                .OrderBy(t=>t.Code)
+                .OrderBy(t => t.Code)
                 .ToList();
 
-            var checkSettingItems= excelData
-                .GroupBy(t => new { t.Code, t.Name, t.DetailCode, t.DetailName })
-                .Select(t => new { t.Key.Code, t.Key.Name, t.Key.DetailCode, t.Key.DetailName })
-                .OrderBy(t=>t.Code)
-                .ThenBy(t=>t.DetailCode)
+            var checkSettingItems = excelData
+                .GroupBy(t => new {t.Code, t.Name, t.DetailCode, t.DetailName})
+                .Select(t => new {t.Key.Code, t.Key.Name, t.Key.DetailCode, t.Key.DetailName})
+                .OrderBy(t => t.Code)
+                .ThenBy(t => t.DetailCode)
                 .ToList();
 
-            StringBuilder sqlBuilder=new StringBuilder();
-            int startId = 10;
+            StringBuilder sqlBuilder = new StringBuilder();
+            int startId = 10, detailStartId = 10;
             checkSettings.ForEach(t =>
             {
-                int detailStartId = 10;
-                int id = startId;
                 sqlBuilder.Append(
-                    $"insert into CheckSetting(id, Code, Name, Company_Id) values ({startId}, '{t.Code}', '{t.Name}',1);");
-                sqlBuilder.Append(Environment.NewLine);
+                    $"delete from CheckSetting_Item where CheckSetting_Id={startId} and Pid is not null;{Environment.NewLine}" +
+                    $"delete from CheckSetting_Item where CheckSetting_Id={startId};{Environment.NewLine}");
+                sqlBuilder.Append(
+                    $"delete from CheckSetting where id={startId};{Environment.NewLine}");
 
+                sqlBuilder.Append(
+                    $"insert into CheckSetting(id, Code, Name, Memo) values ({startId}, '{t.Code}', '{t.Name}', '{t.Name}');{Environment.NewLine}");
+
+                int masterId = startId;
                 checkSettingItems
-                    .Where(q=>q.Code==t.Code)
+                    .Where(q => q.Code == t.Code)
                     .ForEach(item =>
                     {
-                        sqlBuilder.Append(
-                            $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid) values ({detailStartId}, '{item.DetailCode}', '{item.DetailName}', {id}, null);");
-                        sqlBuilder.Append(Environment.NewLine);
-
                         int detailId = detailStartId;
-                        int childId = detailStartId * 100 + 10;
-                        excelData.Where(w=>w.Code==t.Code && w.DetailCode==item.DetailCode)
+                        sqlBuilder.Append(
+                            $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid, Memo) values ({detailId}, '{item.DetailCode}', '{item.DetailName}', {masterId}, null, '{item.DetailName}');{Environment.NewLine}");
+                        
+                        int childId = detailId * 100 + 10;
+                        excelData.Where(w => w.Code == t.Code && w.DetailCode == item.DetailCode)
                             .ForEach(child =>
                             {
                                 sqlBuilder.Append(
-                                    $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid) values ({childId}, '{child.ChildCode}', '{child.ChildName}', {id}, {detailId});");
-                                sqlBuilder.Append(Environment.NewLine);
+                                    $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid, Memo) values ({childId}, '{child.ChildCode}', '{child.ChildName}', {masterId}, {detailId}, '{item.DetailName}');{Environment.NewLine}");
                                 childId += 10;
                             });
                         detailStartId += 10;
@@ -80,15 +85,17 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
                 startId += 10;
             });
-            SerilogHelper.Instance.Error("sql:" + sqlBuilder.ToString());
-            //
-            // using var stream = new FileStream(ExcelFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            // XSSFWorkbook xssfWorkbook = new XSSFWorkbook(stream);
-            // var iSheet = xssfWorkbook.GetSheetAt(1);
-            // var excelData = new List<CheckSettingDto>();
-            // for (int i = 1; i < _importExcelDto.EndRow; i++)
-            // {
-            // }
+
+            File.WriteAllText(filePath, sqlBuilder.ToString(), Encoding.UTF8);
+        }
+
+        public void GeneratorFacilitySetting()
+        {
+            using var stream = new FileStream(ExcelFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(stream);
+            var iSheet = xssfWorkbook.GetSheetAt(2);
+
+            
         }
     }
 }

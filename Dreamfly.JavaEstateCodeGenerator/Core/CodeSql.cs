@@ -150,7 +150,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             sqlBuilder.Append($"delete from SysCode where id={codeId};{Environment.NewLine}");
             sqlBuilder.Append($"# {item.Name} {item.Code} {item.KeyValues}{Environment.NewLine}");
             sqlBuilder.Append(
-                $"insert into SysCode(id, code, name, ord, pid) value({codeId}, '{item.Code}', '{item.Name}', 0 , null);{Environment.NewLine}");
+                $"insert into SysCode(id, code, name, ord, pid, rank) value({codeId}, '{item.Code}', '{item.Name}', 0 , null, 1);{Environment.NewLine}");
             var subItems = item.KeyValues.Split(".");
             int orderNum = 10;
             try
@@ -166,7 +166,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                         var subItemSplit = name.Split("*", StringSplitOptions.RemoveEmptyEntries);
                         name = subItemSplit[0];
                         sqlBuilder.Append(
-                            $"insert into SysCode(id, code, name, ord, pid) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId});{Environment.NewLine}");
+                            $"insert into SysCode(id, code, name, ord, pid, rank) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId}, 2);{Environment.NewLine}");
 
                         var threeItems = subItemSplit[1].Split("|", StringSplitOptions.RemoveEmptyEntries);
                         int threeOrder = 10;
@@ -174,14 +174,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                         {
                             var threeItemSplit = threeItem.Split("&", StringSplitOptions.RemoveEmptyEntries);
                             sqlBuilder.Append(
-                                $"insert into SysCode(id, code, name, ord, pid) value({(codeId + orderNum) * 100 + threeOrder}, '{threeItemSplit[0]}', '{threeItemSplit[1]}', {threeOrder} , {(codeId + orderNum)});{Environment.NewLine}");
+                                $"insert into SysCode(id, code, name, ord, pid, rank) value({(codeId + orderNum) * 100 + threeOrder}, '{threeItemSplit[0]}', '{threeItemSplit[1]}', {threeOrder} , {(codeId + orderNum)}, 3);{Environment.NewLine}");
                             threeOrder += 10;
                         }
                     }
                     else
                     {
                         sqlBuilder.Append(
-                            $"insert into SysCode(id, code, name, ord, pid) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId});{Environment.NewLine}");
+                            $"insert into SysCode(id, code, name, ord, pid, rank) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId}, 2);{Environment.NewLine}");
                     }
 
                     orderNum += 10;
