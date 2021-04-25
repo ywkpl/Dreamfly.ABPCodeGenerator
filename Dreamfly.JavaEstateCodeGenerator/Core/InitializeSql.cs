@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dreamfly.JavaEstateCodeGenerator.Contexts;
 using Dreamfly.JavaEstateCodeGenerator.Helper;
 using Dreamfly.JavaEstateCodeGenerator.Models;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 using Npoi.Mapper;
 using NPOI.XSSF.UserModel;
 
@@ -91,11 +94,33 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
         public void GeneratorFacilitySetting()
         {
-            using var stream = new FileStream(ExcelFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(stream);
-            var iSheet = xssfWorkbook.GetSheetAt(2);
+//            using var stream = new FileStream(ExcelFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+//            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(stream);
+//            var iSheet = xssfWorkbook.GetSheetAt(2);
 
-            
+            using var estateContext = new EstateContext();
+            var test = ReadSysCodeFacilityType();
+            SerilogHelper.Instance.Error("count:{count}", test.Count());
+        }
+
+        private List<SysCodeDto> ReadSysCodeFacilityType()
+        {
+            const string codeString = "FacilityType";
+            using var estateContext = new EstateContext();
+            var parentCode = estateContext.SysCodes
+                .Include(t=>t.InversePidNavigation)
+                .SingleOrDefault(t => t.Code == codeString && t.Pid == null);
+            if (parentCode != null)
+            {
+                parentCode.InversePidNavigation.ForEach(t =>
+                {
+                    SerilogHelper.Instance.Error("count:{count}", t.InversePidNavigation.Count());
+                });
+            }
+
+            return parentCode?.InversePidNavigation
+                .Select(t => new SysCodeDto {Pid = t.Pid, PidCode = t.PidNavigation.Code, Id = t.Id, Code = t.Code})
+                .ToList();
         }
     }
 }

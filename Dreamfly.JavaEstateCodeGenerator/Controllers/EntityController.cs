@@ -34,7 +34,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         }
 
         [HttpPost("Save")]
-        public async Task Save(EntityDto entity)
+        public void Save(EntityDto entity)
         {
             _entityPersistence.Save(entity);
         }
