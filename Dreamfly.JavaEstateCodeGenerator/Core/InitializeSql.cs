@@ -17,6 +17,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
     {
         private readonly Project _project;
         private readonly String filePath;
+
         private const string ExcelFilePath = "Excel\\InitializeData.xlsx";
 //        private const int DefaultCompanyId = 1;
 //        private const int DefaultTenantId = 1;
@@ -35,7 +36,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             var mapper = new Mapper(ExcelFilePath);
             var excelData = mapper
                 .Take<CheckSettingDto>(1)
-                .Where(t => t.Value != null && !String.IsNullOrEmpty(t.Value.Code) && t.Value.Code!="A19")
+                .Where(t => t.Value != null && !String.IsNullOrEmpty(t.Value.Code) && t.Value.Code != "A19")
                 //A19待修正長度，後緒再增加進來
                 .Select(t => t.Value)
                 .ToList();
@@ -74,7 +75,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                         int detailId = detailStartId;
                         sqlBuilder.Append(
                             $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid, Memo) values ({detailId}, '{item.DetailCode}', '{item.DetailName}', {masterId}, null, '{item.DetailName}');{Environment.NewLine}");
-                        
+
                         int childId = detailId * 100 + 10;
                         excelData.Where(w => w.Code == t.Code && w.DetailCode == item.DetailCode)
                             .ForEach(child =>
@@ -100,6 +101,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
             using var estateContext = new EstateContext();
             var test = ReadSysCodeFacilityType();
+            test.ForEach(t =>
+            {
+                SerilogHelper.Instance.Error("pid:{pid}, pcode:{PidCode}, id:{Id}, code:{Code}", t.Pid, t.PidCode, t.Id, t.Code);
+            });
             SerilogHelper.Instance.Error("count:{count}", test.Count());
         }
 
@@ -108,19 +113,29 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             const string codeString = "FacilityType";
             using var estateContext = new EstateContext();
             var parentCode = estateContext.SysCodes
-                .Include(t=>t.InversePidNavigation)
+                .Include(t => t.InversePidNavigation)
+                .ThenInclude(t => t.InversePidNavigation)
                 .SingleOrDefault(t => t.Code == codeString && t.Pid == null);
-            if (parentCode != null)
-            {
-                parentCode.InversePidNavigation.ForEach(t =>
-                {
-                    SerilogHelper.Instance.Error("count:{count}", t.InversePidNavigation.Count());
-                });
-            }
 
-            return parentCode?.InversePidNavigation
-                .Select(t => new SysCodeDto {Pid = t.Pid, PidCode = t.PidNavigation.Code, Id = t.Id, Code = t.Code})
+            return parentCode?.InversePidNavigation.SelectMany(t =>
+                    
+                t.InversePidNavigation
+                    .Select(z => new SysCodeDto
+                    {
+                        Pid = z.Pid,
+                        PidCode = z.PidNavigation.Code,
+                        Id = z.Id,
+                        Code = z.Code
+                    }))
                 .ToList();
+            // parentCode?.InversePidNavigation.ForEach(t =>
+            // {
+            //     SerilogHelper.Instance.Error("count:{count}", t.InversePidNavigation.Count());
+            // });
+            //
+            // return parentCode?.InversePidNavigation
+            //     .Select(t => new SysCodeDto {Pid = t.Pid, PidCode = t.PidNavigation.Code, Id = t.Id, Code = t.Code})
+            //     .ToList();
         }
     }
 }
