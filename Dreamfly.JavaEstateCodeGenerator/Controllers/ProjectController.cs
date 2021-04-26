@@ -51,15 +51,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         [HttpPost("InitializeSql")]
         public void InitializeSql()
         {
-            new InitializeSql(_project).GeneratorCheckSetting();
+            new InitializeSql(_project).GenerateSql();
         }
-
-        [HttpPost("Test")]
-        public void Test()
-        {
-            new InitializeSql(_project).GeneratorFacilitySetting();
-        }
-
 
 
         //        [HttpPost("ToDb")]

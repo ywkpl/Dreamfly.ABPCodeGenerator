@@ -19,6 +19,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         private readonly String filePath;
 
         private const string ExcelFilePath = "Excel\\InitializeData.xlsx";
+
+        private StringBuilder sqlBuilder;
 //        private const int DefaultCompanyId = 1;
 //        private const int DefaultTenantId = 1;
 
@@ -27,12 +29,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             this._project = project;
             filePath = Path.Combine(_project.OutputPath,
                 "..\\..\\baseinfo-service\\src\\main\\resources\\Initilize.sql");
-
+            sqlBuilder = new StringBuilder();
         }
 
-        public void GeneratorCheckSetting()
+        private void GeneratorCheckSetting()
         {
-
             var mapper = new Mapper(ExcelFilePath);
             var excelData = mapper
                 .Take<CheckSettingDto>(1)
@@ -54,8 +55,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                 .ThenBy(t => t.DetailCode)
                 .ToList();
 
-            StringBuilder sqlBuilder = new StringBuilder();
             int startId = 10, detailStartId = 10;
+            sqlBuilder.Append($"{Environment.NewLine}{Environment.NewLine}#####=== CheckSetting ===#####{Environment.NewLine}");
             checkSettings.ForEach(t =>
             {
                 sqlBuilder.Append(
@@ -89,23 +90,49 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
                 startId += 10;
             });
+        }
 
+        public void GenerateSql()
+        {
+            GeneratorCheckSetting();
+            GeneratorFacilitySetting();
             File.WriteAllText(filePath, sqlBuilder.ToString(), Encoding.UTF8);
         }
 
-        public void GeneratorFacilitySetting()
+        private void GeneratorFacilitySetting()
         {
-//            using var stream = new FileStream(ExcelFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-//            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(stream);
-//            var iSheet = xssfWorkbook.GetSheetAt(2);
+            var mapper = new Mapper(ExcelFilePath);
+            var excelFacilitySetting = mapper
+                .Take<FacilitySettingDto>(2)
+                .Where(t => t.Value != null && !string.IsNullOrEmpty(t.Value.CodeFacilityType))
+                .Select(t => t.Value)
+                .ToList();
 
-            using var estateContext = new EstateContext();
-            var test = ReadSysCodeFacilityType();
-            test.ForEach(t =>
+            var codeFacilityType = ReadSysCodeFacilityType();
+            excelFacilitySetting.ForEach(t =>
             {
-                SerilogHelper.Instance.Error("pid:{pid}, pcode:{PidCode}, id:{Id}, code:{Code}", t.Pid, t.PidCode, t.Id, t.Code);
+                var sysCode = codeFacilityType
+                    .FirstOrDefault(q => q.PidCode == t.CodeFacilityType && q.Code == t.CodeFacilityType2);
+                if (sysCode != null)
+                {
+                    t.CodeFacilityTypeId = sysCode.Pid;
+                    t.CodeFacilityType2Id = sysCode.Id;
+                }
             });
-            SerilogHelper.Instance.Error("count:{count}", test.Count());
+
+            int startId = 10;
+            sqlBuilder.Append($"{Environment.NewLine}{Environment.NewLine}#####=== FacilitySetting ===#####{Environment.NewLine}");
+            excelFacilitySetting.Where(t => t.CodeFacilityTypeId.HasValue).ForEach(t =>
+            {
+                sqlBuilder.Append(
+                    $"delete from FacilitySetting where id={startId};{Environment.NewLine}");
+
+                sqlBuilder.Append(
+                    $"insert into FacilitySetting(id, Code, Name, Code_FacilityType, Code_FacilityType2, Specification) " +
+                    $"values ({startId}, '{t.Code}', '{t.Name}', {t.CodeFacilityTypeId}, {t.CodeFacilityType2Id}, '{t.Specification}');{Environment.NewLine}");
+
+                startId += 10;
+            });
         }
 
         private List<SysCodeDto> ReadSysCodeFacilityType()
@@ -128,14 +155,6 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                         Code = z.Code
                     }))
                 .ToList();
-            // parentCode?.InversePidNavigation.ForEach(t =>
-            // {
-            //     SerilogHelper.Instance.Error("count:{count}", t.InversePidNavigation.Count());
-            // });
-            //
-            // return parentCode?.InversePidNavigation
-            //     .Select(t => new SysCodeDto {Pid = t.Pid, PidCode = t.PidNavigation.Code, Id = t.Id, Code = t.Code})
-            //     .ToList();
         }
     }
 }
