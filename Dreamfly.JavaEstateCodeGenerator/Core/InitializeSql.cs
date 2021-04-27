@@ -32,7 +32,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             sqlBuilder = new StringBuilder();
         }
 
-        private void GeneratorCheckSetting()
+        private void GeneratorCheckSettingCheckType()
         {
             var mapper = new Mapper(ExcelFilePath);
             var excelData = mapper
@@ -55,18 +55,23 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                 .ThenBy(t => t.DetailCode)
                 .ToList();
 
+            //定期巡检类别，周期月
+            const string DefaultCodeCheckType = "89020", DefaultCodeCheckPeriod = "88040";
+
             int startId = 10, detailStartId = 10;
-            sqlBuilder.Append($"{Environment.NewLine}{Environment.NewLine}#####=== CheckSetting ===#####{Environment.NewLine}");
+            sqlBuilder.Append(
+                $"{Environment.NewLine}{Environment.NewLine}#####=== CheckSetting Check Type ===#####{Environment.NewLine}");
+            sqlBuilder.Append($"delete from CheckSetting_Item where Pid is not null;{Environment.NewLine}");
             checkSettings.ForEach(t =>
             {
                 sqlBuilder.Append(
-                    $"delete from CheckSetting_Item where CheckSetting_Id={startId} and Pid is not null;{Environment.NewLine}" +
                     $"delete from CheckSetting_Item where CheckSetting_Id={startId};{Environment.NewLine}");
                 sqlBuilder.Append(
                     $"delete from CheckSetting where id={startId};{Environment.NewLine}");
 
                 sqlBuilder.Append(
-                    $"insert into CheckSetting(id, Code, Name, Memo) values ({startId}, '{t.Code}', '{t.Name}', '{t.Name}');{Environment.NewLine}");
+                    $"insert into CheckSetting(id, Code, Name, Memo, Code_CheckType, Code_CheckPeriod, Released, Ord) " +
+                    $"values ({startId}, '{t.Code}', '{t.Name}', '{t.Name}', {DefaultCodeCheckType}, {DefaultCodeCheckPeriod}, 1, {startId});{Environment.NewLine}");
 
                 int masterId = startId;
                 checkSettingItems
@@ -75,14 +80,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     {
                         int detailId = detailStartId;
                         sqlBuilder.Append(
-                            $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid, Memo) values ({detailId}, '{item.DetailCode}', '{item.DetailName}', {masterId}, null, '{item.DetailName}');{Environment.NewLine}");
+                            $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid, Memo, Ord) values ({detailId}, '{item.DetailCode}', '{item.DetailName}', {masterId}, null, '{item.DetailName}', {detailId});{Environment.NewLine}");
 
                         int childId = detailId * 100 + 10;
                         excelData.Where(w => w.Code == t.Code && w.DetailCode == item.DetailCode)
                             .ForEach(child =>
                             {
                                 sqlBuilder.Append(
-                                    $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid, Memo) values ({childId}, '{child.ChildCode}', '{child.ChildName}', {masterId}, {detailId}, '{item.DetailName}');{Environment.NewLine}");
+                                    $"insert into CheckSetting_Item(id, Code, Name, Pid, Memo, Ord) values ({childId}, '{child.ChildCode}', '{child.ChildName}', {detailId}, '{child.ChildName}', {childId%100});{Environment.NewLine}");
                                 childId += 10;
                             });
                         detailStartId += 10;
@@ -94,7 +99,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
         public void GenerateSql()
         {
-            GeneratorCheckSetting();
+            //生成 日常巡檢 類別項目
+            GeneratorCheckSettingCheckType();
             GeneratorFacilitySetting();
             File.WriteAllText(filePath, sqlBuilder.ToString(), Encoding.UTF8);
         }
@@ -121,7 +127,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             });
 
             int startId = 10;
-            sqlBuilder.Append($"{Environment.NewLine}{Environment.NewLine}#####=== FacilitySetting ===#####{Environment.NewLine}");
+            sqlBuilder.Append(
+                $"{Environment.NewLine}{Environment.NewLine}#####=== FacilitySetting ===#####{Environment.NewLine}");
             excelFacilitySetting.Where(t => t.CodeFacilityTypeId.HasValue).ForEach(t =>
             {
                 sqlBuilder.Append(
@@ -145,15 +152,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                 .SingleOrDefault(t => t.Code == codeString && t.Pid == null);
 
             return parentCode?.InversePidNavigation.SelectMany(t =>
-                    
-                t.InversePidNavigation
-                    .Select(z => new SysCodeDto
-                    {
-                        Pid = z.Pid,
-                        PidCode = z.PidNavigation.Code,
-                        Id = z.Id,
-                        Code = z.Code
-                    }))
+                    t.InversePidNavigation
+                        .Select(z => new SysCodeDto
+                        {
+                            Pid = z.Pid,
+                            PidCode = z.PidNavigation.Code,
+                            Id = z.Id,
+                            Code = z.Code
+                        }))
                 .ToList();
         }
     }
