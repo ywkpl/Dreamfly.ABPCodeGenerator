@@ -70,8 +70,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     $"delete from CheckSetting where id={startId};{Environment.NewLine}");
 
                 sqlBuilder.Append(
-                    $"insert into CheckSetting(id, Code, Name, Memo, Code_CheckType, Code_CheckPeriod, Released, Ord) " +
-                    $"values ({startId}, '{t.Code}', '{t.Name}', '{t.Name}', {DefaultCodeCheckType}, {DefaultCodeCheckPeriod}, 1, {startId});{Environment.NewLine}");
+                    $"insert into CheckSetting(id, Code, Name, Code_CheckType, Code_CheckPeriod, Released, Ord) " +
+                    $"values ({startId}, '{t.Code}', '{t.Name}', {DefaultCodeCheckType}, {DefaultCodeCheckPeriod}, 1, {startId});{Environment.NewLine}");
 
                 int masterId = startId;
                 checkSettingItems
@@ -80,14 +80,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                     {
                         int detailId = detailStartId;
                         sqlBuilder.Append(
-                            $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid, Memo, Ord) values ({detailId}, '{item.DetailCode}', '{item.DetailName}', {masterId}, null, '{item.DetailName}', {detailId});{Environment.NewLine}");
+                            $"insert into CheckSetting_Item(id, Code, Name, CheckSetting_Id, Pid, Ord) values ({detailId}, '{item.DetailCode}', '{item.DetailName}', {masterId}, null, {detailId});{Environment.NewLine}");
 
                         int childId = detailId * 100 + 10;
                         excelData.Where(w => w.Code == t.Code && w.DetailCode == item.DetailCode)
                             .ForEach(child =>
                             {
                                 sqlBuilder.Append(
-                                    $"insert into CheckSetting_Item(id, Code, Name, Pid, Memo, Ord) values ({childId}, '{child.ChildCode}', '{child.ChildName}', {detailId}, '{child.ChildName}', {childId%100});{Environment.NewLine}");
+                                    $"insert into CheckSetting_Item(id, Code, Name, Pid, Ord) values ({childId}, '{child.ChildCode}', '{child.ChildName}', {detailId}, {childId%100});{Environment.NewLine}");
                                 childId += 10;
                             });
                         detailStartId += 10;
