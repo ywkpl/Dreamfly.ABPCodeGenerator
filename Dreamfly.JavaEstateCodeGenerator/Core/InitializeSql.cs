@@ -56,7 +56,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
                 .ToList();
 
             //定期巡检类别，周期月
-            const string DefaultCodeCheckType = "89020", DefaultCodeCheckPeriod = "88040";
+            const string DefaultCodeCheckType = "89010", DefaultCodeCheckPeriod = "88040";
 
             int startId = 10, detailStartId = 10;
             sqlBuilder.Append(
