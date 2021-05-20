@@ -62,7 +62,7 @@ if (!String.IsNullOrEmpty(item.Description))
     @:*/
     @:@@ApiModelProperty(value = "@Html.Raw(item.Description)")
 }
-if (item.Type == "Text")
+if (item.Type == "Text"||item.Type == "Json")
 {
     itemType = "String";
 }

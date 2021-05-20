@@ -4,6 +4,6 @@
     {
         public const string BaseJavaDirectory = "main/src";
         ///對應json類型
-        public const string JsonMapType = "List<String>";
+        public const string JsonMapType = "Json";
     }
 }

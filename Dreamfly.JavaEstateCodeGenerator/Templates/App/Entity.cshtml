@@ -119,7 +119,7 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
         {
             columns.Add($"name = \"{item.ColumnName}\"");
         }
-        if (@item.Type == "List<String>")
+        if (@item.Type == "Json")
         {
             columns.Add($"columnDefinition = \"json\"");
         }
@@ -128,7 +128,7 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
     @:@@Column(@Html.Raw(String.Join(", ", columns)))
         }
     }
-    if (item.Type == "List<String>")
+    if (item.Type == "Json")
     {
     @:@@Type( type = "json" )
     }
@@ -140,6 +140,9 @@ public class @(Model.EntityName) extends FullAudited implements Serializable@(Mo
     {
         itemType = "String";
     @:@@Lob
+    }
+    if(item.Type=="Json"){
+        itemType = "String";
     }
     if (!String.IsNullOrEmpty(item.RelateType)){
     if(!String.IsNullOrEmpty(relateTypeStr)){

@@ -61,7 +61,7 @@ else if (item.Length.HasValue)
 {
     @:@@Size(max = @item.Length)
 }
-if (item.Type == "Text")
+if (item.Type == "Text" || item.Type == "Json")
 {
     item.Type = "String";
 }
