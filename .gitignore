@@ -5,7 +5,7 @@
 obj/
 bin/
 Dreamfly.ABPCodeGenerator/Output/
-packages/
+packages
 
 **/log
 **/log/*
