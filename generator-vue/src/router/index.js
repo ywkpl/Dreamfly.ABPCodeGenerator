@@ -1,22 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-//import RenderRouterView from "../components/RenderRouterView.vue";
-import { h } from "vue";
+//import { h, resolveComponent } from "vue";
 
 const routes = [
   {
     path: "/setting",
+    //添加布局组件，必须包含router-view子组件，下阶路由时用到
+    component: () =>
+      import(
+        /* webpackChunkName: "basicLayout" */ "../layouts/BasicLayout.vue"
+      ),
     // component: {
-    //   render: () => {
-    //     return h("router-view", {});
-    //   },
+    //   render: () => h(resolveComponent("router-view")),
     // },
-    component: {
-      render: () => {
-        return h("h1", {}, "AA");
-      },
-    },
+    //添加下阶路由
     children: [
+      {
+        path: "/setting",
+        redirect: "/setting/project",
+      },
       {
         path: "/setting/project",
         name: "project",
@@ -37,13 +39,9 @@ const routes = [
     component: Home,
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/:catchAll(.*)",
+    name: "notFound",
+    component: () => import(/* webpackChunkName: "about" */ "../views/404.vue"),
   },
 ];
 
