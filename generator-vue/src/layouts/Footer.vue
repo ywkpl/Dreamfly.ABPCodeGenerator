@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>Footer</div>
+  <div>Vue Code Generator ©2021 Created by Dreamfly</div>
 </template>
 <script>
 export default {};
