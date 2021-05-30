@@ -8,18 +8,18 @@
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
         <div>
-          <MenuFoldOutlined
+          <MenuUnfoldOutlined
             v-show="collapsed"
             class="trigger"
             @click="collapse"
           />
-          <MenuUnfoldOutlined
+          <MenuFoldOutlined
             v-show="!collapsed"
             class="trigger"
             @click="collapse"
           />
+          <Header />
         </div>
-        <Header />
       </a-layout-header>
       <a-layout-content style="margin: 0 16px">
         <router-view />
@@ -59,7 +59,7 @@ export default {
   },
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .trigger {
   padding: 0 20px;
   line-height: 64px;

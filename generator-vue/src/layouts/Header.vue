@@ -1,7 +1,11 @@
 <template lang="html">
-  <div>Header</div>
+  <div class="header">Header</div>
 </template>
 <script>
 export default {};
 </script>
-<style lang="less"></style>
+<style lang="less" scoped>
+.header {
+  float: right;
+}
+</style>
