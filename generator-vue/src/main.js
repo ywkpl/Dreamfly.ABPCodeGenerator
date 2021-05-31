@@ -2,14 +2,35 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import * as antIcons from "@ant-design/icons-vue";
-import { Button, Layout, Menu } from "ant-design-vue";
+import {
+  Button,
+  Layout,
+  Menu,
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Switch,
+  Checkbox,
+  Radio,
+  Table,
+  Card,
+} from "ant-design-vue";
 
 const app = createApp(App);
-// 注册组件
-Object.keys(antIcons).forEach((key) => {
-  app.component(key, antIcons[key]);
-});
-// 添加到全局
-app.config.globalProperties.$antIcons = antIcons;
-app.use(Button).use(Layout).use(Menu).use(store).use(router).mount("#app");
+app
+  .use(Button)
+  .use(Layout)
+  .use(Menu)
+  .use(Form)
+  .use(Input)
+  .use(Switch)
+  .use(DatePicker)
+  .use(Select)
+  .use(Checkbox)
+  .use(Radio)
+  .use(Table)
+  .use(Card)
+  .use(store)
+  .use(router)
+  .mount("#app");

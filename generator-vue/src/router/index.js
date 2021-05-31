@@ -13,7 +13,7 @@ const routes = [
     //添加布局组件，必须包含router-view子组件，下阶路由时用到
     component: () =>
       import(
-        /* webpackChunkName: "basicLayout" */ "../layouts/BasicLayout.vue"
+        /* webpackChunkName: "siderLayout" */ "../layouts/SiderLayout.vue"
       ),
     // component: {
     //   render: () => h(resolveComponent("router-view")),
