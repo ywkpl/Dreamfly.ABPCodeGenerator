@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-//import { h, resolveComponent } from "vue";
+// import { h, resolveComponent } from "vue";
 
 const routes = [
+  {
+    path: "/",
+    redirect: "/setting",
+  },
   {
     path: "/setting",
     //添加布局组件，必须包含router-view子组件，下阶路由时用到
@@ -19,28 +22,29 @@ const routes = [
     children: [
       {
         path: "/setting",
-        redirect: "/setting/project",
+        name: "setting",
+        meta: { icon: "HomeOutlined", title: "首页" },
+        component: () =>
+          import(/* webpackChunkName: "setting" */ "../views/Home.vue"),
       },
       {
         path: "/setting/project",
         name: "project",
+        meta: { icon: "ProfileOutlined", title: "项目设定" },
         component: () =>
           import(/* webpackChunkName: "setting" */ "../views/Setting/Project"),
       },
       {
         path: "/setting/entity",
         name: "entity",
+        meta: { icon: "CoffeeOutlined", title: "实体设定" },
         component: () =>
           import(/* webpackChunkName: "setting" */ "../views/Setting/Entity"),
       },
     ],
   },
   {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-  {
+    hideInMenu: true,
     path: "/:catchAll(.*)",
     name: "notFound",
     component: () => import(/* webpackChunkName: "about" */ "../views/404.vue"),

@@ -2,6 +2,14 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import { Button, Layout } from "ant-design-vue";
+import * as antIcons from "@ant-design/icons-vue";
+import { Button, Layout, Menu } from "ant-design-vue";
 
-createApp(App).use(Button).use(Layout).use(store).use(router).mount("#app");
+const app = createApp(App);
+// 注册组件
+Object.keys(antIcons).forEach((key) => {
+  app.component(key, antIcons[key]);
+});
+// 添加到全局
+app.config.globalProperties.$antIcons = antIcons;
+app.use(Button).use(Layout).use(Menu).use(store).use(router).mount("#app");

@@ -1,6 +1,11 @@
 <template lang="html">
   <a-layout style="min-height: 100vh">
-    <a-layout-sider :trigger="null" v-model:collapsed="collapsed" collapsible>
+    <a-layout-sider
+      :trigger="null"
+      v-model:collapsed="collapsed"
+      collapsible
+      width="256px"
+    >
       <div class="logo" />
       <!-- <a-button @click="changeCollapsed">test</a-button> -->
       <SideMenu />
