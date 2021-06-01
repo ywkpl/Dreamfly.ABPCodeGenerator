@@ -32,6 +32,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
             switch (dataType)
             {
+                
+            }
+            switch (dataType)
+            {
                 case DataType.String:
                     break;
             }
