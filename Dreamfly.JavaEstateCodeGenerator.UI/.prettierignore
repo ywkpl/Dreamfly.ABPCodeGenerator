@@ -1,5 +1,8 @@
 **/*.svg
 package.json
+**/.http
+*.http
+.http
 .umi
 .umi-production
 /dist

@@ -91,7 +91,26 @@ const Entity = (): JSX.Element => {
     setEditModelVisible(true);
   };
 
+  const deleteEntityItems = (param: number[], removedItems: EntityItemType[]) => {
+    if (param.length > 0) {
+      setSubmitting(true);
+      deleteItems(param).then((response: Response) => {
+        if (!response) {
+          setEntityItems([...removedItems]);
+          setSelectedRowKeys([]);
+          message.success('删除成功！');
+        }
+        setSubmitting(false);
+      });
+    }
+  };
+
   const columns: ColumnProps<EntityItemType>[] = [
+    // {
+    //   key: 'id',
+    //   title: '编号',
+    //   dataIndex: 'id',
+    // },
     {
       key: 'name',
       title: '名称',
@@ -204,7 +223,8 @@ const Entity = (): JSX.Element => {
             title="确认删除吗?"
             onConfirm={() => {
               const removedItems = entityItems.filter((t) => t.index !== record.index);
-              setEntityItems([...removedItems]);
+              const param = entityItems.filter((t) => t.index === record.index).map((t) => t.id);
+              deleteEntityItems(param, removedItems);
             }}
           >
             <a>删除</a>
@@ -858,21 +878,11 @@ const Entity = (): JSX.Element => {
                     const removedItems = entityItems.filter(
                       (t) => !selectedRowKeys.includes(t.index),
                     );
-
                     const param = entityItems
                       .filter((t) => selectedRowKeys.includes(t.index))
                       .map((t) => t.id);
-                    if (param.length > 0) {
-                      setSubmitting(true);
-                      deleteItems(param).then((response: Response) => {
-                        if (!response) {
-                          setEntityItems([...removedItems]);
-                          setSelectedRowKeys([]);
-                          message.success('删除成功！');
-                        }
-                        setSubmitting(false);
-                      });
-                    }
+
+                    deleteEntityItems(param, removedItems);
                   }}
                   disabled={selectedRowKeys.length === 0}
                 >

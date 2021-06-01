@@ -32,12 +32,28 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
             switch (dataType)
             {
-                
-            }
-            switch (dataType)
-            {
                 case DataType.String:
                     break;
+                case DataType.Long:
+                    break;
+                case DataType.Integer:
+                    break;
+                case DataType.Boolean:
+                    break;
+                case DataType.Date:
+                    break;
+                case DataType.Float:
+                    break;
+                case DataType.Json:
+                    break;
+                case DataType.BigDecimal:
+                    break;
+                case DataType.Text:
+                    break;
+                case DataType.Set:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

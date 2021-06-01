@@ -36,9 +36,9 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         }
 
         [HttpPost("Update")]
-        public void Update(EntityDto entity)
+        public EntityDto Update(EntityDto entity)
         {
-            _entityPersistence.Update(entity);
+            return _entityPersistence.Update(entity);
         }
 
         [HttpPost("DeleteItems")]
@@ -87,6 +87,19 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         public EntityDto ImportFromDb(string tableName)
         {
             return new DBExternalEntity(tableName).ReadEntity();
+        }
+
+        [HttpGet("SyncFields")]
+        public EntityDto SyncFields(string tableName)
+        {
+            //讀取96設定
+            //對比字段：
+            //      新增：存在96中，不存在本地設定
+            //      刪除：存在本地，不存在96中
+            //      修改：新增+刪除
+            //生成SQL
+            //返回 實體數據+SQL
+            return null;
         }
     }
 }
