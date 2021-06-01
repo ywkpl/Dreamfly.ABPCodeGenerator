@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Dreamfly.JavaEstateCodeGenerator.Helper;
 using Dreamfly.JavaEstateCodeGenerator.Models;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Core
@@ -27,7 +28,16 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
 
         private void ItemSql(EntityItemDto itemDto)
         {
+            DataType dataType = itemDto.Type.ToEnum<DataType>(DataType.String);
 
+            switch (dataType)
+            {
+                case DataType.String:
+                    break;
+            }
         }
+
+        
+
     }
 }

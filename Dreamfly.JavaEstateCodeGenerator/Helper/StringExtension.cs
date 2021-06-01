@@ -27,5 +27,22 @@ namespace Dreamfly.JavaEstateCodeGenerator.Helper
                 char.ToUpperInvariant(variable[0]) + variable.Substring(1)
             );
         }
+
+        public static T ToEnum<T>(this string value, T defaultValue)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return defaultValue;
+            }
+
+            return Enum.TryParse(typeof(T), value, true, out var result) ? 
+                (T) result 
+                : defaultValue;
+        }
+
+        public static T ToEnum<T>(this string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
+        }
     }
 }
