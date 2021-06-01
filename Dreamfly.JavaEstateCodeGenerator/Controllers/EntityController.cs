@@ -4,6 +4,7 @@ using Dreamfly.JavaEstateCodeGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using Dreamfly.JavaEstateCodeGenerator.Core;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Controllers
 {
@@ -43,6 +44,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         public EntityDto Get(string entityName)
         {
             return _entityPersistence.Get(entityName);
+        }
+
+        [HttpGet("CreateSql")]
+        public string CreateSql(string entityName)
+        {
+            EntityDto dto = _entityPersistence.Get(entityName);
+            return new CreateSql(dto).ToSql();
         }
 
         [HttpPost("Remove")]
