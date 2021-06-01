@@ -24,5 +24,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
         private void GeneratorItemsSql()
         {
         }
+
+        private void ItemSql(EntityItemDto itemDto)
+        {
+
+        }
     }
 }
