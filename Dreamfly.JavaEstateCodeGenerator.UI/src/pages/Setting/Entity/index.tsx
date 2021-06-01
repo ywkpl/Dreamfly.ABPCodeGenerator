@@ -30,6 +30,8 @@ import {
   removeCode,
   getEntity,
   save,
+  update,
+  deleteItems,
 } from './service';
 import request from '@/utils/request';
 
@@ -58,6 +60,7 @@ const Entity = (): JSX.Element => {
   const handleAdd = () => {
     setIsEdit(false);
     editModelForm.setFieldsValue({
+      index: entityItems.length,
       name: '',
       columnName: '',
       type: '',
@@ -77,7 +80,13 @@ const Entity = (): JSX.Element => {
       joinName: null,
       foreignKeyName: null,
       relateEntityInModule: false,
-      order: 10,
+      order:
+        entityItems.length > 0
+          ? Math.max.apply(
+              Math,
+              entityItems.map((t) => t.order),
+            ) + 10
+          : 10,
     });
     setEditModelVisible(true);
   };
@@ -194,7 +203,7 @@ const Entity = (): JSX.Element => {
           <Popconfirm
             title="确认删除吗?"
             onConfirm={() => {
-              const removedItems = entityItems.filter((t) => t.name !== record.name);
+              const removedItems = entityItems.filter((t) => t.index !== record.index);
               setEntityItems([...removedItems]);
             }}
           >
@@ -208,9 +217,7 @@ const Entity = (): JSX.Element => {
   const handleEditModelOk = () => {
     editModelForm.validateFields().then((values) => {
       const entityItem = values as EntityItemType;
-      const editItem = entityItems?.find(
-        (t) => t.name.toLowerCase() === entityItem.name.toLowerCase(),
-      );
+      const editItem = entityItems?.find((t) => t.index === entityItem.index);
       if (isEdit) {
         if (editItem) {
           const index = entityItems.indexOf(editItem);
@@ -218,7 +225,10 @@ const Entity = (): JSX.Element => {
           setEntityItems([...entityItems]);
         }
       } else {
-        if (editItem) {
+        const existsName = entityItems?.find(
+          (t) => t.name.toLowerCase() === entityItem.name.toLowerCase(),
+        );
+        if (existsName) {
           message.error('实体项目已存在，请确认！');
           return;
         }
@@ -254,7 +264,8 @@ const Entity = (): JSX.Element => {
       console.log(values);
       importEntityFromDb(values).then((response) => {
         mainForm.setFieldsValue(response);
-        setEntityItems(response.entityItems);
+        var items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
+        setEntityItems(items);
       });
       setImportFromDbVisible(false);
     });
@@ -265,7 +276,8 @@ const Entity = (): JSX.Element => {
       setSelectedRowKeys([]);
       getEntity(values.entityName).then((response) => {
         mainForm.setFieldsValue(response);
-        setEntityItems(response.entityItems);
+        var items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
+        setEntityItems(items);
       });
       setLoadModelVisible(false);
     });
@@ -303,7 +315,7 @@ const Entity = (): JSX.Element => {
   const handleRelateTypeChange = (value: string) => {
     if (value) {
       setCheckEntityName(true);
-      if (value == 'OneToOne' || value == 'ManyToOne') {
+      if (value === 'OneToOne' || value === 'ManyToOne') {
         editModelForm.setFieldsValue({
           fetchType: 'FetchType.LAZY',
         });
@@ -329,6 +341,12 @@ const Entity = (): JSX.Element => {
     >
       <Form style={{ marginTop: 8 }} form={editModelForm} name="model">
         <Row>
+          <FormItem name="id">
+            <Input type="hidden" />
+          </FormItem>
+          <FormItem name="index">
+            <Input type="hidden" />
+          </FormItem>
           <Col span={12}>
             <FormItem
               {...formAllItemLayout}
@@ -668,29 +686,6 @@ const Entity = (): JSX.Element => {
     setLoadModelVisible(true);
   };
 
-  const handleTest = () => {
-    var url = 'http://test.dreamfly.com:9201/auth/oauth/token';
-    request(url, {
-      method: 'post',
-      data: {
-        grant_type: 'password',
-        client_id: 'newcity',
-        client_secret: '23101680',
-        username: 'admin',
-        password: '123456',
-      },
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const handleSave = () => {
     mainForm.validateFields().then((values) => {
       if (entityItems.length === 0) {
@@ -726,22 +721,18 @@ const Entity = (): JSX.Element => {
         return;
       }
 
-      const para = {
-        name: values.name,
-        tableName: values.tableName,
-        description: values.description,
-        hasIHasCompany: values.hasIHasCompany,
-        hasIHasTenant: values.hasIHasTenant,
-        isSync: values.isSync,
-        entityItems,
-      };
-
-      console.log(para);
+      const param = Object.assign({}, values, { entityItems });
+      console.log(param);
       setSubmitting(true);
-      save(para).then((response: Response) => {
+      update(param).then((response: Response) => {
         if (!response) {
           message.success('保存成功！');
         }
+        setSelectedRowKeys([]);
+        mainForm.setFieldsValue(response);
+        var items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
+        setEntityItems(items);
+
         setSubmitting(false);
       });
     });
@@ -811,6 +802,9 @@ const Entity = (): JSX.Element => {
       <Form style={{ marginTop: 8 }} form={mainForm} name="main">
         <Space direction="vertical" style={{ width: '100%' }}>
           <Card bordered={false} title="实体">
+            <FormItem name="id">
+              <Input type="hidden" />
+            </FormItem>
             <FormItem
               {...formItemLayout}
               label="名称"
@@ -862,10 +856,23 @@ const Entity = (): JSX.Element => {
                   danger
                   onClick={() => {
                     const removedItems = entityItems.filter(
-                      (t) => !selectedRowKeys.includes(t.name),
+                      (t) => !selectedRowKeys.includes(t.index),
                     );
-                    setEntityItems([...removedItems]);
-                    setSelectedRowKeys([]);
+
+                    const param = entityItems
+                      .filter((t) => selectedRowKeys.includes(t.index))
+                      .map((t) => t.id);
+                    if (param.length > 0) {
+                      setSubmitting(true);
+                      deleteItems(param).then((response: Response) => {
+                        if (!response) {
+                          setEntityItems([...removedItems]);
+                          setSelectedRowKeys([]);
+                          message.success('删除成功！');
+                        }
+                        setSubmitting(false);
+                      });
+                    }
                   }}
                   disabled={selectedRowKeys.length === 0}
                 >
@@ -876,7 +883,7 @@ const Entity = (): JSX.Element => {
               <Table
                 pagination={false}
                 columns={columns}
-                rowKey="name"
+                rowKey="index"
                 bordered
                 dataSource={entityItems}
                 rowSelection={rowSelection}

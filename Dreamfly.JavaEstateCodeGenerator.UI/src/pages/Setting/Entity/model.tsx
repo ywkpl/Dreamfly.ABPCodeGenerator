@@ -1,4 +1,6 @@
 export interface EntityItemType {
+  index: number;
+  id: number;
   name: string;
   columnName?: string;
   type: string;
@@ -22,6 +24,7 @@ export interface EntityItemType {
 }
 
 export interface EntityType {
+  id: number;
   name: string;
   tableName?: string;
   description: string;

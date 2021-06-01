@@ -1,4 +1,5 @@
-﻿using Dreamfly.JavaEstateCodeGenerator.Core.Impl;
+﻿using System.Collections.Generic;
+using Dreamfly.JavaEstateCodeGenerator.Core.Impl;
 using Dreamfly.JavaEstateCodeGenerator.Core.Interface;
 using Dreamfly.JavaEstateCodeGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,19 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             //生成Code文件
             await _projectBuilder.Build(entity);
         }
+
+        [HttpPost("Update")]
+        public void Update(EntityDto entity)
+        {
+            _entityPersistence.Update(entity);
+        }
+
+        [HttpPost("DeleteItems")]
+        public void DeleteItems(List<int> itemIds)
+        {
+            _entityPersistence.DeleteItems(itemIds);
+        }
+
 
         [HttpPost("Save")]
         public void Save(EntityDto entity)

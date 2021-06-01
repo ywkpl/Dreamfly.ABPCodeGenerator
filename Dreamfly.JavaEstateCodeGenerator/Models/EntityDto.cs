@@ -5,6 +5,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
 {
     public class EntityDto
     {
+        public int? Id { get; set; }
         public string Name { get; set; }
         public string TableName { get; set; }
         public string Description { get; set; }
@@ -17,6 +18,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
 
     public class EntityItemDto : ICloneable
     {
+        public int? Id { get; set; }
         public string Name { get; set; }
         public string ColumnName { get; set; }
         public string Type { get; set; }
