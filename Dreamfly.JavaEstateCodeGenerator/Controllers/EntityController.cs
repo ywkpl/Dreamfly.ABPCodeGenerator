@@ -141,7 +141,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
 
             if (addFields.Any() || dropFields.Any())
             {
-                sqlBuilder.Append($"alter table `{entity.TableName}`{Environment.NewLine}");
+                sqlBuilder.Append($"alter table `{entity.TableName}`");
                 //新增字段
                 addFields.ForEach(p => sqlBuilder.Append(GetAddFieldSql(p)));
                 dropFields.ForEach(p => sqlBuilder.Append(GetDropFieldSql(p)));
@@ -187,7 +187,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
 
         private string GetDropFieldSql(EntityItemDto item)
         {
-            return $"{Environment.NewLine}\tdrop column is exists {item.ColumnName},";
+            return $"{Environment.NewLine}\tdrop column if exists `{item.FieldName}`,";
         }
 
         private string GetCreateFieldSql(EntityItemDto item)
@@ -199,12 +199,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         private string GetAddFieldSql(EntityItemDto item)
         {
             string fieldSql= GetFieldSql(item);
-            return $"{Environment.NewLine}\tadd column is not exists {fieldSql},";
+            return $"{Environment.NewLine}\tadd column if not exists {fieldSql},";
         }
 
         private string GetFieldSql(EntityItemDto item)
         {
-            StringBuilder fieldBuilder = new StringBuilder($"`{item.ColumnName}`");
+            StringBuilder fieldBuilder = new StringBuilder($"`{item.FieldName}`");
             DataType dataType = item.Type.ToEnum<DataType>(DataType.String);
             switch (dataType)
             {

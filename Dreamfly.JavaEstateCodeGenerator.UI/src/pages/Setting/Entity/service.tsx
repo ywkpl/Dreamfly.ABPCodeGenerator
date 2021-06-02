@@ -46,14 +46,14 @@ export async function importEntityFromExcel(params: any) {
 export async function importEntityFromDb(params: any) {
   return request(`${appConsts.apiUrl}/entity/importFromDB`, {
     method: 'GET',
-    params: params,
+    params,
   });
 }
 
 export async function getEntity(entityName: string) {
   return request(`${appConsts.apiUrl}/entity/get`, {
     method: 'GET',
-    params: { entityName: entityName },
+    params: { entityName },
   });
 }
 

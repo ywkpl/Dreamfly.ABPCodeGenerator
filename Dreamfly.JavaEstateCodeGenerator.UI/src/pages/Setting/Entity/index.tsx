@@ -38,7 +38,7 @@ import request from '@/utils/request';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
-const Option = Select.Option;
+const { Option } = Select;
 
 const Entity = (): JSX.Element => {
   const [editModelForm] = Form.useForm();
@@ -55,7 +55,7 @@ const Entity = (): JSX.Element => {
   const [isEdit, setIsEdit] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
-  const [itemJson, setItemJson] = useState('');
+  const [sql, setSql] = useState('');
   const [checkEntityName, setCheckEntityName] = useState(false);
 
   const handleAdd = () => {
@@ -224,8 +224,8 @@ const Entity = (): JSX.Element => {
             title="确认删除吗?"
             onConfirm={() => {
               const removedItems = entityItems.filter((t) => t.index !== record.index);
-              const param = entityItems.filter((t) => t.index === record.index).map((t) => t.id);
-              deleteEntityItems(param, removedItems);
+              setEntityItems([...removedItems]);
+              setSelectedRowKeys([]);
             }}
           >
             <a>删除</a>
@@ -707,67 +707,28 @@ const Entity = (): JSX.Element => {
     setLoadModelVisible(true);
   };
 
-  const handleSave = () => {
+  const handleSave = (onlySave: boolean = false) => {
     mainForm.validateFields().then((values) => {
       if (entityItems.length === 0) {
         message.error('明细项目必须有值！');
         return;
       }
 
-      const para = {
-        name: values.name,
-        tableName: values.tableName,
-        description: values.description,
-        hasIHasCompany: values.hasIHasCompany,
-        hasIHasTenant: values.hasIHasTenant,
-        isSync: values.isSync,
-        entityItems,
-      };
-
-      console.log(para);
-      setSubmitting(true);
-      generatorCode(para).then((response: Response) => {
-        if (!response) {
-          message.success('生成成功！');
-        }
-        setSubmitting(false);
-      });
-    });
-  };
-
-  const handleOnlySave = () => {
-    mainForm.validateFields().then((values) => {
-      if (entityItems.length === 0) {
-        message.error('明细项目必须有值！');
-        return;
-      }
-
-      const param = Object.assign({}, values, { entityItems });
+      const param = { ...values, entityItems };
       console.log(param);
       setSubmitting(true);
-      const t = true;
-      const temp = t ? update(param) : save(param);
-      temp.then((response: Response) => {
+      const callSave = onlySave ? saveTest(param) : save(param);
+      callSave.then((response: SavedEntity) => {
         if (!response) {
-          message.success('保存成功！');
+          message.success('执行成功！');
         }
         setSelectedRowKeys([]);
-        mainForm.setFieldsValue(response);
-        var items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
+        console.log(response);
+        mainForm.setFieldsValue(response.entityDto);
+        const items = response.entityDto.entityItems.map((item, index) => ({ ...item, index }));
         setEntityItems(items);
-
-        setSubmitting(false);
-      });
-
-      update(param).then((response: Response) => {
-        if (!response) {
-          message.success('保存成功！');
-        }
-        setSelectedRowKeys([]);
-        mainForm.setFieldsValue(response);
-        var items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
-        setEntityItems(items);
-
+        console.log(response.sql);
+        setSql(response.sql);
         setSubmitting(false);
       });
     });
@@ -812,10 +773,15 @@ const Entity = (): JSX.Element => {
       {/* <Button type="primary" htmlType="submit" onClick={handleTest}>
         测试
       </Button> */}
-      <Button type="primary" htmlType="submit" onClick={handleOnlySave} loading={submitting}>
+      <Button
+        type="primary"
+        htmlType="submit"
+        onClick={() => handleSave(true)}
+        loading={submitting}
+      >
         保存修改
       </Button>
-      <Button type="primary" htmlType="submit" onClick={handleSave} loading={submitting}>
+      <Button type="primary" htmlType="submit" onClick={() => handleSave} loading={submitting}>
         生成
       </Button>
       <Button type="primary" htmlType="submit" onClick={handleDelete} loading={submitting}>
@@ -893,11 +859,8 @@ const Entity = (): JSX.Element => {
                     const removedItems = entityItems.filter(
                       (t) => !selectedRowKeys.includes(t.index),
                     );
-                    const param = entityItems
-                      .filter((t) => selectedRowKeys.includes(t.index))
-                      .map((t) => t.id);
-
-                    deleteEntityItems(param, removedItems);
+                    setEntityItems([...removedItems]);
+                    setSelectedRowKeys([]);
                   }}
                   disabled={selectedRowKeys.length === 0}
                 >
@@ -914,72 +877,16 @@ const Entity = (): JSX.Element => {
                 rowSelection={rowSelection}
               />
               <Divider />
-              <FormItem name="itemJson">
+              <FormItem name="sql">
                 <TextArea
-                  placeholder="明细Json"
+                  placeholder="Sql语法"
                   autoSize={{ minRows: 6, maxRows: 6 }}
-                  value={itemJson}
-                  onChange={(e) => {
-                    setItemJson(e.target.value);
-                  }}
+                  // value={sql}
+                  // onChange={(e) => {
+                  //   setSql(e.target.value);
+                  // }}
                 />
               </FormItem>
-              <Button
-                type="primary"
-                onClick={() => {
-                  if (itemJson && itemJson.length > 0) {
-                    const items = JSON.parse(itemJson) as EntityItemType[];
-                    if (items && items.length > 0) {
-                      const itemNames = items.map((t) => t.name);
-                      const existsNames = entityItems.filter((t) => itemNames.includes(t.name));
-                      if (existsNames.length > 0) {
-                        message.error('已存在相同名称其次，请确认！');
-                        return;
-                      }
-                      const newItmes = entityItems.concat(items);
-                      setEntityItems([...newItmes]);
-                    }
-                  }
-                }}
-              >
-                导入
-              </Button>
-              <Button
-                type="primary"
-                style={{ marginLeft: '10px' }}
-                onClick={() => {
-                  const data = `[
-                    {
-                        "name": "name",
-                        "columnName":"test_name",
-                        "type": "String",
-                        "length": 20,
-                        "isRequired": true,
-                        "description": "名称",
-                        "inQuery":true,
-                        "inCreate":true,
-                        "inResponse":false,
-                        "inAllResponse":true
-                    },
-                    {
-                        "name": "age",
-                        "type": "Integer",
-                        "description": "年龄",
-                        "inQuery":true,
-                        "inResponse":true
-                    },
-                    {
-                        "name": "memo",
-                        "type": "String",
-                        "length": 400
-                    }
-                ]`;
-                  setItemJson(data);
-                  mainForm.setFieldsValue({ itemJson: data });
-                }}
-              >
-                生成示范数据
-              </Button>
             </div>
           </Card>
         </Space>

@@ -1,4 +1,5 @@
-POST http://localhost:55000/entity/update HTTP/1.1
+### 测试保存API
+POST http://localhost:55000/entity/saveTest HTTP/1.1
 content-type:application/json 
 
 {
@@ -261,11 +262,11 @@ content-type:application/json
             "index": 9
         },
         {
-            "id": 13918,
+            "id": 13928,
             "name": "test",
-            "columnName": "",
-            "type": "Long",
-            "length": null,
+            "columnName": "Test",
+            "type": "String",
+            "length": 30,
             "fraction": null,
             "hasTime": false,
             "isRequired": false,
@@ -273,7 +274,7 @@ content-type:application/json
             "inAllResponse": true,
             "inResponse": false,
             "inCreate": true,
-            "description": "test",
+            "description": "测试",
             "relateType": null,
             "cascadeType": null,
             "relateEntity": null,
@@ -286,11 +287,11 @@ content-type:application/json
             "index": 10
         },
         {
-            "id": 13919,
-            "name": "test01",
-            "columnName": "",
-            "type": "String",
-            "length": 10,
+            "id": 13931,
+            "name": "abc",
+            "columnName": "ABC",
+            "type": "Float",
+            "length": null,
             "fraction": null,
             "hasTime": false,
             "isRequired": false,
@@ -298,7 +299,7 @@ content-type:application/json
             "inAllResponse": true,
             "inResponse": false,
             "inCreate": true,
-            "description": "test",
+            "description": "好的",
             "relateType": null,
             "cascadeType": null,
             "relateEntity": null,
@@ -307,14 +308,14 @@ content-type:application/json
             "fetchType": null,
             "joinName": null,
             "foreignKeyName": null,
-            "order": 10019,
-            "index": 11
+            "order": 10029,
+            "index": 13
         },
         {
             "index": 12,
-            "name": "test02",
-            "columnName": "",
-            "type": "String",
+            "name": "exit",
+            "columnName": "Exit",
+            "type": "Long",
             "length": null,
             "fraction": null,
             "isRequired": false,
@@ -325,8 +326,8 @@ content-type:application/json
             "relateEntityInModule": false,
             "relateDirection": null,
             "foreignKeyName": null,
-            "description": "test02",
-            "order": 10029,
+            "description": "退一下",
+            "order": 10039,
             "inQuery": false,
             "inCreate": true,
             "inAllResponse": true,

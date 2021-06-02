@@ -18,6 +18,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
 
     public class EntityItemDto : ICloneable
     {
+        public string FieldName
+        {
+            get => String.IsNullOrEmpty(ColumnName) ? Name : ColumnName;
+        }
         public int? Id { get; set; }
         public string Name { get; set; }
         public string ColumnName { get; set; }
