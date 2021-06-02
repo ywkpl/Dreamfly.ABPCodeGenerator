@@ -29,6 +29,13 @@ export async function deleteItems(params: any) {
   });
 }
 
+export async function saveTest(params: any) {
+  return request(`${appConsts.apiUrl}/entity/saveTest`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
 export async function importEntityFromExcel(params: any) {
   return request(`${appConsts.apiUrl}/entity/importFromExcel`, {
     method: 'POST',

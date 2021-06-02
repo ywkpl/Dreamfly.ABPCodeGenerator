@@ -21,7 +21,7 @@ import {
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ColumnProps } from 'antd/es/table';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { EntityItemType } from './model';
+import { EntityItemType, SavedEntity } from './model';
 import styles from './index.less';
 import {
   generatorCode,
@@ -32,6 +32,7 @@ import {
   save,
   update,
   deleteItems,
+  saveTest,
 } from './service';
 import request from '@/utils/request';
 
@@ -744,6 +745,20 @@ const Entity = (): JSX.Element => {
       const param = Object.assign({}, values, { entityItems });
       console.log(param);
       setSubmitting(true);
+      const t = true;
+      const temp = t ? update(param) : save(param);
+      temp.then((response: Response) => {
+        if (!response) {
+          message.success('保存成功！');
+        }
+        setSelectedRowKeys([]);
+        mainForm.setFieldsValue(response);
+        var items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
+        setEntityItems(items);
+
+        setSubmitting(false);
+      });
+
       update(param).then((response: Response) => {
         if (!response) {
           message.success('保存成功！');

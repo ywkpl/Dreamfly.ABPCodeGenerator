@@ -77,7 +77,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 HasIHasTenant = true,
                 IsSync = false,
                 TableName = _tableSetting.Name,
-                Name = RemoveUnderLine(_tableSetting.Name),
+                Name = _tableSetting.Name.RemoveUnderLine(),
                 Description = _tableSetting.Desc,
                 EntityItems = new List<EntityItemDto>()
             };
@@ -238,17 +238,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
 
         private string ConvertFieldName(string field)
         {
-            var name = RemoveUnderLine(field).ToCamelCase();
+            var name = field.RemoveUnderLine().ToCamelCase();
             if (name == "default")
             {
                 name = "isDefault";
             }
             return name;
-        }
-
-        private string RemoveUnderLine(string field)
-        {
-            return field.Replace("_", "");
         }
     }
 }

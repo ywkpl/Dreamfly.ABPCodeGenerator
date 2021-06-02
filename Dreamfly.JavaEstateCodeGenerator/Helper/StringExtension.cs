@@ -28,6 +28,15 @@ namespace Dreamfly.JavaEstateCodeGenerator.Helper
             );
         }
 
+        public static string RemoveUnderLine(this string variable)
+        {
+            if (String.IsNullOrWhiteSpace(variable))
+            {
+                return String.Empty;
+            }
+            return variable.Replace("_", "");
+        }
+
         public static T ToEnum<T>(this string value, T defaultValue)
         {
             if (string.IsNullOrEmpty(value))

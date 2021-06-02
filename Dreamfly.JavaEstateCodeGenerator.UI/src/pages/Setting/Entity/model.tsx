@@ -30,3 +30,8 @@ export interface EntityType {
   description: string;
   entityItems: EntityItemType[];
 }
+
+export interface SavedEntity {
+  entityDto: EntityType;
+  sql: string;
+}

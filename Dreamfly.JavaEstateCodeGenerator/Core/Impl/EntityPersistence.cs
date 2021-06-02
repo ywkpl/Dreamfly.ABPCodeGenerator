@@ -26,6 +26,21 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             context.SaveChanges();
         }
 
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public EntityDto Add(EntityDto dto)
+        {
+            var entity = ToEntity(dto);
+            using var context = new SettingContext();
+            context.Add(entity);
+            context.SaveChanges();
+            return ToEntityDto(entity);
+        }
+
         /// <summary>
         /// 更新
         /// </summary>
@@ -36,7 +51,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             using var context = new SettingContext();
             context.Set<Entity>().Update(entity);
             context.SaveChanges();
-            return Get(entity.Id);
+            return ToEntityDto(entity);
+            //return Get(entity.Id);
         }
 
         public void DeleteItem(int itemId)
