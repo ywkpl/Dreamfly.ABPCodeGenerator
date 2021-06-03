@@ -13,5 +13,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
         
         EntityDto Add(EntityDto dto);
         EntityDto Update(EntityDto dto);
+
+        EntityDto Update(EntityDto dto, List<EntityItemDto> dropItems);
     }
 }

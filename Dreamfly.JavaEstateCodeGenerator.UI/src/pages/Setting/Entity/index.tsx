@@ -61,6 +61,7 @@ const Entity = (): JSX.Element => {
   const handleAdd = () => {
     setIsEdit(false);
     editModelForm.setFieldsValue({
+      id: null,
       index: entityItems.length,
       name: '',
       columnName: '',

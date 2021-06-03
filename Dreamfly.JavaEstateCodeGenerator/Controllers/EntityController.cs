@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Dreamfly.JavaEstateCodeGenerator.Core;
 using Dreamfly.JavaEstateCodeGenerator.Helper;
+using Dreamfly.JavaEstateCodeGenerator.SqliteDbModels;
 
 namespace Dreamfly.JavaEstateCodeGenerator.Controllers
 {
@@ -111,7 +112,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         /// <returns></returns>
         private SavedDto Update(EntityDto entity)
         {
-            var sql = GetUpdateSql(entity);
+            var dropItems = GetDropEntityItems(entity);
+            var sql = GetUpdateSql(entity, dropItems);
             var savedEntity = _entityPersistence.Update(entity);
 
             return new SavedDto
@@ -121,7 +123,26 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             };
         }
 
-        private string GetUpdateSql(EntityDto entity)
+        private List<EntityItemDto> GetDropEntityItems(EntityDto entity)
+        {
+            if (entity.Id.HasValue)
+            {
+                //讀取現有實體
+                var dbEntityDto = _entityPersistence.Get(entity.Id.Value);
+                //刪除字段[原實體存在, 提交實體中不存在]
+                var dbFields = dbEntityDto.EntityItems.Select(t => t.Id).ToList();
+                var fields = entity.EntityItems.Select(t => t.Id).ToList();
+                var deleteFields = dbFields.Except(fields);
+                var dropFields = dbEntityDto.EntityItems
+                    .Where(t => deleteFields.Contains(t.Id) && t.Type != "Set")
+                    .ToList();
+                return dropFields;
+            }
+
+            return new List<EntityItemDto>();
+        }
+
+        private string GetUpdateSql(EntityDto entity, List<EntityItemDto> dropItems)
         {
             StringBuilder sqlBuilder = new StringBuilder();
             
@@ -129,22 +150,12 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
                 .Where(t => t.Id == null && t.Type != "Set")
                 .ToList();
 
-            //讀取現有實體
-            var dbEntityDto = _entityPersistence.Get(entity.Id.Value);
-            //刪除字段[原實體存在, 提交實體中不存在]
-            var dbFields = dbEntityDto.EntityItems.Select(t => t.Id).ToList();
-            var fields = entity.EntityItems.Select(t => t.Id).ToList();
-            var deleteFields = dbFields.Except(fields);
-            var dropFields = dbEntityDto.EntityItems
-                .Where(t => deleteFields.Contains(t.Id) && t.Type != "Set")
-                .ToList();
-
-            if (addFields.Any() || dropFields.Any())
+            if (addFields.Any() || dropItems.Any())
             {
                 sqlBuilder.Append($"alter table `{entity.TableName}`");
                 //新增字段
                 addFields.ForEach(p => sqlBuilder.Append(GetAddFieldSql(p)));
-                dropFields.ForEach(p => sqlBuilder.Append(GetDropFieldSql(p)));
+                dropItems.ForEach(p => sqlBuilder.Append(GetDropFieldSql(p)));
 
                 //去除最後","号,添加";"
                 sqlBuilder.Remove(sqlBuilder.Length - 1, 1);
