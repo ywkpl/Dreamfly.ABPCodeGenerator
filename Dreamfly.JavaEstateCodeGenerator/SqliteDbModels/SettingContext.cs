@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
@@ -17,6 +18,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
 
     public class Entity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [MaxLength(50)]
         public string Name { get; set; }
@@ -32,6 +35,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
 
     public class EntityItem
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [MaxLength(50)]
         public string Name { get; set; }
@@ -98,6 +103,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         /// 排序
         /// </summary>
         public int Order { get; set; }
+        public int? EntityId { get; set; }
+        public Entity Entity { get; set; }
     }
 
     public class CodeTrack

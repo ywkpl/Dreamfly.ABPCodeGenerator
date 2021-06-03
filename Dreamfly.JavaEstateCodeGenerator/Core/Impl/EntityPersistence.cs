@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dreamfly.JavaEstateCodeGenerator.Core.Interface;
 using Dreamfly.JavaEstateCodeGenerator.Models;
@@ -15,13 +16,14 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
         {
             var findEntity = GetEntityByName(dto.Name);
             var entity = ToEntity(dto);
-            using var context=new SettingContext();
+            using var context = new SettingContext();
             if (findEntity != null)
             {
                 context.Remove(findEntity);
                 context.SaveChanges();
                 entity.Id = findEntity.Id;
             }
+
             context.Add(entity);
             context.SaveChanges();
         }
@@ -42,17 +44,55 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
         }
 
         /// <summary>
-        /// 更新
+        /// 更新,删除身档一起
         /// </summary>
         /// <param name="dto"></param>
         public EntityDto Update(EntityDto dto)
         {
+            if(dto.Id==null)
+                throw  new Exception("Id不得為空");
+            
+            //刪除字段
+            RemoveEntityItems(dto);
+
+            //更新
             var entity = ToEntity(dto);
             using var context = new SettingContext();
+
+            //var oldEntity = GetEntityById(dto.Id.Value);
+            //context.Entity.Update(entity);
             context.Set<Entity>().Update(entity);
             context.SaveChanges();
             return ToEntityDto(entity);
             //return Get(entity.Id);
+        }
+
+        private Entity Test(EntityDto dto, Entity entity)
+        {
+            //賦值所有屬性
+
+        }
+
+        public void RemoveEntityItems(EntityDto dto)
+        {
+            if (dto.Id != null)
+            {
+                //取身档差集【原数据有，新数据没有】，删除
+                using var context = new SettingContext();
+                var oldItems = context.EntityItem.AsNoTracking().Where(t => t.EntityId == dto.Id).ToList();
+                var oldIds= oldItems.Select(t=>t.Id).ToList();
+                var newIds = dto.EntityItems.Where(t => t.Id.HasValue).Select(t => t.Id.Value).ToList();
+                var deleteIds = oldIds.Except(newIds).ToList();
+                var deleteItems= oldItems.Where(t => deleteIds.Contains(t.Id));
+                context.EntityItem.RemoveRange(deleteItems);
+                context.SaveChanges();
+//                oldEntity.EntityItems.RemoveAll(t => deleteIds.Contains(t.Id));
+//
+//                using var context = new SettingContext();
+//                context.Entity.Update(oldEntity);
+//                context.SaveChanges();
+                //DeleteItems(deleteIds);
+            }
         }
 
         public void DeleteItem(int itemId)
@@ -90,7 +130,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
         {
             using var context = new SettingContext();
             return context.Entity
-                .Include(t => t.EntityItems.OrderBy(g=>g.Order))
+                .Include(t => t.EntityItems.OrderBy(g => g.Order))
                 .FirstOrDefault(t => t.Name == entityName);
         }
 
