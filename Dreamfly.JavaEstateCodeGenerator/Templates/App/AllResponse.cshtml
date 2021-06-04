@@ -62,6 +62,10 @@ if (!String.IsNullOrEmpty(item.Description))
     @:*/
     @:@@ApiModelProperty(value = "@Html.Raw(item.Description)")
 }
+if (item.Type == "Long" && item.RelateType==null)
+{
+    @:@@JsonSerialize(using = ToStringSerializer.class)
+}
 if (item.Type == "Text"||item.Type == "Json")
 {
     itemType = "String";

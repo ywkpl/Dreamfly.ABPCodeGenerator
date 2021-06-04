@@ -31,20 +31,15 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         }
 
         [HttpPost("Generate")]
-        public async Task Generate(EntityDto entity)
+        public async Task<SavedDto> Generate(EntityDto entity)
         {
-            this.SaveTest(entity);
+            var result = this.SaveTest(entity);
             //转换成Entity
             entity.Project = _project;
 
             //生成Code文件
             await _projectBuilder.Build(entity);
-        }
-
-        [HttpPost("DeleteItems")]
-        public void DeleteItems(List<int> itemIds)
-        {
-            _entityPersistence.DeleteItems(itemIds);
+            return result;
         }
 
         [HttpPost("Save")]
@@ -145,9 +140,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         private string GetUpdateSql(EntityDto entity, List<EntityItemDto> dropItems)
         {
             StringBuilder sqlBuilder = new StringBuilder();
-            
+            var fixedFields = new string[] {"companyId, tenantId"};
+
             var addFields = entity.EntityItems
-                .Where(t => t.Id == null && t.Type != "Set")
+                .Where(t => t.Id == null && t.Type != "Set" && !fixedFields.Contains(t.Name))
                 .ToList();
 
             if (addFields.Any() || dropItems.Any())
@@ -175,7 +171,10 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             sqlBuilder.Append($"{Environment.NewLine}\tid bigint not null,");
             entity.EntityItems.ForEach(p =>  sqlBuilder.Append(GetCreateFieldSql(p)));
             //添加固定欄位[新增，刪除，修改等]
-            sqlBuilder.Append(FullAuditFieldSql);
+            if (entity.HasAudit)
+            {
+                sqlBuilder.Append(FullAuditFieldSql);
+            }
             sqlBuilder.Append($"{Environment.NewLine}\tprimary key (id)");
             sqlBuilder.Append(") engine = InnoDB;");
             return sqlBuilder.ToString();
@@ -267,34 +266,33 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             //讀取本地設定
             var entityDto = _entityPersistence.Get(tableName.RemoveUnderLine());
 
-            var fixedFieldName=new String[]{"tenantId", "companyId"};
+            var filterFields=new string[]{"companyId", "tenantId"};
+
             var dbFields = dbEntityDto.EntityItems
-                .Where(t=>!fixedFieldName.Contains(t.ColumnName.ToCamelCase()))
-                .Select(t =>t.ColumnName).ToList();
+                .Select(t =>t.Name).ToList();
             var fields = entityDto.EntityItems
-                .Where(t=> !fixedFieldName.Contains(t.Name))
-                .Select(t => t.ColumnName).ToList();
+                .Select(t => t.Name).ToList();
             //新增字段【96中有，本地沒有】
             var addFields = dbFields.Except(fields);
             //刪除字段【本地有，96中沒有】
-            var deleteFields = fields.Except(dbFields);
+            var deleteFields = fields.Except(dbFields).Except(filterFields);
 
-            var addEntityItmes = dbEntityDto.EntityItems
-                .Where(t => addFields.Contains(t.ColumnName))
+            var addEntityItems = dbEntityDto.EntityItems
+                .Where(t => addFields.Contains(t.Name))
                 .OrderBy(t=>t.Order)
                 .ToList();
 
-            var deleteEntityItmes = dbEntityDto.EntityItems
-                .Where(t => deleteFields.Contains(t.ColumnName))
+            var deleteEntityItems = dbEntityDto.EntityItems
+                .Where(t => deleteFields.Contains(t.Name))
                 .ToList();
-            deleteEntityItmes.ForEach(t =>  entityDto.EntityItems.Remove(t) );
-            entityDto.EntityItems.AddRange(addEntityItmes);
+            deleteEntityItems.ForEach(t =>  entityDto.EntityItems.Remove(t) );
+            entityDto.EntityItems.AddRange(addEntityItems);
             //更新頭檔
             entityDto.Description = dbEntityDto.Description;
             //更新排序
             entityDto.EntityItems.ForEach(p =>
             {
-                var item = dbEntityDto.EntityItems.FirstOrDefault(t => t.ColumnName == p.ColumnName);
+                var item = dbEntityDto.EntityItems.FirstOrDefault(t => t.Name == p.Name);
                 if (item != null)
                 {
                     p.Order = item.Order;

@@ -83,7 +83,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
             return Get(entity.Id);
         }
 
-        public void RemoveEntityItems(EntityDto dto)
+        private void RemoveEntityItems(EntityDto dto)
         {
             if (dto.Id != null)
             {
@@ -98,29 +98,6 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Impl
                 context.SaveChanges();
             }
         }
-
-        public void DeleteItem(int itemId)
-        {
-            using var context = new SettingContext();
-            var entity = context.EntityItem.SingleOrDefault(t => t.Id == itemId);
-            if (entity != null)
-            {
-                context.EntityItem.Remove(entity);
-                context.SaveChanges();
-            }
-        }
-
-        public void DeleteItems(List<int> itemIds)
-        {
-            using var context = new SettingContext();
-            var entities = context.EntityItem.Where(t => itemIds.Contains(t.Id));
-            if (entities.Any())
-            {
-                context.EntityItem.RemoveRange(entities);
-                context.SaveChanges();
-            }
-        }
-
 
         private Entity GetEntityById(int id)
         {

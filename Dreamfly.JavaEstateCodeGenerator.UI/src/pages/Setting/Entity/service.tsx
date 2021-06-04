@@ -22,13 +22,6 @@ export async function update(params: any) {
   });
 }
 
-export async function deleteItems(params: any) {
-  return request(`${appConsts.apiUrl}/entity/deleteItems`, {
-    method: 'POST',
-    data: params,
-  });
-}
-
 export async function saveTest(params: any) {
   return request(`${appConsts.apiUrl}/entity/saveTest`, {
     method: 'POST',
@@ -45,6 +38,13 @@ export async function importEntityFromExcel(params: any) {
 
 export async function importEntityFromDb(params: any) {
   return request(`${appConsts.apiUrl}/entity/importFromDB`, {
+    method: 'GET',
+    params,
+  });
+}
+
+export async function syncEntityFromDb(params: any) {
+  return request(`${appConsts.apiUrl}/entity/SyncFields`, {
     method: 'GET',
     params,
   });

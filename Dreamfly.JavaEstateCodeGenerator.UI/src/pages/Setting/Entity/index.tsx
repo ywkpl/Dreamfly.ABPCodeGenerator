@@ -31,8 +31,8 @@ import {
   getEntity,
   save,
   update,
-  deleteItems,
   saveTest,
+  syncEntityFromDb,
 } from './service';
 import request from '@/utils/request';
 
@@ -46,11 +46,13 @@ const Entity = (): JSX.Element => {
   const [loadModelForm] = Form.useForm();
   const [mainForm] = Form.useForm();
   const [importFromDb] = Form.useForm();
+  const [syncFromDb] = Form.useForm();
   const [entityItems, setEntityItems] = useState<EntityItemType[]>([]);
   const [editModelVisible, setEditModelVisible] = useState<boolean>(false);
   const [importModelVisible, setImportModelVisible] = useState<boolean>(false);
   const [loadModelVisible, setLoadModelVisible] = useState<boolean>(false);
   const [importFromDbVisible, setImportFromDbVisible] = useState<boolean>(false);
+  const [syncFromDbVisible, setSyncFromDbVisible] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -264,6 +266,23 @@ const Entity = (): JSX.Element => {
 
   const handleImportFromDbCancel = () => {
     setImportFromDbVisible(false);
+  };
+
+  const handleSyncFromDbOk = () => {
+    syncFromDb.validateFields().then((values) => {
+      setSelectedRowKeys([]);
+      console.log(values);
+      syncEntityFromDb(values).then((response) => {
+        mainForm.setFieldsValue(response);
+        const items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
+        setEntityItems(items);
+      });
+      setSyncFromDbVisible(false);
+    });
+  };
+
+  const handleSyncFromDbCancel = () => {
+    setSyncFromDbVisible(false);
   };
 
   const handleImportFromDbOk = () => {
@@ -649,6 +668,33 @@ const Entity = (): JSX.Element => {
     </Modal>
   );
 
+  const modelSyncFromDb = (
+    <Modal
+      title="导入条件"
+      destroyOnClose
+      visible={syncFromDbVisible}
+      onOk={handleSyncFromDbOk}
+      okText="确定"
+      onCancel={handleSyncFromDbCancel}
+    >
+      <Form style={{ marginTop: 8 }} form={syncFromDb} name="model">
+        <FormItem
+          {...formAllItemLayout}
+          label="表名"
+          name="tableName"
+          rules={[
+            {
+              required: true,
+              message: '请输入表名',
+            },
+          ]}
+        >
+          <Input placeholder="表名" style={{ width: '80%' }} />
+        </FormItem>
+      </Form>
+    </Modal>
+  );
+
   const modelLoad = (
     <Modal
       title="载入条件"
@@ -682,6 +728,12 @@ const Entity = (): JSX.Element => {
     setImportFromDbVisible(true);
   };
 
+  const handleSyncFromDb = () => {
+    syncFromDb.resetFields();
+    syncFromDb.setFieldsValue({ tabIndex: 0 });
+    setSyncFromDbVisible(true);
+  };
+
   const handleImport = () => {
     importModelForm.resetFields();
     importModelForm.setFieldsValue({ tabIndex: 0 });
@@ -704,9 +756,9 @@ const Entity = (): JSX.Element => {
       const param = { ...values, entityItems };
       console.log(param);
       setSubmitting(true);
-      const callSave = onlySave ? saveTest(param) : save(param);
+      const callSave = onlySave ? saveTest(param) : generatorCode(param);
       callSave.then((response: SavedEntity) => {
-        if (!response) {
+        if (response) {
           message.success('执行成功！');
         }
         setSelectedRowKeys([]);
@@ -748,6 +800,9 @@ const Entity = (): JSX.Element => {
 
   const saveButton = (
     <>
+      <Button type="primary" htmlType="submit" onClick={handleSyncFromDb}>
+        数据库同步
+      </Button>
       <Button type="primary" htmlType="submit" onClick={handleImportFromDb}>
         数据库导入
       </Button>
@@ -768,7 +823,7 @@ const Entity = (): JSX.Element => {
       >
         保存修改
       </Button>
-      <Button type="primary" htmlType="submit" onClick={() => handleSave} loading={submitting}>
+      <Button type="primary" htmlType="submit" onClick={() => handleSave()} loading={submitting}>
         生成
       </Button>
       <Button type="primary" htmlType="submit" onClick={handleDelete} loading={submitting}>
@@ -867,16 +922,14 @@ const Entity = (): JSX.Element => {
                 rowSelection={rowSelection}
               />
               <Divider />
-              <FormItem name="sql">
-                <TextArea
-                  placeholder="Sql语法"
-                  autoSize={{ minRows: 6, maxRows: 6 }}
-                  // value={sql}
-                  // onChange={(e) => {
-                  //   setSql(e.target.value);
-                  // }}
-                />
-              </FormItem>
+              <TextArea
+                placeholder="Sql语法"
+                autoSize={{ minRows: 6, maxRows: 6 }}
+                value={sql}
+                // onChange={(e) => {
+                //   setSql(e.target.value);
+                // }}
+              />
             </div>
           </Card>
         </Space>
@@ -885,6 +938,7 @@ const Entity = (): JSX.Element => {
       {importModelVisible && modelImport}
       {loadModelVisible && modelLoad}
       {importFromDbVisible && modelImportFromDb}
+      {syncFromDbVisible && modelSyncFromDb}
     </PageHeaderWrapper>
   );
 };
