@@ -29,6 +29,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.SqliteDbModels
         public string Description { get; set; }
         public bool HasIHasCompany { get; set; }
         public bool HasIHasTenant { get; set; }
+        public bool HasAudit { get; set; }
         public bool IsSync { get; set; }
         public List<EntityItem> EntityItems { get; set; }
     }

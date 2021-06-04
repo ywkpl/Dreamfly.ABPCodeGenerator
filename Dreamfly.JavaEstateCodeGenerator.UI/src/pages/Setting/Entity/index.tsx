@@ -93,20 +93,6 @@ const Entity = (): JSX.Element => {
     setEditModelVisible(true);
   };
 
-  const deleteEntityItems = (param: number[], removedItems: EntityItemType[]) => {
-    if (param.length > 0) {
-      setSubmitting(true);
-      deleteItems(param).then((response: Response) => {
-        if (!response) {
-          setEntityItems([...removedItems]);
-          setSelectedRowKeys([]);
-          message.success('删除成功！');
-        }
-        setSubmitting(false);
-      });
-    }
-  };
-
   const columns: ColumnProps<EntityItemType>[] = [
     // {
     //   key: 'id',
@@ -286,7 +272,7 @@ const Entity = (): JSX.Element => {
       console.log(values);
       importEntityFromDb(values).then((response) => {
         mainForm.setFieldsValue(response);
-        var items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
+        const items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
         setEntityItems(items);
       });
       setImportFromDbVisible(false);
@@ -298,7 +284,7 @@ const Entity = (): JSX.Element => {
       setSelectedRowKeys([]);
       getEntity(values.entityName).then((response) => {
         mainForm.setFieldsValue(response);
-        var items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
+        const items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
         setEntityItems(items);
       });
       setLoadModelVisible(false);
@@ -840,6 +826,9 @@ const Entity = (): JSX.Element => {
               name="hasIHasTenant"
               valuePropName="checked"
             >
+              <Switch />
+            </FormItem>
+            <FormItem {...formItemLayout} label="審計接口" name="hasAudit" valuePropName="checked">
               <Switch />
             </FormItem>
             <FormItem {...formItemLayout} label="同步状态" name="isSync" valuePropName="checked">

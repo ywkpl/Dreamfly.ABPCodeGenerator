@@ -75,6 +75,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
             {
                 HasIHasCompany = true,
                 HasIHasTenant = true,
+                HasAudit = true,
                 IsSync = false,
                 TableName = _tableSetting.Name,
                 Name = _tableSetting.Name.RemoveUnderLine(),

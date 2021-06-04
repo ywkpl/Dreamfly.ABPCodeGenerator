@@ -33,7 +33,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
         [HttpPost("Generate")]
         public async Task Generate(EntityDto entity)
         {
-            _entityPersistence.Save(entity);
+            this.SaveTest(entity);
             //转换成Entity
             entity.Project = _project;
 
@@ -267,8 +267,13 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             //讀取本地設定
             var entityDto = _entityPersistence.Get(tableName.RemoveUnderLine());
 
-            var dbFields = dbEntityDto.EntityItems.Select(t =>t.ColumnName).ToList();
-            var fields = entityDto.EntityItems.Select(t => t.ColumnName).ToList();
+            var fixedFieldName=new String[]{"tenantId", "companyId"};
+            var dbFields = dbEntityDto.EntityItems
+                .Where(t=>!fixedFieldName.Contains(t.ColumnName.ToCamelCase()))
+                .Select(t =>t.ColumnName).ToList();
+            var fields = entityDto.EntityItems
+                .Where(t=> !fixedFieldName.Contains(t.Name))
+                .Select(t => t.ColumnName).ToList();
             //新增字段【96中有，本地沒有】
             var addFields = dbFields.Except(fields);
             //刪除字段【本地有，96中沒有】
@@ -284,7 +289,6 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
                 .ToList();
             deleteEntityItmes.ForEach(t =>  entityDto.EntityItems.Remove(t) );
             entityDto.EntityItems.AddRange(addEntityItmes);
-
             //更新頭檔
             entityDto.Description = dbEntityDto.Description;
             //更新排序
@@ -296,7 +300,8 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
                     p.Order = item.Order;
                 }
             });
-
+            entityDto.EntityItems = entityDto.EntityItems.OrderBy(t => t.Order).ToList();
+            //修改栏位类型未处理
             return entityDto;
         }
     }

@@ -11,6 +11,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Models
         public string Description { get; set; }
         public bool HasIHasCompany { get; set; }
         public bool HasIHasTenant { get; set; }
+        public bool HasAudit { get; set; }
         public Project Project { get; set; }
         public bool IsSync { get; set; }
         public List<EntityItemDto> EntityItems { get; set; }
