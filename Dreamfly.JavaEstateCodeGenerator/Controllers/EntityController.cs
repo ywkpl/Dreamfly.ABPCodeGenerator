@@ -282,7 +282,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
                 .OrderBy(t=>t.Order)
                 .ToList();
 
-            var deleteEntityItems = dbEntityDto.EntityItems
+            var deleteEntityItems = entityDto.EntityItems
                 .Where(t => deleteFields.Contains(t.Name))
                 .ToList();
             deleteEntityItems.ForEach(t =>  entityDto.EntityItems.Remove(t) );

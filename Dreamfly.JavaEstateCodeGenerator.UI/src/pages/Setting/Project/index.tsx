@@ -11,6 +11,7 @@ import {
   Modal,
   message,
   Popconfirm,
+  Select,
 } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ColumnProps } from 'antd/es/table';
@@ -20,6 +21,7 @@ import styles from './index.less';
 import { getProject, updateProject } from './service';
 
 const FormItem = Form.Item;
+const { Option } = Select;
 
 const Project = () => {
   const [editModelForm] = Form.useForm();
@@ -271,6 +273,30 @@ const Project = () => {
       <Form style={{ marginTop: 8 }} form={mainForm} name="main">
         <Space direction="vertical" style={{ width: '100%' }}>
           <Card bordered={false} title="项目">
+            <FormItem {...formItemLayout} label="代码模块">
+              <Select
+                placeholder="代码模块"
+                allowClear
+                onChange={(value) => {
+                  const oldName = mainForm.getFieldValue('name');
+                  const oldOutputPath = mainForm.getFieldValue('outputPath');
+                  if (value) {
+                    mainForm.setFieldsValue({
+                      name: value,
+                      outputPath: oldOutputPath.replace(oldName, value),
+                      isShare: value === 'baseinfo',
+                    });
+                  }
+                }}
+              >
+                <Option value="baseinfo">baseinfo</Option>
+                <Option value="charge">charge</Option>
+                <Option value="construction">construction</Option>
+                <Option value="crm">crm</Option>
+                <Option value="evaluate">evaluate</Option>
+                <Option value="purchase">purchase</Option>
+              </Select>
+            </FormItem>
             <FormItem
               {...formItemLayout}
               label="名称"
