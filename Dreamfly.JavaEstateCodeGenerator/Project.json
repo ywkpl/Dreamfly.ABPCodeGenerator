@@ -1,7 +1,7 @@
 {
   "Project": {
     "Name": "evaluate",
-    "OutputPath": "d:/Development/Newcity/microestate/evaluate-service/src",
+    "OutputPath": "e:/Development/Newcity/microestate/evaluate-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.1",
     "Author": {

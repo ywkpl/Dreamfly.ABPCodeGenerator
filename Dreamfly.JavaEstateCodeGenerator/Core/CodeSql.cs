@@ -155,36 +155,54 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             int orderNum = 10;
             try
             {
-                foreach (string subItem in subItems)
+                if (subItems.Length > 0)
                 {
-                    var itemSplit = subItem.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                    string code = itemSplit[0].Replace(" ", "");
-                    string name = itemSplit[1].Replace(" ", "");
+                    StringBuilder secondSql =
+                        new StringBuilder(
+                            $"{Environment.NewLine}insert into SysCode(id, code, name, ord, pid, rank) values");
 
-                    if (hasThreeItem)
+                    StringBuilder thirdSqlAll = new StringBuilder();
+                    foreach (string subItem in subItems)
                     {
-                        var subItemSplit = name.Split("*", StringSplitOptions.RemoveEmptyEntries);
-                        name = subItemSplit[0];
-                        sqlBuilder.Append(
-                            $"insert into SysCode(id, code, name, ord, pid, rank) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId}, 2);{Environment.NewLine}");
+                        var itemSplit = subItem.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        string code = itemSplit[0].Replace(" ", "");
+                        string name = itemSplit[1].Replace(" ", "");
 
-                        var threeItems = subItemSplit[1].Split("|", StringSplitOptions.RemoveEmptyEntries);
-                        int threeOrder = 10;
-                        foreach (var threeItem in threeItems)
+                        if (hasThreeItem)
                         {
-                            var threeItemSplit = threeItem.Split("&", StringSplitOptions.RemoveEmptyEntries);
-                            sqlBuilder.Append(
-                                $"insert into SysCode(id, code, name, ord, pid, rank) value({(codeId + orderNum) * 100 + threeOrder}, '{threeItemSplit[0]}', '{threeItemSplit[1]}', {threeOrder} , {(codeId + orderNum)}, 3);{Environment.NewLine}");
-                            threeOrder += 10;
+                            var subItemSplit = name.Split("*", StringSplitOptions.RemoveEmptyEntries);
+                            name = subItemSplit[0];
+                            secondSql.Append(
+                                $"({Environment.NewLine}{codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId}, 2),");
+
+                            var threeItems = subItemSplit[1].Split("|", StringSplitOptions.RemoveEmptyEntries);
+                            int threeOrder = 10;
+                            StringBuilder thirdSql = new StringBuilder(
+                                $"{Environment.NewLine}insert into SysCode(id, code, name, ord, pid, rank) values");
+                            foreach (var threeItem in threeItems)
+                            {
+                                var threeItemSplit = threeItem.Split("&", StringSplitOptions.RemoveEmptyEntries);
+                                thirdSql.Append(
+                                    $"{Environment.NewLine}({(codeId + orderNum) * 100 + threeOrder}, '{threeItemSplit[0]}', '{threeItemSplit[1]}', {threeOrder} , {(codeId + orderNum)}, 3),");
+                                threeOrder += 10;
+                            }
+
+                            thirdSql.Remove(thirdSql.Length - 1, 1).Append(";");
+                            thirdSqlAll.Append(thirdSql);
                         }
-                    }
-                    else
-                    {
-                        sqlBuilder.Append(
-                            $"insert into SysCode(id, code, name, ord, pid, rank) value({codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId}, 2);{Environment.NewLine}");
+                        else
+                        {
+                            secondSql.Append(
+                                $"({Environment.NewLine}{codeId + orderNum}, '{code}', '{name}', {orderNum} , {codeId}, 2),");
+                        }
+
+                        orderNum += 10;
                     }
 
-                    orderNum += 10;
+                    secondSql.Remove(secondSql.Length - 1, 1).Append(";");
+                    sqlBuilder.Append(secondSql);
+                    if(thirdSqlAll.Length>0)
+                        sqlBuilder.Append(thirdSqlAll);
                 }
             }
             catch (Exception e)
