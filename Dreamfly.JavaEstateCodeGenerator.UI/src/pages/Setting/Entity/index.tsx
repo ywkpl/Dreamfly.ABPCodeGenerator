@@ -303,8 +303,14 @@ const Entity = (): JSX.Element => {
       setSelectedRowKeys([]);
       getEntity(values.entityName).then((response) => {
         mainForm.setFieldsValue(response);
-        const items = response.entityItems.map((item, index) => Object.assign({}, item, { index }));
-        setEntityItems(items);
+        if (response.entityItems && response.entityItems.length > 0) {
+          const items = response.entityItems.map((item, index) =>
+            Object.assign({}, item, { index }),
+          );
+          setEntityItems(items);
+        } else {
+          setEntityItems([]);
+        }
       });
       setLoadModelVisible(false);
     });
