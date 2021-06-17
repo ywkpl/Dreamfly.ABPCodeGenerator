@@ -194,6 +194,11 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 itemDto.InResponse = true;
             }
 
+            if (itemDto.ColumnName.Equals("SourceId"))
+            {
+                itemDto.Type = "Long";
+            }
+
             if (itemDto.ColumnName.EndsWith("Area"))
             {
                 itemDto.Type = "BigDecimal";
@@ -201,23 +206,21 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core.Interface
                 itemDto.Fraction = 4;
             }
 
-            if (itemDto.ColumnName.EndsWith("Amount"))
+            if (itemDto.ColumnName.EndsWith("Amount")|| itemDto.ColumnName.EndsWith("Price"))
             {
                 itemDto.Type = "BigDecimal";
                 itemDto.Length = 18;
-                itemDto.Fraction = 0;
+                itemDto.Fraction = 2;
             }
 
-            if (itemDto.ColumnName.EndsWith("Price"))
-            {
-                itemDto.Type = "BigDecimal";
-                itemDto.Length = 18;
-                itemDto.Fraction = 0;
-            }
-
-            if (itemDto.ColumnName.EndsWith("Qty"))
+            if (itemDto.ColumnName.EndsWith("Qty")|| itemDto.ColumnName.Equals("Ord"))
             {
                 itemDto.Type = "Integer";
+            }
+
+            if (itemDto.ColumnName.StartsWith("Is"))
+            {
+                itemDto.Type = "Boolean";
             }
 
             if (itemDto.ColumnName.StartsWith("Code_"))

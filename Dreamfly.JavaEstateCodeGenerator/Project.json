@@ -1,7 +1,7 @@
 {
   "Project": {
-    "Name": "charge",
-    "OutputPath": "e:/Development/Newcity/microestate/charge-service/src",
+    "Name": "baseinfo",
+    "OutputPath": "e:/Development/Newcity/microestate/baseinfo-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.1",
     "Author": {
@@ -10,7 +10,7 @@
       "Remark": ""
     },
     "HasApi": true,
-    "IsShare": false,
+    "IsShare": true,
     "Templates": [
       {
         "File": "Templates/App/Entity.cshtml",
