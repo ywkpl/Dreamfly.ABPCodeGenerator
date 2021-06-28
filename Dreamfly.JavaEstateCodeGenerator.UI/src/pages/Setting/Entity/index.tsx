@@ -769,9 +769,11 @@ const Entity = (): JSX.Element => {
         }
         setSelectedRowKeys([]);
         console.log(response);
-        mainForm.setFieldsValue(response.entityDto);
-        const items = response.entityDto.entityItems.map((item, index) => ({ ...item, index }));
-        setEntityItems(items);
+        if (response.entityDto && response.entityDto.entityItems) {
+          mainForm.setFieldsValue(response.entityDto);
+          const items = response.entityDto.entityItems.map((item, index) => ({ ...item, index }));
+          setEntityItems(items);
+        }
         console.log(response.sql);
         setSql(response.sql);
         setSubmitting(false);

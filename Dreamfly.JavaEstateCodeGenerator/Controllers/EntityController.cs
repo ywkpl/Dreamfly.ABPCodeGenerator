@@ -169,7 +169,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Controllers
             }
             StringBuilder sqlBuilder = new StringBuilder($"create table if not exists `{entity.TableName}` (");
             sqlBuilder.Append($"{Environment.NewLine}\tid bigint not null,");
-            entity.EntityItems.ForEach(p =>  sqlBuilder.Append(GetCreateFieldSql(p)));
+            entity.EntityItems.Where(t=>t.Type!="Set").ToList().ForEach(p =>  sqlBuilder.Append(GetCreateFieldSql(p)));
             //添加固定欄位[新增，刪除，修改等]
             if (entity.HasAudit)
             {
