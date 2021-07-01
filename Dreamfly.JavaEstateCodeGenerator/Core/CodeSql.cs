@@ -151,7 +151,7 @@ namespace Dreamfly.JavaEstateCodeGenerator.Core
             sqlBuilder.Append($"# {item.Name} {item.Code} {item.KeyValues}{Environment.NewLine}");
             sqlBuilder.Append(
                 $"insert into SysCode(id, code, name, ord, pid, rank) value({codeId}, '{item.Code}', '{item.Name}', 0 , null, 1);{Environment.NewLine}");
-            var subItems = item.KeyValues.Split(".");
+            var subItems = item.KeyValues.Split("$");
             int orderNum = 10;
             try
             {
