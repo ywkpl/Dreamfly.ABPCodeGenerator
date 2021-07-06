@@ -404,11 +404,16 @@ Content-Type: application/json
 }
 
 ### 权限测试-银行全部【未给权限】
-GET http://210.241.233.140:9201/baseinfo/bankInfo/getAll HTTP/1.1
+GET http://127.0.0.1:9201/baseinfo/parameter/getAll?sys=true&sorting=&page=1&size=99999 HTTP/1.1
 Authorization: Bearer {{token}}
+Referer: http://127.0.0.1:3000/
 
 ### 菜单获取
 GET http://localhost:9201/baseinfo/menu/getUserTree?type=group&sorting=ord&hidden=false&id=0 HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+GET http://localhost:9201/baseinfo/menu/getTree?type=group&sorting=ord&hidden=false&id=0 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### 刷新权限缓存
@@ -419,6 +424,15 @@ Content-Type: application/json
 {
 }
 
+### 刷新权限缓存
+POST http://localhost:9201/auth/oauth/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&client_id=newcity
+&client_secret=23101680
+&username=admin
+&password=123456
 
 #---------------------------权限重建测试---------------
 @id = 847863902225039360
