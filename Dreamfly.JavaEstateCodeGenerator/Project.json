@@ -1,7 +1,7 @@
 {
   "Project": {
-    "Name": "construction",
-    "OutputPath": "e:/Development/Newcity/microestate/construction-service/src",
+    "Name": "charge",
+    "OutputPath": "e:/Development/Newcity/microestate/charge-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.1",
     "Author": {

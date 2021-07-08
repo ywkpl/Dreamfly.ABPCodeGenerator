@@ -386,7 +386,7 @@ DELETE http://localhost:9201/baseinfo/bankInfo/delete?id={{id}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### 权限测试-银行修改
-DELETE http://210.241.233.140:9201/baseinfo/permission/deleteByMenuId?menuId=847863902225039360 HTTP/1.1
+DELETE http://localhost:9201/baseinfo/permission/deleteByMenuId?menuId=862333308099362816 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### 权限测试-银行修改
