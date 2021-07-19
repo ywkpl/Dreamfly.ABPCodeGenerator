@@ -295,6 +295,8 @@ const Project = () => {
                 <Option value="crm">crm</Option>
                 <Option value="evaluate">evaluate</Option>
                 <Option value="purchase">purchase</Option>
+                <Option value="finance">finance</Option>
+                <Option value="docking">docking</Option>
               </Select>
             </FormItem>
             <FormItem

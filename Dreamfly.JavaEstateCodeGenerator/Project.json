@@ -1,7 +1,7 @@
 {
   "Project": {
-    "Name": "charge",
-    "OutputPath": "e:/Development/Newcity/microestate/charge-service/src",
+    "Name": "docking",
+    "OutputPath": "e:/Development/Newcity/microestate/docking-service/src",
     "PackagePath": "com.newcity.microestate",
     "Version": "1.0.1",
     "Author": {

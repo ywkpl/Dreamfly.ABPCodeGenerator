@@ -1,5 +1,5 @@
 ### Admin Token  bankinfo 全部接口
-@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGxCdWlsZGluZyI6dHJ1ZSwidXNlcl9uYW1lIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJhZG1pbiIsIkIwMi0wMSIsIkEwMCIsInRlbXAiLCJ0ZXN0IiwiMTExMSJdLCJjbGllbnRfaWQiOiJuZXdjaXR5IiwiY29tcGFuaWVzIjpbeyJpZCI6MiwidGVuYW50SWQiOjEsInRlbmFudE5hbWUiOiLlnIvms7Dpm4blnJgiLCJjb21wYW55SWQiOjIsImNvbXBhbnlOYW1lIjoi5paw56eR6ZqbIiwiYnVpbGRpbmdJZCI6MTEsImJ1aWxkaW5nTmFtZSI6IuaVpuWNl-iyoee2kyIsImFyY2hJZCI6MTEsImFyY2hOYW1lIjoiQeajnyIsImhvdXNlSWQiOjE0LCJob3VzZU5hbWUiOiIwMkYtQSIsImN1c3RvbWVySWQiOjExLCJjdXN0b21lck5hbWUiOiLlnIvms7Dkurrlo70iLCJzdXBwbGllcklkIjo4NDc0MDYyMTczOTQzODkwMDEsInN1cHBsaWVyTmFtZSI6IuiJr-apn-WvpualreiCoeS7veaciemZkOWFrOWPuCIsImRlcHRJZCI6ODYzMDYxNDU0NDE1MjAwMjU2LCJkZXB0TmFtZSI6IuihjOaUv-euoeeQhue1hCIsIndvcmtDb2RlSWQiOjg2MzA4MjE2MjE2MzgxMDMwNCwid29ya0NvZGVOYW1lIjoi5pu-5paH56eAIn1dLCJjdXJyZW50Ijp7ImlkIjoyLCJ0ZW5hbnRJZCI6MSwidGVuYW50TmFtZSI6IuWci-azsOmbhuWcmCIsImNvbXBhbnlJZCI6MiwiY29tcGFueU5hbWUiOiLmlrDnp5HpmpsiLCJidWlsZGluZ0lkIjoxMSwiYnVpbGRpbmdOYW1lIjoi5pWm5Y2X6LKh57aTIiwiYXJjaElkIjoxMSwiYXJjaE5hbWUiOiJB5qOfIiwiaG91c2VJZCI6MTQsImhvdXNlTmFtZSI6IjAyRi1BIiwiY3VzdG9tZXJJZCI6MTEsImN1c3RvbWVyTmFtZSI6IuWci-azsOS6uuWjvSIsInN1cHBsaWVySWQiOjg0NzQwNjIxNzM5NDM4OTAwMSwic3VwcGxpZXJOYW1lIjoi6Imv5qmf5a-m5qWt6IKh5Lu95pyJ6ZmQ5YWs5Y-4IiwiZGVwdElkIjo4NjMwNjE0NTQ0MTUyMDAyNTYsImRlcHROYW1lIjoi6KGM5pS_566h55CG57WEIiwid29ya0NvZGVJZCI6ODYzMDgyMTYyMTYzODEwMzA0LCJ3b3JrQ29kZU5hbWUiOiLmm77mlofnp4AifSwic2NvcGUiOlsiYWxsIl0sImJ1aWxkaW5ncyI6W10sIm5hbWUiOiLnrqHnkIblk6EiLCJpZCI6MSwiZXhwIjoxNjI5MDEwNjAxLCJhbGxEZXB0Ijp0cnVlLCJqdGkiOiIyZTY4OTQ2Ny01N2Y4LTRiYjUtOWJjNC05YWExYWFkN2RlOTkiLCJkZXB0cyI6W3siaWQiOjg2MzA2MTQ1MTc3Njk4MzA0MCwibmFtZSI6IualreWLmeS4gOmDqCJ9XSwiZW1haWwiOiJhZG1pbkBuZXdjaXR5LmNvbSJ9.OPrjxHlcG565n8tU_rHMiE-HJkqpWwya9IOJJkD2UimlOIpxxE5GYepfcdkPk5ooKRGxYnfsCyLSYZ6-IdrKXjSypFRMwy8JaMXKsnJFPAVBH_dZ1r2KIxuNYrQwTIOmg3O5A327WOCIyeDBiDC6zWpy6U0nyNSz46fFzrkPlvbuwlMsVqkrWviCfbQU_k1CX20Rgl7i5AEnuQxNVjI6Qx9bLbg0hbjh05jvA1-vefC5x_B9uIY5DkB2pBLsB5vU85EVYvrTkLSnZWfkUrCuKH_cqIGXfo1w1Ah_jLpi12uqsLN_bLx8F9IryY67pfuQe9H66OY0nt69hPvTW8Fqvg
+@token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGxCdWlsZGluZyI6dHJ1ZSwidXNlcl9uYW1lIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJhZG1pbiIsIkIwMi0wMSIsIkEwMCIsInRlbXAiLCJ0ZXN0IiwiMTExMSJdLCJjbGllbnRfaWQiOiJuZXdjaXR5IiwiY29tcGFuaWVzIjpbeyJpZCI6MiwidGVuYW50SWQiOjEsInRlbmFudE5hbWUiOiLlnIvms7Dpm4blnJgiLCJjb21wYW55SWQiOjEsImNvbXBhbnlOYW1lIjoi6ZyW5ZyS5YWs5a-T5aSn5buIIiwiYnVpbGRpbmdJZCI6MTEsImJ1aWxkaW5nTmFtZSI6IuaVpuWNl-iyoee2kyIsImFyY2hJZCI6MTEsImFyY2hOYW1lIjoiQeajnyIsImhvdXNlSWQiOjE0LCJob3VzZU5hbWUiOiIwMkYtQSIsImN1c3RvbWVySWQiOjExLCJjdXN0b21lck5hbWUiOiLlnIvms7Dkurrlo70iLCJzdXBwbGllcklkIjo4NDc0MDYyMTczOTQzODkwMDEsInN1cHBsaWVyTmFtZSI6IuiJr-apn-WvpualreiCoeS7veaciemZkOWFrOWPuCIsImRlcHRJZCI6ODYzMDYxNDU0NDE1MjAwMjU2LCJkZXB0TmFtZSI6IuihjOaUv-euoeeQhue1hCIsIndvcmtDb2RlSWQiOjg2MzA4MjE2MjE2MzgxMDMwNCwid29ya0NvZGVOYW1lIjoi5pu-5paH56eAIn1dLCJjdXJyZW50Ijp7ImlkIjoyLCJ0ZW5hbnRJZCI6MSwidGVuYW50TmFtZSI6IuWci-azsOmbhuWcmCIsImNvbXBhbnlJZCI6MSwiY29tcGFueU5hbWUiOiLpnJblnJLlhazlr5PlpKflu4giLCJidWlsZGluZ0lkIjoxMSwiYnVpbGRpbmdOYW1lIjoi5pWm5Y2X6LKh57aTIiwiYXJjaElkIjoxMSwiYXJjaE5hbWUiOiJB5qOfIiwiaG91c2VJZCI6MTQsImhvdXNlTmFtZSI6IjAyRi1BIiwiY3VzdG9tZXJJZCI6MTEsImN1c3RvbWVyTmFtZSI6IuWci-azsOS6uuWjvSIsInN1cHBsaWVySWQiOjg0NzQwNjIxNzM5NDM4OTAwMSwic3VwcGxpZXJOYW1lIjoi6Imv5qmf5a-m5qWt6IKh5Lu95pyJ6ZmQ5YWs5Y-4IiwiZGVwdElkIjo4NjMwNjE0NTQ0MTUyMDAyNTYsImRlcHROYW1lIjoi6KGM5pS_566h55CG57WEIiwid29ya0NvZGVJZCI6ODYzMDgyMTYyMTYzODEwMzA0LCJ3b3JrQ29kZU5hbWUiOiLmm77mlofnp4AifSwic2NvcGUiOlsiYWxsIl0sImJ1aWxkaW5ncyI6W3siaWQiOjg2MjM1NjY0MTA3MTIzNTA3MiwibmFtZSI6Iua4rOippuWkp-aokyJ9XSwibmFtZSI6IueuoeeQhuWToSIsImlkIjoxLCJleHAiOjE2MjkyNTE5ODEsImFsbERlcHQiOnRydWUsImp0aSI6Ijk5MTdkYjY3LWEzZTgtNGY1ZS1iZTM2LTZkZmIzYTEzNTM4ZCIsImRlcHRzIjpbeyJpZCI6ODYzMDYxNDUxNzc2OTgzMDQwLCJuYW1lIjoi5qWt5YuZ5LiA6YOoIn1dLCJlbWFpbCI6ImFkbWluQG5ld2NpdHkuY29tIn0.TxuvaYekdL7YYlVD78wBgkwcHrzoAKfgt_j1S34JLECCO9LtSP2cqqNVVNxGMuiNhPR62A0JC6KfSoMSyx3NfQCOh77LYwGYfiDkd7WWRfh2GSv-EwgEJ9TT3dXZMSY3s7M-u2KLCR9rBDvxkctqx9UKDiakUfv8Vfa19ohdy9xWdc5X134uywi4I8CT4FWWFsA1-Wo_4oNuP8b5ipyH1AJ0tOfgeGfoimuZ2usho-rsO3xxEqFVuP8ySao9vhXEQgr_cuk8CWlYbrml5eNhQ2uPWLhtfGxFhWPsMmq3LIpU33RjZ6vL__JSi3FqO6oSIhrwbHLdXKu8WTtaAvsNEQ
 
 ### 权限测试-银行查询单笔
 GET http://localhost:9201/baseinfo/bankInfo/get?id=847139086253686784 HTTP/1.1
@@ -25,6 +25,63 @@ Content-Type: application/json
   "enable": true,
   "name": "name",
   "tel": "123456"
+}
+
+### 新建大楼
+# @name createBuilding
+POST http://localhost:9201/baseinfo/building/create HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "addr": "string",
+  "cityRegionId": 0,
+  "code": "string",
+  "codeBuildingService": 0,
+  "codeHouseType": 0,
+  "codeManagementGroup": 0,
+  "codeUseRent": 0,
+  "contact": "string",
+  "deptId": 0,
+  "fax": "string",
+  "fileUploadMapId": 0,
+  "fullName": "string",
+  "latitude": 0,
+  "longitude": 0,
+  "memo": "string",
+  "ownerCustomerId": 0,
+  "shortName": "string",
+  "tel": "string",
+  "townRegionId": 0
+}
+
+### 修改大楼
+# @name updateBuilding
+PUT http://localhost:9201/baseinfo/building/update HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id":866624650258415616,
+  "addr": "addr",
+  "cityRegionId": 0,
+  "code": "code",
+  "codeBuildingService": 0,
+  "codeHouseType": 0,
+  "codeManagementGroup": 0,
+  "codeUseRent": 0,
+  "contact": "contact",
+  "deptId": 0,
+  "fax": "fax",
+  "fileUploadMapId": 0,
+  "fullName": "fullName",
+  "latitude": 0,
+  "longitude": 0,
+  "memo": "memo",
+  "ownerCustomerId": 0,
+  "shortName": "shortName",
+  "tel": "tel",
+  "townRegionId": 0
 }
 
 @id={{createBankInfo.response.body.$.result.id}}
@@ -84,6 +141,10 @@ Referer: http://127.0.0.1:3000/
 ### 菜单获取
 GET http://localhost:9201/file/file/get?id=863116707508518912 HTTP/1.1
 Authorization: Bearer {{token}}
+
+### 菜单获取
+GET http://localhost:9201/crm/announce/getAll?codeAnnounceType=208030&page=1&size=9999&sorting=onTop+desc,id+desc HTTP/1.1
+
 
 ### 菜单获取
 GET http://localhost:9201/baseinfo/menu/getUserTree?type=group&sorting=ord&hidden=false&id=0 HTTP/1.1
