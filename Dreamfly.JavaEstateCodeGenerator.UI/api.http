@@ -151,7 +151,7 @@ GET http://localhost:9201/baseinfo/menu/getUserTree?type=group&sorting=ord&hidde
 Authorization: Bearer {{token}}
 
 ### 測試用戶接口
-GET http://localhost:9201/auth/oauth/test HTTP/1.1
+POST http://localhost:9201/auth/oauth/test HTTP/1.1
 Authorization: Bearer {{token}}
 
 ###
